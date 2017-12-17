@@ -11,7 +11,7 @@ import java.lang.reflect.Type;
 import java.util.Set;
 
 public class SharedPreference {
-    public static final String PREFS_NAME = "Bariatricpal_Prefs";
+    public static final String PREFS_NAME = "Turnstr_chat";
     private final Context mContext;
     SharedPreferences settings;
     Editor editor;

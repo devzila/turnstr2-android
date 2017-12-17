@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
-        facebookLoginIntialization();
+        //facebookLoginIntialization();
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -207,19 +207,19 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void facebookLoginIntialization() {
-        facebookLogin = (TextView) findViewById(R.id.facebook);
-        loginButton = (LoginButton) findViewById(R.id.login_button);
-        facebookLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loginButton.performClick();
-            }
-        });
-        callbackManager = CallbackManager.Factory.create();
-//        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
-        loginButton.registerCallback(callbackManager, callback);
-    }
+//    private void facebookLoginIntialization() {
+//        facebookLogin = (TextView) findViewById(R.id.facebook);
+//        loginButton = (LoginButton) findViewById(R.id.login_button);
+//        facebookLogin.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                loginButton.performClick();
+//            }
+//        });
+//        callbackManager = CallbackManager.Factory.create();
+////        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
+//        loginButton.registerCallback(callbackManager, callback);
+//    }
 
 
     private void googleLogin() {
