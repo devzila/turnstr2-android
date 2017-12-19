@@ -14,6 +14,7 @@ public class GeneralValues {
     public static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
     public static final String REGISTRATION_COMPLETE = "registrationComplete";
     public static final String LOGIN_URL = "/v1/sessions";
+    public static final String SIGNUP_URL = "/v1/signup";
     public static final java.lang.String FACEBOOK_LOGIN = "/v1/facebook/login";
 
     public static String Push_Token = "";
