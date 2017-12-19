@@ -54,7 +54,7 @@ public class WebApi {
 
     //===========GET Method===========
 
-    public String webCallForGet(Context context, JSONObject jsonObject, String masterRequestType) {
+    public String webCallForGet(Context context, JSONObject jsonObject, String masterRequestType, HashMap<String, String> extraHeaders) {
         Common_URL = "";
         String url = GeneralValues.BASE_URL + masterRequestType;
         Common_URL = appendGetFeildsToUrl(url, jsonObject);
@@ -66,6 +66,7 @@ public class WebApi {
             conn.setRequestMethod("GET");
             conn.setDoInput(true);
             conn.setDoOutput(false);
+            conn.setRequestProperty("auth_token",extraHeaders.get("auth_token"));
             conn.setRequestProperty("Content-Type", "application/json;charset=utf-8");
             conn.setRequestProperty("Accept", "application/json;charset=utf-8");
             conn.setConnectTimeout(60 * 1000);

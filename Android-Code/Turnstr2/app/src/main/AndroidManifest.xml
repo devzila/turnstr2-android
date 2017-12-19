@@ -51,19 +51,19 @@
             android:name=".Activity.SignUpActivity"
             android:label="@string/title_activity_login"></activity>
 
-<<<<<<< HEAD
+
 
         <activity android:name=".chat.activitys.AllFriendList" android:label="New Chat?"/>
-=======
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
 
-        <activity
-            android:name="com.facebook.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name" />
->>>>>>> 379ceb897314fd60a92fd5a1e06be7d313283a80
+        <!--<meta-data-->
+            <!--android:name="com.facebook.sdk.ApplicationId"-->
+            <!--android:value="@string/facebook_app_id" />-->
+
+        <!--<activity-->
+            <!--android:name="com.facebook.FacebookActivity"-->
+            <!--android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"-->
+            <!--android:label="@string/app_name" />-->
+
     </application>
 
 

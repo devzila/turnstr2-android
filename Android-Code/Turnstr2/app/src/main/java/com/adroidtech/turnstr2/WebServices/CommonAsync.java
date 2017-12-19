@@ -53,6 +53,8 @@ public class CommonAsync extends AsyncTask<String, Void, String> {
         this.extraHeaders = extraHeaders;
     }
 
+
+
     public CommonAsync(Context context, JSONObject jsonObject, AsyncCallback asyncCallback, String masterCall, String app_token) {
         this(context, jsonObject, asyncCallback, masterCall);
         this.app_token = app_token;
@@ -120,7 +122,7 @@ public class CommonAsync extends AsyncTask<String, Void, String> {
         String s = null;
         try {
             if ((request_type != null) && request_type.equals("GET")) {
-                s = webApi.webCallForGet(context, jsonObject, masterCall);
+                s = webApi.webCallForGet(context, jsonObject, masterCall, extraHeaders);
             } else if ((request_type != null) && request_type.equals("PUT")) {
                 s = webApi.webCallForPutRequest(context, jsonObject, masterCall, extraHeaders);
             } else if ((request_type != null) && request_type.equals("DELETE")) {

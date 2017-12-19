@@ -3,10 +3,7 @@
     <color name="colorPrimary">#FFFFAA00</color>
     <color name="colorPrimaryDark">#c78603</color>
     <color name="colorAccent">#FF4081</color>
-<<<<<<< HEAD
-    <color name="background">#ffaa00</color>
 
-    <color name="black">#000000</color>
     <color name="spliterLine">#606060</color>
 
     <color name="btn_create">#ffffff</color>
@@ -15,7 +12,7 @@
     <color name="btn_edit_disabled">#c1acff</color>
     <color name="btn_send">#c78603</color>
     <color name="btn_send_disabled">#8e8e8e</color>
-=======
+
 
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
@@ -29,5 +26,5 @@
     <color name="light_white">#FAFAFA</color>
     <color name="yello_back">#FF9C00</color>
 
->>>>>>> 379ceb897314fd60a92fd5a1e06be7d313283a80
+
 </resources>

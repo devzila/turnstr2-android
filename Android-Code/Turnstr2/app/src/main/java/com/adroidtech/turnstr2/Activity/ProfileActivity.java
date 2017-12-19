@@ -10,7 +10,7 @@ import com.adroidtech.turnstr2.CubeView.Cubesurfaceview;
 import com.adroidtech.turnstr2.CubeView.URLImageParser;
 import com.adroidtech.turnstr2.R;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
+
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;

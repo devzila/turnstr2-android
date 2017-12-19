@@ -155,10 +155,9 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
             if (jsonObject1.has("success") && jsonObject1.getBoolean("success")) {
                 LoginDetailModel data = new Gson().fromJson(jsonObject, LoginDetailModel.class);
 
+                Toast.makeText(LoginActivity.this, "Login : " + data.getUser().getFirstName(), Toast.LENGTH_SHORT).show();
 
-                Toast.makeText(LoginActivity.this, "Login : " + data.getData().getUser().getFirstName(), Toast.LENGTH_SHORT).show();
-
-                 connectToSendBird(String.valueOf(data.getData().getUser().getId()), data.getData().getUser().getFirstName());
+                connectToSendBird(String.valueOf(data.getUser().getId()), data.getUser().getFirstName());
 
             }
         } catch (JSONException e) {
@@ -249,13 +248,13 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
 
 
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if(PreferenceUtils.getConnected(this)) {
-            connectToSendBird(PreferenceUtils.getUserId(this), PreferenceUtils.getNickname(this));
-        }
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        if(PreferenceUtils.getConnected(this)) {
+//            connectToSendBird(PreferenceUtils.getUserId(this), PreferenceUtils.getNickname(this));
+//        }
+//    }
 
     /**
      * Attempts to connect a user to SendBird.
