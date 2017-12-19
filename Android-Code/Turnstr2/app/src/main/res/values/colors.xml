@@ -3,5 +3,17 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="background">#ffaa00</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="background">#FEAF2C</color>
+    <color name="background_gradient">#F97920</color>
+    <color name="btn_color">#DF5D12</color>
+    <color name="text_bliue">#08A0FA</color>
+    <color name="gray_light">#E1E1E1</color>
+    <color name="img_background">#F3F3F3</color>
+    <color name="text_golden">#E9A228</color>
+    <color name="light_white">#FAFAFA</color>
+    <color name="yello_back">#FF9C00</color>
+
 </resources>
