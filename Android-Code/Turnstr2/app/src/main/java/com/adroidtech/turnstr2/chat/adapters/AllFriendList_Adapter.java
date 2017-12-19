@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.adroidtech.turnstr2.R;
-import com.adroidtech.turnstr2.chat.models.Friends;
+import com.adroidtech.turnstr2.chat.models.Member;
 
 import java.util.List;
 
@@ -19,22 +19,25 @@ import java.util.List;
 public class AllFriendList_Adapter extends RecyclerView.Adapter<AllFriendList_Adapter.MyViewHolder> {
 
     private final Context context;
-    private List<Friends> moviesList;
+    private final List<Member> member;
+    private List<Member> moviesList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, year, genre;
+        private TextView name;
+        private TextView email;
+
 
         public MyViewHolder(View view) {
             super(view);
-//            title = (TextView) view.findViewById(R.id.title);
-//            genre = (TextView) view.findViewById(R.id.genre);
-//            year = (TextView) view.findViewById(R.id.year);
+            name = (TextView) view.findViewById(R.id.name);
+            email = (TextView) view.findViewById(R.id.email);
         }
     }
 
 
-    public AllFriendList_Adapter(Context context) {
-        this.context=context;
+    public AllFriendList_Adapter(Context context, List<Member> member) {
+        this.context = context;
+        this.member=member;
     }
 
     @Override
@@ -47,14 +50,16 @@ public class AllFriendList_Adapter extends RecyclerView.Adapter<AllFriendList_Ad
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-//        Friends movie = moviesList.get(position);
-//        holder.title.setText(movie.getTitle());
-//        holder.genre.setText(movie.getGenre());
-//        holder.year.setText(movie.getYear());
+
+        holder.name.setText(member.get(position).getFirst_name());
+
+
+
+
     }
 
     @Override
     public int getItemCount() {
-        return 10;//moviesList.size();
+        return member.size();
     }
 }

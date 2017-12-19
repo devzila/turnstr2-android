@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.adroidtech.turnstr2.R;
-import com.adroidtech.turnstr2.chat.models.Friends;
+import com.adroidtech.turnstr2.chat.models.Member;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ import java.util.List;
 public class FriendList_Adapter extends RecyclerView.Adapter<FriendList_Adapter.MyViewHolder> {
 
     private final Context context;
-    private List<Friends> moviesList;
+    private List<Member> moviesList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, year, genre;
@@ -47,7 +47,7 @@ public class FriendList_Adapter extends RecyclerView.Adapter<FriendList_Adapter.
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-//        Friends movie = moviesList.get(position);
+//        Member movie = moviesList.get(position);
 //        holder.title.setText(movie.getTitle());
 //        holder.genre.setText(movie.getGenre());
 //        holder.year.setText(movie.getYear());
