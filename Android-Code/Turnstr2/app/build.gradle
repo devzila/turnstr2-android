@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.gms.google-services'
 android {
     compileSdkVersion 25
     buildToolsVersion '26.0.2'
@@ -50,11 +50,14 @@ dependencies {
     // SendBird
     compile 'com.sendbird.sdk:sendbird-android-sdk:3.0.45'
     // Firebase
-    //compile 'com.google.firebase:firebase-messaging:9.0.2'
+    compile 'com.google.firebase:firebase-messaging:9.0.2'
     // External libraries
     compile 'com.github.bumptech.glide:glide:4.3.1'
     compile 'org.jsoup:jsoup:1.10.2'
     compile 'com.dinuscxj:circleprogressbar:1.1.1'
     compile 'com.github.stfalcon:multiimageview:0.1'
+
+    // RecyclerView
+    compile 'com.android.support:recyclerview-v7:25.0.0'
 
 }

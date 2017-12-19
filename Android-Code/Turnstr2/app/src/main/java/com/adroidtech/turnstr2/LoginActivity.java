@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -33,8 +34,11 @@ import com.adroidtech.turnstr2.Models.FacebookUserModel;
 import com.adroidtech.turnstr2.Models.LoginDetailModel;
 import com.adroidtech.turnstr2.Utils.CommanFunctions;
 import com.adroidtech.turnstr2.Utils.GeneralValues;
+import com.adroidtech.turnstr2.Utils.chatUtils.PreferenceUtils;
+import com.adroidtech.turnstr2.Utils.chatUtils.PushUtils;
 import com.adroidtech.turnstr2.WebServices.AsyncCallback;
 import com.adroidtech.turnstr2.WebServices.CommonAsync;
+import com.adroidtech.turnstr2.chat.activitys.AllFriendList;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -44,6 +48,9 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.gson.Gson;
+import com.sendbird.android.SendBird;
+import com.sendbird.android.SendBirdException;
+import com.sendbird.android.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -147,7 +154,12 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
             JSONObject jsonObject1 = new JSONObject(jsonObject);
             if (jsonObject1.has("success") && jsonObject1.getBoolean("success")) {
                 LoginDetailModel data = new Gson().fromJson(jsonObject, LoginDetailModel.class);
+
+
                 Toast.makeText(LoginActivity.this, "Login : " + data.getData().getUser().getFirstName(), Toast.LENGTH_SHORT).show();
+
+                 connectToSendBird(String.valueOf(data.getData().getUser().getId()), data.getData().getUser().getFirstName());
+
             }
         } catch (JSONException e) {
 
@@ -231,6 +243,116 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
 //                startActivityForResult(new Intent(LoginActivity.this, GooglePlusLogin.class), GOOGLE_LOGIN);
 //            }
 //        });
+    }
+
+
+
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(PreferenceUtils.getConnected(this)) {
+            connectToSendBird(PreferenceUtils.getUserId(this), PreferenceUtils.getNickname(this));
+        }
+    }
+
+    /**
+     * Attempts to connect a user to SendBird.
+     * @param userId    The unique ID of the user.
+     * @param userNickname  The user's nickname, which will be displayed in chats.
+     */
+    private void connectToSendBird(final String userId, final String userNickname) {
+        // Show the loading indicator
+        showProgressBar(true);
+        //mConnectButton.setEnabled(false);
+
+        SendBird.connect(userId, new SendBird.ConnectHandler() {
+            @Override
+            public void onConnected(User user, SendBirdException e) {
+                // Callback received; hide the progress bar.
+                showProgressBar(false);
+
+                if (e != null) {
+                    // Error!
+                    Toast.makeText(
+                            LoginActivity.this, "" + e.getCode() + ": " + e.getMessage(),
+                            Toast.LENGTH_SHORT)
+                            .show();
+
+                    // Show login failure snackbar
+                    showSnackbar("Login to SendBird failed");
+                   // mConnectButton.setEnabled(true);
+                    PreferenceUtils.setConnected(LoginActivity.this, false);
+                    return;
+                }
+
+                Log.e("TAG", "Connected ......................."+user.getUserId()+"  ...  " + user.getProfileUrl());
+                PreferenceUtils.setNickname(LoginActivity.this, user.getNickname());
+                PreferenceUtils.setProfileUrl(LoginActivity.this, user.getProfileUrl());
+                PreferenceUtils.setConnected(LoginActivity.this, true);
+
+                // Update the user's nickname
+                updateCurrentUserInfo(userNickname);
+                updateCurrentUserPushToken();
+
+
+
+                // Proceed to MainActivity
+                Intent intent = new Intent(LoginActivity.this, AllFriendList.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
+
+    /**
+     * Update the user's push token.
+     */
+    private void updateCurrentUserPushToken() {
+        PushUtils.registerPushTokenForCurrentUser(LoginActivity.this, null);
+    }
+
+    /**
+     * Updates the user's nickname.
+     * @param userNickname  The new nickname of the user.
+     */
+    private void updateCurrentUserInfo(final String userNickname) {
+        SendBird.updateCurrentUserInfo(userNickname, null, new SendBird.UserInfoUpdateHandler() {
+            @Override
+            public void onUpdated(SendBirdException e) {
+                if (e != null) {
+                    // Error!
+                    Toast.makeText(
+                            LoginActivity.this, "" + e.getCode() + ":" + e.getMessage(),
+                            Toast.LENGTH_SHORT)
+                            .show();
+
+                    // Show update failed snackbar
+                    showSnackbar("Update user nickname failed");
+
+                    return;
+                }
+
+                PreferenceUtils.setNickname(LoginActivity.this, userNickname);
+            }
+        });
+    }
+
+    // Displays a Snackbar from the bottom of the screen
+    private void showSnackbar(String text) {
+//        Snackbar snackbar = Snackbar.make(mLoginLayout, text, Snackbar.LENGTH_SHORT);
+//
+//        snackbar.show();
+    }
+
+    // Shows or hides the ProgressBar
+    private void showProgressBar(boolean show) {
+//        if (show) {
+//            mProgressBar.show();
+//        } else {
+//            mProgressBar.hide();
+//        }
     }
 
 }
