@@ -8,17 +8,25 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.adroidtech.turnstr2.R;
 import com.adroidtech.turnstr2.Utils.GeneralValues;
 import com.adroidtech.turnstr2.Utils.PreferenceKeys;
 import com.adroidtech.turnstr2.Utils.Serializer;
 import com.adroidtech.turnstr2.Utils.SharedPreference;
+import com.adroidtech.turnstr2.Utils.chatUtils.PreferenceUtils;
 import com.adroidtech.turnstr2.WebServices.AsyncCallback;
 import com.adroidtech.turnstr2.WebServices.CommonAsync;
 import com.adroidtech.turnstr2.chat.adapters.AllFriendList_Adapter;
+import com.adroidtech.turnstr2.chat.groupchannel.CreateGroupChannelActivity;
+import com.adroidtech.turnstr2.chat.groupchannel.GroupChannelActivity;
+import com.adroidtech.turnstr2.chat.groupchannel.SelectDistinctFragment;
+import com.adroidtech.turnstr2.chat.groupchannel.SelectUserFragment;
 import com.adroidtech.turnstr2.chat.listeners.RecyclerItemClickListener;
 import com.adroidtech.turnstr2.chat.models.Member;
+import com.sendbird.android.GroupChannel;
+import com.sendbird.android.SendBirdException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,14 +41,19 @@ import java.util.List;
  * Created by narinder on 18/12/17.
  */
 
-public class AllFriendList extends AppCompatActivity implements AsyncCallback {
+public class AllFriendList extends AppCompatActivity implements AsyncCallback , SelectUserFragment.UsersSelectedListener, SelectDistinctFragment.DistinctSelectedListener{
 
+    public static final String EXTRA_NEW_CHANNEL_URL = "EXTRA_NEW_CHANNEL_URL";
+    public static final String GROUP_CHANNEL_URL = "groupChannelUrl";
 
     private RecyclerView recyclerView;
     private AllFriendList_Adapter mAdapter;
     private SharedPreference sharedPreference;
     private String TAG = "AllFriendList";
     Member member = new Member();
+    private boolean mIsDistinct;
+    private List<String> mSelectedIds;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,16 +79,24 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback {
 
                         if(null!=member)
                         {
-                            try {
-                                Intent intent=new Intent(getApplicationContext(), ChatWindow.class);
-                                Bundle bundle = new Bundle();
-                                bundle.putByteArray("CHAT", Serializer.serialize(member.getMemberList().get(position)));
-                                intent.putExtras(bundle);
-                                startActivity(intent);
-                            }catch (Exception ex)
-                            {
-                                ex.printStackTrace();
-                            }
+//                            try {
+//                                Intent intent=new Intent(getApplicationContext(), ChatWindow.class);
+//                                Bundle bundle = new Bundle();
+//                                bundle.putByteArray("CHAT", Serializer.serialize(member.getMemberList().get(position)));
+//                                intent.putExtras(bundle);
+//                                startActivity(intent);
+//                            }catch (Exception ex)
+//                            {
+//                                ex.printStackTrace();
+//                            }
+
+                            mSelectedIds=new ArrayList<>();
+                            mSelectedIds.add(member.getMemberList().get(position).getId());
+
+                            mIsDistinct = PreferenceUtils.getGroupChannelDistinct(AllFriendList.this);////CreateGroupChannelActivity
+                            createGroupChannel(mSelectedIds, mIsDistinct);
+
+
                         }
 
                     }
@@ -200,6 +221,65 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback {
 
     }
 
+    private void createGroupChannel(final List<String> userIds, boolean distinct) {
+        try {
+            Log.e("TAG", "userID............"+userIds);
+            GroupChannel.createChannelWithUserIds(userIds, distinct, new GroupChannel.GroupChannelCreateHandler() {
+                @Override
+                public void onResult(GroupChannel groupChannel, SendBirdException e) {
+                    if (e != null) {
+                        // Error!
+                        Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_LONG).show();
+                        System.out.println("Error "+e.getMessage());
+                        return;
+                    }
 
+                    Log.e("TAG", "EXTRA_NEW_CHANNEL_URL............"+groupChannel.getUrl());
+//
+//                    Intent intent = new Intent();
+//                    intent.putExtra(EXTRA_NEW_CHANNEL_URL, groupChannel.getUrl());
+//                    setResult(RESULT_OK, intent);
+//                    finish();
+
+                    Intent intent=new Intent(getApplicationContext(), GroupChannelActivity.class);
+                    intent.putExtra(GROUP_CHANNEL_URL, groupChannel.getUrl());
+                    startActivity(intent);
+
+
+                    //GroupChannelActivity
+                }
+            });
+
+        }catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+
+    }
+
+
+
+    @Override
+    public void onDistinctSelected(boolean distinct) {
+        mIsDistinct = distinct;
+    }
+
+
+    @Override
+    public void onUserSelected(boolean selected, String userId) {
+        if (selected) {
+            mSelectedIds.add(userId);
+        } else {
+            mSelectedIds.remove(userId);
+        }
+
+        if (mSelectedIds.size() > 0) {
+//            mCreateButton.setEnabled(true);
+
+        } else {
+   //         mCreateButton.setEnabled(false);
+
+        }
+    }
 }
 

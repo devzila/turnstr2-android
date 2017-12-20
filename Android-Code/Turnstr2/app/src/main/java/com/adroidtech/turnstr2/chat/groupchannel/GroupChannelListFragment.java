@@ -15,9 +15,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.adroidtech.turnstr2.R;
+import com.adroidtech.turnstr2.chat.activitys.AllFriendList;
 import com.sendbird.android.BaseChannel;
 import com.sendbird.android.BaseMessage;
 import com.sendbird.android.GroupChannel;
@@ -29,7 +31,7 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
-public class GroupChannelListFragment extends Fragment {
+public class GroupChannelListFragment extends Fragment implements View.OnClickListener {
 
     private static final String CHANNEL_HANDLER_ID = "CHANNEL_HANDLER_GROUP_CHANNEL_LIST";
     public static final String EXTRA_GROUP_CHANNEL_URL = "GROUP_CHANNEL_URL";
@@ -41,6 +43,7 @@ public class GroupChannelListFragment extends Fragment {
     private FloatingActionButton mCreateChannelFab;
     private GroupChannelListQuery mChannelListQuery;
     private SwipeRefreshLayout mSwipeRefresh;
+    private TextView addNewChat;
 
     public static GroupChannelListFragment newInstance() {
         GroupChannelListFragment fragment = new GroupChannelListFragment();
@@ -71,8 +74,11 @@ public class GroupChannelListFragment extends Fragment {
         setRetainInstance(true);
 
         // Change action bar title
-        ((GroupChannelActivity) getActivity()).setActionBarTitle(getResources().getString(R.string.all_group_channels));
+        //((GroupChannelActivity) getActivity()).setActionBarTitle(getResources().getString(R.string.all_group_channels));
 
+
+        addNewChat=(TextView)rootView.findViewById(R.id.addNewChat);
+        addNewChat.setOnClickListener(this);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_group_channel_list);
         mCreateChannelFab = (FloatingActionButton) rootView.findViewById(R.id.fab_group_channel_list);
         mSwipeRefresh = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_layout_group_channel_list);
@@ -340,5 +346,17 @@ public class GroupChannelListFragment extends Fragment {
                 refreshChannelList(15);
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v==addNewChat)
+        {
+//            Intent intent = new Intent(getContext(), CreateGroupChannelActivity.class);
+//            startActivityForResult(intent, INTENT_REQUEST_NEW_GROUP_CHANNEL);
+
+            Intent intent = new Intent(getContext(), AllFriendList.class);
+            startActivity(intent);
+        }
     }
 }

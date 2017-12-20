@@ -659,17 +659,17 @@ class GroupChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 readReceiptText.setText(R.string.message_sending);
                 readReceiptText.setVisibility(View.VISIBLE);
             } else {
-
+                readReceiptText.setVisibility(View.INVISIBLE);
                 // Since setChannel is set slightly after adapter is created
-                if (channel != null) {
-                    int readReceipt = channel.getReadReceipt(message);
-                    if (readReceipt > 0) {
-                        readReceiptText.setVisibility(View.VISIBLE);
-                        readReceiptText.setText(String.valueOf(readReceipt));
-                    } else {
-                        readReceiptText.setVisibility(View.INVISIBLE);
-                    }
-                }
+//                if (channel != null) {
+//                    int readReceipt = channel.getReadReceipt(message);
+//                    if (readReceipt > 0) {
+//                        readReceiptText.setVisibility(View.VISIBLE);
+//                       // readReceiptText.setText(String.valueOf(readReceipt));
+//                    } else {
+//                        readReceiptText.setVisibility(View.INVISIBLE);
+//                    }
+//                }
             }
 
             // If continuous from previous message, remove extra padding.
@@ -757,8 +757,8 @@ class GroupChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             if (channel != null) {
                 int readReceipt = channel.getReadReceipt(message);
                 if (readReceipt > 0) {
-                    readReceiptText.setVisibility(View.VISIBLE);
-                    readReceiptText.setText(String.valueOf(readReceipt));
+                    readReceiptText.setVisibility(View.INVISIBLE);
+                    //readReceiptText.setText(String.valueOf(readReceipt));
                 } else {
                     readReceiptText.setVisibility(View.INVISIBLE);
                 }
@@ -866,8 +866,8 @@ class GroupChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 if (channel != null) {
                     int readReceipt = channel.getReadReceipt(message);
                     if (readReceipt > 0) {
-                        readReceiptText.setVisibility(View.VISIBLE);
-                        readReceiptText.setText(String.valueOf(readReceipt));
+                        readReceiptText.setVisibility(View.INVISIBLE);
+                       // readReceiptText.setText(String.valueOf(readReceipt));
                     } else {
                         readReceiptText.setVisibility(View.INVISIBLE);
                     }
@@ -919,8 +919,8 @@ class GroupChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             if (channel != null) {
                 int readReceipt = channel.getReadReceipt(message);
                 if (readReceipt > 0) {
-                    readReceiptText.setVisibility(View.VISIBLE);
-                    readReceiptText.setText(String.valueOf(readReceipt));
+                    readReceiptText.setVisibility(View.INVISIBLE);
+                   // readReceiptText.setText(String.valueOf(readReceipt));
                 } else {
                     readReceiptText.setVisibility(View.INVISIBLE);
                 }
@@ -999,8 +999,8 @@ class GroupChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 if (channel != null) {
                     int readReceipt = channel.getReadReceipt(message);
                     if (readReceipt > 0) {
-                        readReceiptText.setVisibility(View.VISIBLE);
-                        readReceiptText.setText(String.valueOf(readReceipt));
+                        readReceiptText.setVisibility(View.INVISIBLE);
+                       // readReceiptText.setText(String.valueOf(readReceipt));
                     } else {
                         readReceiptText.setVisibility(View.INVISIBLE);
                     }
@@ -1071,8 +1071,8 @@ class GroupChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             if (channel != null) {
                 int readReceipt = channel.getReadReceipt(message);
                 if (readReceipt > 0) {
-                    readReceiptText.setVisibility(View.VISIBLE);
-                    readReceiptText.setText(String.valueOf(readReceipt));
+                    readReceiptText.setVisibility(View.INVISIBLE);
+                   // readReceiptText.setText(String.valueOf(readReceipt));
                 } else {
                     readReceiptText.setVisibility(View.INVISIBLE);
                 }
@@ -1169,8 +1169,8 @@ class GroupChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 if (channel != null) {
                     int readReceipt = channel.getReadReceipt(message);
                     if (readReceipt > 0) {
-                        readReceiptText.setVisibility(View.VISIBLE);
-                        readReceiptText.setText(String.valueOf(readReceipt));
+                        readReceiptText.setVisibility(View.INVISIBLE);
+                       // readReceiptText.setText(String.valueOf(readReceipt));
                     } else {
                         readReceiptText.setVisibility(View.INVISIBLE);
                     }
@@ -1231,8 +1231,8 @@ class GroupChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             if (channel != null) {
                 int readReceipt = channel.getReadReceipt(message);
                 if (readReceipt > 0) {
-                    readReceiptText.setVisibility(View.VISIBLE);
-                    readReceiptText.setText(String.valueOf(readReceipt));
+                    readReceiptText.setVisibility(View.INVISIBLE);
+                   // readReceiptText.setText(String.valueOf(readReceipt));
                 } else {
                     readReceiptText.setVisibility(View.INVISIBLE);
                 }

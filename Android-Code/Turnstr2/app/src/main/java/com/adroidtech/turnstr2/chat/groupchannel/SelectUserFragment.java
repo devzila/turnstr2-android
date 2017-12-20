@@ -32,7 +32,7 @@ public class SelectUserFragment extends Fragment {
     private UsersSelectedListener mListener;
 
     // To pass selected user IDs to the parent Activity.
-    interface UsersSelectedListener {
+    public interface UsersSelectedListener {
         void onUserSelected(boolean selected, String userId);
     }
 

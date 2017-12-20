@@ -17,13 +17,13 @@ public class GroupChannelActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_channel);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_group_channel);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_left_white_24_dp);
-        }
+//
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_group_channel);
+//        setSupportActionBar(toolbar);
+//        if (getSupportActionBar() != null) {
+//            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_left_white_24_dp);
+//        }
 
         if (savedInstanceState == null) {
             // If started from launcher, load list of Open Channels

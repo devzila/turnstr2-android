@@ -53,9 +53,6 @@ public class AllFriendList_Adapter extends RecyclerView.Adapter<AllFriendList_Ad
 
         holder.name.setText(member.get(position).getFirst_name());
 
-
-
-
     }
 
     @Override

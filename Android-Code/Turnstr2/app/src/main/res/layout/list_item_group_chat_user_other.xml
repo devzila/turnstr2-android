@@ -173,6 +173,7 @@
         />
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/text_group_chat_read_receipt"
         android:textSize="10dp"
         android:text="2"

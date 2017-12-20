@@ -26,6 +26,7 @@ import com.adroidtech.turnstr2.Utils.chatUtils.PushUtils;
 import com.adroidtech.turnstr2.WebServices.AsyncCallback;
 import com.adroidtech.turnstr2.WebServices.CommonAsync;
 import com.adroidtech.turnstr2.chat.activitys.AllFriendList;
+import com.adroidtech.turnstr2.chat.groupchannel.GroupChannelActivity;
 import com.facebook.login.widget.LoginButton;
 import com.google.gson.Gson;
 import com.sendbird.android.SendBird;
@@ -271,9 +272,9 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
                 updateCurrentUserPushToken();
 
 
-
                 // Proceed to MainActivity
-                Intent intent = new Intent(LoginActivity.this, AllFriendList.class);
+               // Intent intent = new Intent(LoginActivity.this, AllFriendList.class);
+                Intent intent = new Intent(LoginActivity.this, GroupChannelActivity.class);
                 startActivity(intent);
                 finish();
             }

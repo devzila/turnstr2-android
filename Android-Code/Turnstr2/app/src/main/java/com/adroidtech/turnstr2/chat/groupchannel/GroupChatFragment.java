@@ -56,6 +56,7 @@ import com.sendbird.android.User;
 import com.sendbird.android.UserMessage;
 
 import org.json.JSONException;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -100,6 +101,7 @@ public class GroupChatFragment extends Fragment {
 
     private int mCurrentState = STATE_NORMAL;
     private BaseMessage mEditingMessage = null;
+    private TextView chatUserName;
 
     /**
      * To create an instance of this fragment, a Channel URL should be required.
@@ -145,6 +147,7 @@ public class GroupChatFragment extends Fragment {
 
         setRetainInstance(true);
 
+        chatUserName=(TextView)rootView.findViewById(R.id.chatUserName);
         mRootLayout = (RelativeLayout) rootView.findViewById(R.id.layout_group_chat_root);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_group_chat);
 
@@ -735,6 +738,8 @@ public class GroupChatFragment extends Fragment {
 
         if(mChannel != null) {
             title = TextUtils.getGroupChannelTitle(mChannel);
+
+            chatUserName.setText(TextUtils.getGroupChannelTitle(mChannel));
         }
 
         // Set action bar title to name of channel
