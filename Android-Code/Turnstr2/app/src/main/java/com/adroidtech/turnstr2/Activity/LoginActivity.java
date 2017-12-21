@@ -141,7 +141,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
  		LoginDetailModel data = new Gson().fromJson(jsonObject1.getString("data"), LoginDetailModel.class);
                 sharedPreference.putString(PreferenceKeys.APP_AUTH_TOKEN, data.getAuthToken());
                 sharedPreference.putSerializableObject(PreferenceKeys.USER_DETAIL, data);
-                startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
+                //startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
 
                 connectToSendBird(String.valueOf(data.getUser().getId()), data.getUser().getFirstName());
             } else {
@@ -273,12 +273,8 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
                 updateCurrentUserInfo(userNickname);
                 updateCurrentUserPushToken();
 
-
-                // Proceed to MainActivity
-               // Intent intent = new Intent(LoginActivity.this, AllFriendList.class);
-                Intent intent = new Intent(LoginActivity.this, GroupChannelActivity.class);
-                startActivity(intent);
-                finish();
+                startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
+               // finish();
             }
         });
     }

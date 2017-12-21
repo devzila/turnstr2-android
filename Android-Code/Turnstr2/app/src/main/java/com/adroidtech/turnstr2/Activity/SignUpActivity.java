@@ -39,7 +39,9 @@ import org.json.JSONObject;
  */
 public class SignUpActivity extends AppCompatActivity implements AsyncCallback {
 
+//turnstr_staging
 
+    //
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;

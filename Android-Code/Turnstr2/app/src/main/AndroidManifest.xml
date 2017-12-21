@@ -66,9 +66,6 @@
 
 
 
-
-
-
         <activity android:name=".chat.groupchannel.CreateGroupChannelActivity"/>
         <activity android:name=".chat.groupchannel.GroupChannelActivity"/>
         <activity android:name=".chat.groupchannel.InviteMemberActivity" />
@@ -76,6 +73,7 @@
         <activity android:name=".Utils.chatUtils.PhotoViewerActivity"/>
         <activity android:name=".Utils.chatUtils.MediaPlayerActivity"/>
 
+        <activity android:name=".Activity.EditProfileActivity"/>
 
         <service android:name=".chat.fcm.MyFirebaseMessagingService">
             <intent-filter>

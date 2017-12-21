@@ -19,8 +19,10 @@ import com.adroidtech.turnstr2.Utils.PreferenceKeys;
 import com.adroidtech.turnstr2.Utils.SharedPreference;
 import com.adroidtech.turnstr2.WebServices.AsyncCallback;
 import com.adroidtech.turnstr2.WebServices.CommonAsync;
+import com.adroidtech.turnstr2.chat.groupchannel.GroupChannelActivity;
 
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,6 +46,7 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
     private TextView txtAddress;
     private TextView txtEmail;
     private Cubesurfaceview view1;
+    private TextView btnChat;
 
 
     @Override
@@ -81,6 +84,10 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
     }
 
     private void viewIntail() {
+
+        btnChat=(TextView)findViewById(R.id.btnChat);
+        btnChat.setOnClickListener(this);
+
         editProfile = (TextView) findViewById(R.id.edit_profile);
         search = (LinearLayout) findViewById(R.id.search);
         txtPosts = (TextView) findViewById(R.id.txt_posts);
@@ -161,6 +168,9 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
         switch (v.getId()) {
             case R.id.edit_profile:
                 startActivity(new Intent(ProfileActivity.this, EditProfileActivity.class));
+                break;
+            case R.id.btnChat:
+                startActivity(new Intent(ProfileActivity.this, GroupChannelActivity.class));
                 break;
         }
     }

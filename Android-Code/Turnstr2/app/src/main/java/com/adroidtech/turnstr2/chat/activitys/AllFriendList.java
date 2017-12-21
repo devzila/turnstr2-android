@@ -64,6 +64,9 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all);
+
+
+
         sharedPreference = new SharedPreference(getApplicationContext());
         init();
         getMembersRequest();
@@ -72,8 +75,6 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
 
     private void init() {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-
-
 
         final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -111,12 +112,16 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
                 super.onScrolled(recyclerView, dx, dy);
                 totalItemCount = linearLayoutManager.getItemCount();
                 lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+
+               Log.e("IsLoading", "......"+isLoading+" ........ "+(totalItemCount <= (lastVisibleItem + visibleThreshold)));
+
                 if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
                     if (onLoadMoreListener != null) {
                         onLoadMoreListener.onLoadMore();
                     }
                     isLoading = true;
                 }
+
             }
         });
 
@@ -224,11 +229,11 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
     private void getMembersRequest() {
 
         JSONObject mJson = new JSONObject();
-
+        Log.e("Tag", "test................");
         HashMap<String, String> extraHeaders = new HashMap<>();
         extraHeaders.put("auth_token", sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN));
         new CommonAsync(this, "GET", this, GeneralValues.MEMBERS_URL, mJson, extraHeaders).execute();
-        Log.e("Tag", "test................");
+        Log.e("Tag", "test................11");
 
 
     }
@@ -247,13 +252,14 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
                     }
 
                     Log.e("TAG", "EXTRA_NEW_CHANNEL_URL............"+groupChannel.getUrl());
-//
-//                    Intent intent = new Intent();
-//                    intent.putExtra(EXTRA_NEW_CHANNEL_URL, groupChannel.getUrl());
+
+//                    Intent intent = new Intent(getApplication(), GroupChannelActivity.class);
+//                    intent.putExtra(GROUP_CHANNEL_URL, groupChannel.getUrl());
 //                    setResult(RESULT_OK, intent);
 //                    finish();
 
-                    Intent intent=new Intent(getApplicationContext(), GroupChannelActivity.class);
+
+                    Intent intent=new Intent(getApplication(), GroupChannelActivity.class);
                     intent.putExtra(GROUP_CHANNEL_URL, groupChannel.getUrl());
                     startActivity(intent);
 

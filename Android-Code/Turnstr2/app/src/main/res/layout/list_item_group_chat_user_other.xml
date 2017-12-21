@@ -24,6 +24,7 @@
         android:textSize="14sp" />
 
     <ImageView
+
         android:id="@+id/image_group_chat_profile"
         android:src="@drawable/profile_placeholder"
         android:layout_alignParentLeft="true"
