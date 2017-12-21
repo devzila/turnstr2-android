@@ -137,10 +137,12 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
         try {
             JSONObject jsonObject1 = new JSONObject(jsonObject);
             if (jsonObject1.has("success") && jsonObject1.getBoolean("success")) {
-                LoginDetailModel data = new Gson().fromJson(jsonObject1.getString("data"), LoginDetailModel.class);
-               // startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
-
+                
+ 		LoginDetailModel data = new Gson().fromJson(jsonObject1.getString("data"), LoginDetailModel.class);
                 sharedPreference.putString(PreferenceKeys.APP_AUTH_TOKEN, data.getAuthToken());
+                sharedPreference.putSerializableObject(PreferenceKeys.USER_DETAIL, data);
+                startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
+
                 connectToSendBird(String.valueOf(data.getUser().getId()), data.getUser().getFirstName());
             } else {
                 Toast.makeText(LoginActivity.this, jsonObject1.getString("error"), Toast.LENGTH_LONG).show();

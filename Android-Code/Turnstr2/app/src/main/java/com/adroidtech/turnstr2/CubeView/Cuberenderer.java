@@ -2,14 +2,13 @@ package com.adroidtech.turnstr2.CubeView;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.PixelFormat;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLUtils;
 import android.opengl.Matrix;
 import android.os.SystemClock;
 import android.util.DisplayMetrics;
-
-import com.adroidtech.turnstr2.R;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -123,20 +122,27 @@ public class Cuberenderer implements GLSurfaceView.Renderer {
     private final int mBytesPerFloat = 4;
 
 
-    GLSurfaceView mActivityContext;
+    GLSurfaceView glSurfaceView;
 
     /**
      * Initialize the model data.
      */
     public Cuberenderer(Cubesurfaceview cubesurfaceview, ArrayList<Bitmap> allBitmaps) {
-        mActivityContext = cubesurfaceview;
+        glSurfaceView = cubesurfaceview;
+        glSurfaceView.setZOrderOnTop(true);
+        glSurfaceView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
+        glSurfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
         this.allBitmaps = allBitmaps;
-        if (allBitmaps.size() < 6) {
-            while (this.allBitmaps.size() < 6) {
-                this.allBitmaps.add(allBitmaps.get(0));
+        try {
+            if (allBitmaps.size() < 6) {
+                while (this.allBitmaps.size() < 6) {
+                    this.allBitmaps.add(allBitmaps.get(0));
+                }
             }
+        } catch (Exception e) {
+
         }
-        DisplayMetrics data = mActivityContext.getResources().getDisplayMetrics();
+        DisplayMetrics data = glSurfaceView.getResources().getDisplayMetrics();
         float ratio = (float) data.widthPixels / (float) data.heightPixels;
         // Define points for equilateral triangles.
         float height = 0.4f;
@@ -214,9 +220,9 @@ public class Cuberenderer implements GLSurfaceView.Renderer {
     public void onSurfaceCreated(GL10 glUnused, EGLConfig config) {
 
         glUnused.glDisable(GL10.GL_DITHER);
-        glUnused.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT,
-                GL10.GL_FASTEST);
-        GLES20.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        glUnused.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
+//        GLES20.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        glUnused.glClearColor(0, 0, 0, 0);
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
 //		// Position the eye behind the origin.
         final float eyeX = 0.0f;
@@ -323,12 +329,12 @@ public class Cuberenderer implements GLSurfaceView.Renderer {
             // Link the two shaders together into a program.
             GLES20.glLinkProgram(mProgramHandle);
 
-            mTextureDataHandle0 = loadTexture(mActivityContext, allBitmaps.get(0));
-            mTextureDataHandle1 = loadTexture(mActivityContext, allBitmaps.get(1));
-            mTextureDataHandle2 = loadTexture(mActivityContext, allBitmaps.get(2));
-            mTextureDataHandle3 = loadTexture(mActivityContext, allBitmaps.get(3));
-            mTextureDataHandle4 = loadTexture(mActivityContext, allBitmaps.get(4));
-            mTextureDataHandle5 = loadTexture(mActivityContext, allBitmaps.get(5));
+            mTextureDataHandle0 = loadTexture(glSurfaceView, allBitmaps.get(0));
+            mTextureDataHandle1 = loadTexture(glSurfaceView, allBitmaps.get(1));
+            mTextureDataHandle2 = loadTexture(glSurfaceView, allBitmaps.get(2));
+            mTextureDataHandle3 = loadTexture(glSurfaceView, allBitmaps.get(3));
+            mTextureDataHandle4 = loadTexture(glSurfaceView, allBitmaps.get(4));
+            mTextureDataHandle5 = loadTexture(glSurfaceView, allBitmaps.get(5));
             // Get the link status.
             final int[] linkStatus = new int[1];
             GLES20.glGetProgramiv(mProgramHandle, GLES20.GL_LINK_STATUS, linkStatus, 0);
