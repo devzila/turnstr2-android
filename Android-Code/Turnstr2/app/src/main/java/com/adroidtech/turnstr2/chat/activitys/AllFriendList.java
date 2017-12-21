@@ -13,16 +13,15 @@ import android.widget.Toast;
 import com.adroidtech.turnstr2.R;
 import com.adroidtech.turnstr2.Utils.GeneralValues;
 import com.adroidtech.turnstr2.Utils.PreferenceKeys;
-import com.adroidtech.turnstr2.Utils.Serializer;
 import com.adroidtech.turnstr2.Utils.SharedPreference;
 import com.adroidtech.turnstr2.Utils.chatUtils.PreferenceUtils;
 import com.adroidtech.turnstr2.WebServices.AsyncCallback;
 import com.adroidtech.turnstr2.WebServices.CommonAsync;
 import com.adroidtech.turnstr2.chat.adapters.AllFriendList_Adapter;
-import com.adroidtech.turnstr2.chat.groupchannel.CreateGroupChannelActivity;
 import com.adroidtech.turnstr2.chat.groupchannel.GroupChannelActivity;
 import com.adroidtech.turnstr2.chat.groupchannel.SelectDistinctFragment;
 import com.adroidtech.turnstr2.chat.groupchannel.SelectUserFragment;
+import com.adroidtech.turnstr2.chat.listeners.OnLoadMoreListener;
 import com.adroidtech.turnstr2.chat.listeners.RecyclerItemClickListener;
 import com.adroidtech.turnstr2.chat.models.Member;
 import com.sendbird.android.GroupChannel;
@@ -53,14 +52,21 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
     Member member = new Member();
     private boolean mIsDistinct;
     private List<String> mSelectedIds;
+    private int visibleThreshold = 5;
+    private int lastVisibleItem, totalItemCount;
+    private boolean isLoading;
+    private OnLoadMoreListener onLoadMoreListener;
 
+    public void setOnLoadMoreListener(OnLoadMoreListener mOnLoadMoreListener) {
+        this.onLoadMoreListener = mOnLoadMoreListener;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all);
         sharedPreference = new SharedPreference(getApplicationContext());
         init();
-        getVideoRequest();
+        getMembersRequest();
 
     }
 
@@ -68,7 +74,8 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
 
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+
+        final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
@@ -79,23 +86,12 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
 
                         if(null!=member)
                         {
-//                            try {
-//                                Intent intent=new Intent(getApplicationContext(), ChatWindow.class);
-//                                Bundle bundle = new Bundle();
-//                                bundle.putByteArray("CHAT", Serializer.serialize(member.getMemberList().get(position)));
-//                                intent.putExtras(bundle);
-//                                startActivity(intent);
-//                            }catch (Exception ex)
-//                            {
-//                                ex.printStackTrace();
-//                            }
 
                             mSelectedIds=new ArrayList<>();
                             mSelectedIds.add(member.getMemberList().get(position).getId());
 
                             mIsDistinct = PreferenceUtils.getGroupChannelDistinct(AllFriendList.this);////CreateGroupChannelActivity
                             createGroupChannel(mSelectedIds, mIsDistinct);
-
 
                         }
 
@@ -107,6 +103,22 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
                     }
                 })
         );
+
+        final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                totalItemCount = linearLayoutManager.getItemCount();
+                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+                if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                    if (onLoadMoreListener != null) {
+                        onLoadMoreListener.onLoadMore();
+                    }
+                    isLoading = true;
+                }
+            }
+        });
 
     }
 
@@ -209,7 +221,7 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
 
     }
 
-    private void getVideoRequest() {
+    private void getMembersRequest() {
 
         JSONObject mJson = new JSONObject();
 

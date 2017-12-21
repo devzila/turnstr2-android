@@ -29,6 +29,7 @@ import android.util.Log;
 import com.adroidtech.turnstr2.R;
 import com.adroidtech.turnstr2.Utils.chatUtils.PreferenceUtils;
 import com.adroidtech.turnstr2.chat.activitys.RecentChatFriendList;
+import com.adroidtech.turnstr2.chat.groupchannel.GroupChannelActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -92,7 +93,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * @param messageBody FCM message body received.
      */
     public static void sendNotification(Context context, String messageBody, String channelUrl) {
-        Intent intent = new Intent(context, RecentChatFriendList.class);
+        Intent intent = new Intent(context, GroupChannelActivity.class);
         intent.putExtra("groupChannelUrl", channelUrl);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
