@@ -162,9 +162,6 @@ public class SignUpActivity extends AppCompatActivity implements AsyncCallback {
     }
 
 
-
-
-
     /**
      * Attempts to connect a user to SendBird.
      * @param userId    The unique ID of the user.
