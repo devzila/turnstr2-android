@@ -1,5 +1,6 @@
 package com.adroidtech.turnstr2.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -17,9 +18,17 @@ import android.widget.Toast;
 import com.adroidtech.turnstr2.Models.LoginDetailModel;
 import com.adroidtech.turnstr2.R;
 import com.adroidtech.turnstr2.Utils.GeneralValues;
+import com.adroidtech.turnstr2.Utils.PreferenceKeys;
+import com.adroidtech.turnstr2.Utils.SharedPreference;
+import com.adroidtech.turnstr2.Utils.chatUtils.PreferenceUtils;
+import com.adroidtech.turnstr2.Utils.chatUtils.PushUtils;
 import com.adroidtech.turnstr2.WebServices.AsyncCallback;
 import com.adroidtech.turnstr2.WebServices.CommonAsync;
+import com.adroidtech.turnstr2.chat.groupchannel.GroupChannelActivity;
 import com.google.gson.Gson;
+import com.sendbird.android.SendBird;
+import com.sendbird.android.SendBirdException;
+import com.sendbird.android.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,12 +48,13 @@ public class SignUpActivity extends AppCompatActivity implements AsyncCallback {
     private AutoCompleteTextView username;
     private EditText confiPassword;
     private Button signUp;
-
+    private SharedPreference sharedPreference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+        sharedPreference = new SharedPreference(getApplicationContext());
         // Set up the login form.
         firstname = (AutoCompleteTextView) findViewById(R.id.firstname);
         username = (AutoCompleteTextView) findViewById(R.id.username);
@@ -134,8 +144,15 @@ public class SignUpActivity extends AppCompatActivity implements AsyncCallback {
         try {
             JSONObject jsonObject1 = new JSONObject(jsonObject);
             if (jsonObject1.has("success") && jsonObject1.getBoolean("success")) {
-                LoginDetailModel data = new Gson().fromJson(jsonObject, LoginDetailModel.class);
+               // LoginDetailModel data = new Gson().fromJson(jsonObject, LoginDetailModel.class);
+                LoginDetailModel data = new Gson().fromJson(jsonObject1.getString("data"), LoginDetailModel.class);
+
                 Toast.makeText(SignUpActivity.this, "Login : " + data.getUser().getFirstName(), Toast.LENGTH_SHORT).show();
+
+                Log.e("Tag", "Signup ......"+data);
+                sharedPreference.putString(PreferenceKeys.APP_AUTH_TOKEN, data.getAuthToken());
+                connectToSendBird(String.valueOf(data.getUser().getId()), data.getUser().getFirstName());
+
             } else {
                 Toast.makeText(SignUpActivity.this, jsonObject1.getString("error"), Toast.LENGTH_LONG).show();
             }
@@ -144,5 +161,106 @@ public class SignUpActivity extends AppCompatActivity implements AsyncCallback {
         }
     }
 
+
+
+
+
+    /**
+     * Attempts to connect a user to SendBird.
+     * @param userId    The unique ID of the user.
+     * @param userNickname  The user's nickname, which will be displayed in chats.
+     */
+    private void connectToSendBird(final String userId, final String userNickname) {
+        // Show the loading indicator
+        showProgressBar(true);
+        //mConnectButton.setEnabled(false);
+
+        SendBird.connect(userId, new SendBird.ConnectHandler() {
+            @Override
+            public void onConnected(User user, SendBirdException e) {
+                // Callback received; hide the progress bar.
+                showProgressBar(false);
+
+                if (e != null) {
+                    // Error!
+                    Toast.makeText(
+                            SignUpActivity.this, "" + e.getCode() + ": " + e.getMessage(),
+                            Toast.LENGTH_SHORT)
+                            .show();
+
+                    // Show login failure snackbar
+                    showSnackbar("Login to SendBird failed");
+                    // mConnectButton.setEnabled(true);
+                    PreferenceUtils.setConnected(SignUpActivity.this, false);
+                    return;
+                }
+
+                Log.e("TAG", "Connected ......................."+user.getUserId()+"  ...  " + user.getProfileUrl());
+                PreferenceUtils.setNickname(SignUpActivity.this, user.getNickname());
+                PreferenceUtils.setProfileUrl(SignUpActivity.this, user.getProfileUrl());
+                PreferenceUtils.setConnected(SignUpActivity.this, true);
+
+                // Update the user's nickname
+                updateCurrentUserInfo(userNickname);
+                updateCurrentUserPushToken();
+
+
+                // Proceed to MainActivity
+                // Intent intent = new Intent(LoginActivity.this, AllFriendList.class);
+                Intent intent = new Intent(SignUpActivity.this, GroupChannelActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
+
+    /**
+     * Update the user's push token.
+     */
+    private void updateCurrentUserPushToken() {
+        PushUtils.registerPushTokenForCurrentUser(SignUpActivity.this, null);
+    }
+
+    /**
+     * Updates the user's nickname.
+     * @param userNickname  The new nickname of the user.
+     */
+    private void updateCurrentUserInfo(final String userNickname) {
+        SendBird.updateCurrentUserInfo(userNickname, null, new SendBird.UserInfoUpdateHandler() {
+            @Override
+            public void onUpdated(SendBirdException e) {
+                if (e != null) {
+                    // Error!
+                    Toast.makeText(
+                            SignUpActivity.this, "" + e.getCode() + ":" + e.getMessage(),
+                            Toast.LENGTH_SHORT)
+                            .show();
+
+                    // Show update failed snackbar
+                    showSnackbar("Update user nickname failed");
+
+                    return;
+                }
+
+                PreferenceUtils.setNickname(SignUpActivity.this, userNickname);
+            }
+        });
+    }
+
+    // Displays a Snackbar from the bottom of the screen
+    private void showSnackbar(String text) {
+//        Snackbar snackbar = Snackbar.make(mLoginLayout, text, Snackbar.LENGTH_SHORT);
+//
+//        snackbar.show();
+    }
+
+    // Shows or hides the ProgressBar
+    private void showProgressBar(boolean show) {
+//        if (show) {
+//            mProgressBar.show();
+//        } else {
+//            mProgressBar.hide();
+//        }
+    }
 }
 
