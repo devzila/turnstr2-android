@@ -1,1 +1,0 @@
-# turnstr2-android
