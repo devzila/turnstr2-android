@@ -31,11 +31,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.adroidtech.turnstr2.R;
+import com.adroidtech.turnstr2.Utils.SharedPreference;
 import com.adroidtech.turnstr2.Utils.chatUtils.FileUtils;
 import com.adroidtech.turnstr2.Utils.chatUtils.MediaPlayerActivity;
 import com.adroidtech.turnstr2.Utils.chatUtils.PhotoViewerActivity;
@@ -43,6 +45,7 @@ import com.adroidtech.turnstr2.Utils.chatUtils.PreferenceUtils;
 import com.adroidtech.turnstr2.Utils.chatUtils.TextUtils;
 import com.adroidtech.turnstr2.Utils.chatUtils.UrlPreviewInfo;
 import com.adroidtech.turnstr2.Utils.chatUtils.WebUtils;
+import com.adroidtech.turnstr2.videoChat.MainVideoActivity;
 import com.sendbird.android.AdminMessage;
 import com.sendbird.android.BaseChannel;
 import com.sendbird.android.BaseMessage;
@@ -56,7 +59,6 @@ import com.sendbird.android.User;
 import com.sendbird.android.UserMessage;
 
 import org.json.JSONException;
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -64,8 +66,10 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
 
-public class GroupChatFragment extends Fragment {
+
+public class GroupChatFragment extends Fragment implements View.OnClickListener {
 
     private static final String CONNECTION_HANDLER_ID = "CONNECTION_HANDLER_GROUP_CHAT";
 
@@ -79,6 +83,7 @@ public class GroupChatFragment extends Fragment {
     private static final int INTENT_REQUEST_CHOOSE_MEDIA = 301;
     private static final int PERMISSION_WRITE_EXTERNAL_STORAGE = 13;
     static final String EXTRA_CHANNEL_URL = "EXTRA_CHANNEL_URL";
+    private static final String MEMBER = "member";
 
     private InputMethodManager mIMM;
     private HashMap<BaseChannel.SendFileMessageWithProgressHandler, FileMessage> mFileProgressHandlerMap;
@@ -102,6 +107,8 @@ public class GroupChatFragment extends Fragment {
     private int mCurrentState = STATE_NORMAL;
     private BaseMessage mEditingMessage = null;
     private TextView chatUserName;
+    private ImageView btnVideoChat;
+
 
     /**
      * To create an instance of this fragment, a Channel URL should be required.
@@ -147,6 +154,8 @@ public class GroupChatFragment extends Fragment {
 
         setRetainInstance(true);
 
+        btnVideoChat=(ImageView)rootView.findViewById(R.id.btnVideoChat);
+        btnVideoChat.setOnClickListener(this);
         chatUserName=(TextView)rootView.findViewById(R.id.chatUserName);
         mRootLayout = (RelativeLayout) rootView.findViewById(R.id.layout_group_chat_root);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_group_chat);
@@ -247,8 +256,13 @@ public class GroupChatFragment extends Fragment {
                         return;
                     }
 
+
+
                     mChannel = groupChannel;
+
+
                     mChatAdapter.setChannel(mChannel);
+
                     mChatAdapter.loadLatestMessages(30, new BaseChannel.GetMessagesHandler() {
                         @Override
                         public void onResult(List<BaseMessage> list, SendBirdException e) {
@@ -740,6 +754,8 @@ public class GroupChatFragment extends Fragment {
             title = TextUtils.getGroupChannelTitle(mChannel);
 
             chatUserName.setText(TextUtils.getGroupChannelTitle(mChannel));
+
+
         }
 
         // Set action bar title to name of channel
@@ -941,5 +957,22 @@ public class GroupChatFragment extends Fragment {
                 });
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v==btnVideoChat)
+        {
+            Intent intent = new Intent(getActivity(), MainVideoActivity.class);
+
+            for(Member mm:mChannel.getMembers())
+            {
+               Log.e("TAG......","....................."+mm.getUserId());
+            }
+
+
+//            intent.putExtra(MEMBER, mChannel.getMembers());
+//            getActivity().startActivity(intent);
+        }
     }
 }
