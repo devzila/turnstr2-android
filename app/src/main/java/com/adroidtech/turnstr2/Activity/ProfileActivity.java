@@ -153,14 +153,22 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
     @Override
     protected void onResume() {
         super.onResume();
-        if (view != null) view.onResume();
+        try {
+//            if (view != null) view.onResume();
+        } catch (Exception e) {
+
+        }
     }
 
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (view != null) view.onPause();
+        try {
+            if (view != null) view.onPause();
+        } catch (Exception e) {
+
+        }
     }
 
     @Override

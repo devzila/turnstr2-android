@@ -123,6 +123,8 @@ public class SignUpActivity extends AppCompatActivity implements AsyncCallback {
             mJson.put("username", user);
             mJson.put("email", email);
             mJson.put("password", password);
+            mJson.put("device_name", "Android");
+            mJson.put("device_push_token", sharedPreference.getString(PreferenceKeys.FIREBASE_TOKEN));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -152,6 +154,7 @@ public class SignUpActivity extends AppCompatActivity implements AsyncCallback {
                 Toast.makeText(SignUpActivity.this, "Login : " + data.getUser().getFirstName(), Toast.LENGTH_SHORT).show();
 
                 Log.e("Tag", "Signup ......"+data);
+                sharedPreference.putBoolean(PreferenceKeys.IS_LOGIN,true);
                 sharedPreference.putString(PreferenceKeys.APP_AUTH_TOKEN, data.getAuthToken());
                 connectToSendBird(String.valueOf(data.getUser().getId()), data.getUser().getFirstName());
 

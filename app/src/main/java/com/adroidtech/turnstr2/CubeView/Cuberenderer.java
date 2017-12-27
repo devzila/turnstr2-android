@@ -378,109 +378,121 @@ public class Cuberenderer implements GLSurfaceView.Renderer {
 
         GLES20.glUseProgram(mProgramHandle);
 
-        // Set program handles for cube drawing.
-        mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgramHandle, "u_MVPMatrix");
-        mTextureUniformHandle = GLES20.glGetUniformLocation(mProgramHandle, "u_Texture");
-        mPositionHandle = GLES20.glGetAttribLocation(mProgramHandle, "a_Position");
-        mColorHandle = GLES20.glGetAttribLocation(mProgramHandle, "a_Color");
-        mTextureCoordinateHandle = GLES20.glGetAttribLocation(mProgramHandle, "a_TexCoordinate");
+        try {
+            // Set program handles for cube drawing.
+            mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgramHandle, "u_MVPMatrix");
+            mTextureUniformHandle = GLES20.glGetUniformLocation(mProgramHandle, "u_Texture");
+            mPositionHandle = GLES20.glGetAttribLocation(mProgramHandle, "a_Position");
+            mColorHandle = GLES20.glGetAttribLocation(mProgramHandle, "a_Color");
+            mTextureCoordinateHandle = GLES20.glGetAttribLocation(mProgramHandle, "a_TexCoordinate");
 
-        // Do a complete rotation every 10 seconds.
-        long time = SystemClock.uptimeMillis() % 10000L;
-        float angleInDegrees = (360.0f / 10000.0f) * ((int) time);
+            // Do a complete rotation every 10 seconds.
+            long time = SystemClock.uptimeMillis() % 10000L;
+            float angleInDegrees = (360.0f / 10000.0f) * ((int) time);
 
-        // Draw the triangle facing straight on.
-        Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.rotateM(mModelMatrix, 0, xAngle, 0.0f, 1.0f, 0.0f);
-        Matrix.rotateM(mModelMatrix, 0, -yAngle, 1.0f, 0.0f, 0.0f);
+            // Draw the triangle facing straight on.
+            Matrix.setIdentityM(mModelMatrix, 0);
+            Matrix.rotateM(mModelMatrix, 0, xAngle, 0.0f, 1.0f, 0.0f);
+            Matrix.rotateM(mModelMatrix, 0, -yAngle, 1.0f, 0.0f, 0.0f);
 //        Matrix.rotateM(mModelMatrix, 0, angleInDegrees, 1.0f, 1.0f, 1.0f);
-        // Set the active texture unit to texture unit 0.
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureDataHandle0);
-        GLES20.glUniform1i(mTextureUniformHandle, 0);
-        draw(mcubeVertices, 0);
+            // Set the active texture unit to texture unit 0.
+            GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureDataHandle0);
+            GLES20.glUniform1i(mTextureUniformHandle, 0);
+            draw(mcubeVertices, 0);
 
-        // Set the active texture unit to texture unit 0.
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE1);
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureDataHandle1);
-        GLES20.glUniform1i(mTextureUniformHandle, 1);
-        draw(mcubeVertices, 1);
+            // Set the active texture unit to texture unit 0.
+            GLES20.glActiveTexture(GLES20.GL_TEXTURE1);
+            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureDataHandle1);
+            GLES20.glUniform1i(mTextureUniformHandle, 1);
+            draw(mcubeVertices, 1);
 
-        // Set the active texture unit to texture unit 0.
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE2);
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureDataHandle2);
-        GLES20.glUniform1i(mTextureUniformHandle, 2);
-        draw(mcubeVertices, 2);
+            // Set the active texture unit to texture unit 0.
+            GLES20.glActiveTexture(GLES20.GL_TEXTURE2);
+            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureDataHandle2);
+            GLES20.glUniform1i(mTextureUniformHandle, 2);
+            draw(mcubeVertices, 2);
 
-        // Set the active texture unit to texture unit 0.
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE3);
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureDataHandle3);
-        GLES20.glUniform1i(mTextureUniformHandle, 3);
-        draw(mcubeVertices, 3);
+            // Set the active texture unit to texture unit 0.
+            GLES20.glActiveTexture(GLES20.GL_TEXTURE3);
+            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureDataHandle3);
+            GLES20.glUniform1i(mTextureUniformHandle, 3);
+            draw(mcubeVertices, 3);
 
-        //Set the active texture unit to texture unit 0.
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE4);
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureDataHandle4);
-        GLES20.glUniform1i(mTextureUniformHandle, 4);
-        draw(mcubeVertices, 4);
+            //Set the active texture unit to texture unit 0.
+            GLES20.glActiveTexture(GLES20.GL_TEXTURE4);
+            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureDataHandle4);
+            GLES20.glUniform1i(mTextureUniformHandle, 4);
+            draw(mcubeVertices, 4);
 
-        //Set the active texture unit to texture unit 0.
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE5);
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureDataHandle5);
-        GLES20.glUniform1i(mTextureUniformHandle, 5);
-        draw(mcubeVertices, 5);
+            //Set the active texture unit to texture unit 0.
+            GLES20.glActiveTexture(GLES20.GL_TEXTURE5);
+            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureDataHandle5);
+            GLES20.glUniform1i(mTextureUniformHandle, 5);
+            draw(mcubeVertices, 5);
+        } catch (Exception e) {
+
+        }
     }
 
 
     private void draw(final FloatBuffer acubeBuffer, final int i) {
         // Pass in the position information. each vertex needs 3 values and each face of the
         //cube needs 4 vertices. so total 3*4 = 12
-        acubeBuffer.position(12 * i);
-        GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 0, acubeBuffer);
-        GLES20.glEnableVertexAttribArray(mPositionHandle);
-        // Pass in the color information. every vertex colr is defined by 4 values and each cube
-        //face has 4 vertices so 4*4 = 16
-        mCubeColors.position(16 * i);
-        GLES20.glVertexAttribPointer(mColorHandle, 4, GLES20.GL_FLOAT, false, 0, mCubeColors);
-        GLES20.glEnableVertexAttribArray(mColorHandle);
-        // Pass in the texture coordinate information. every vertex needs 2 values to define texture
+        try {
+            acubeBuffer.position(12 * i);
+            GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 0, acubeBuffer);
+            GLES20.glEnableVertexAttribArray(mPositionHandle);
+            // Pass in the color information. every vertex colr is defined by 4 values and each cube
+            //face has 4 vertices so 4*4 = 16
+            mCubeColors.position(16 * i);
+            GLES20.glVertexAttribPointer(mColorHandle, 4, GLES20.GL_FLOAT, false, 0, mCubeColors);
+            GLES20.glEnableVertexAttribArray(mColorHandle);
+            // Pass in the texture coordinate information. every vertex needs 2 values to define texture
 //        for each face of the cube we need 4 textures . so 4*2=8
-        mCubeTextureCoordinates.position(8 * i);
-        GLES20.glVertexAttribPointer(mTextureCoordinateHandle, mTextureCoordinateDataSize, GLES20.GL_FLOAT, false, 0, mCubeTextureCoordinates);
-        GLES20.glEnableVertexAttribArray(mTextureCoordinateHandle);
-        // This multiplies the view matrix by the model matrix, and stores the result in the MVP matrix
-        // (which currently contains model * view).
-        Matrix.multiplyMM(mMVPMatrix, 0, mViewMatrix, 0, mModelMatrix, 0);
-        // This multiplies the modelview matrix by the projection matrix, and stores the result in the MVP matrix
-        // (which now contains model * view * projection).
-        Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mMVPMatrix, 0);
-        GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
+            mCubeTextureCoordinates.position(8 * i);
+            GLES20.glVertexAttribPointer(mTextureCoordinateHandle, mTextureCoordinateDataSize, GLES20.GL_FLOAT, false, 0, mCubeTextureCoordinates);
+            GLES20.glEnableVertexAttribArray(mTextureCoordinateHandle);
+            // This multiplies the view matrix by the model matrix, and stores the result in the MVP matrix
+            // (which currently contains model * view).
+            Matrix.multiplyMM(mMVPMatrix, 0, mViewMatrix, 0, mModelMatrix, 0);
+            // This multiplies the modelview matrix by the projection matrix, and stores the result in the MVP matrix
+            // (which now contains model * view * projection).
+            Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mMVPMatrix, 0);
+            GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
 //*each face of the cube is drawn using 2 triangles. so 2*3=6 lines
-        GLES20.glDrawElements(GLES20.GL_TRIANGLES, 6, GLES20.GL_UNSIGNED_SHORT, indexBuffer);
+            GLES20.glDrawElements(GLES20.GL_TRIANGLES, 6, GLES20.GL_UNSIGNED_SHORT, indexBuffer);
+        } catch (Exception e) {
+
+        }
 
     }
 
 
     public static int loadTexture(GLSurfaceView mActivityContext2, final Bitmap bitmap) {
-        final int[] textureHandle = new int[1];
-        GLES20.glGenTextures(1, textureHandle, 0);
-        if (textureHandle[0] != 0) {
-            final BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inScaled = true;   // No pre-scaling
-            // Read in the resource
-//            final Bitmap bitmap = BitmapFactory.decodeResource(mActivityContext2.getResources(), resourceId, options);
-            // Bind to the texture in OpenGL
-            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureHandle[0]);
-            // Set filtering
-            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_NEAREST);
-            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_NEAREST);
-            // Load the bitmap into the bound texture.
-            GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
-            // Recycle the bitmap, since its data has been loaded into OpenGL.
-            bitmap.recycle();
-        }
-        if (textureHandle[0] == 0) {
-            throw new RuntimeException("Error loading texture.");
+        final int[]  textureHandle = new int[1];;
+        try {
+            GLES20.glGenTextures(1, textureHandle, 0);
+            if (textureHandle[0] != 0) {
+                final BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inScaled = true;   // No pre-scaling
+                // Read in the resource
+    //            final Bitmap bitmap = BitmapFactory.decodeResource(mActivityContext2.getResources(), resourceId, options);
+                // Bind to the texture in OpenGL
+                GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureHandle[0]);
+                // Set filtering
+                GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_NEAREST);
+                GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_NEAREST);
+                // Load the bitmap into the bound texture.
+                GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
+                // Recycle the bitmap, since its data has been loaded into OpenGL.
+                bitmap.recycle();
+            }
+            if (textureHandle[0] == 0) {
+                throw new RuntimeException("Error loading texture.");
+            }
+        } catch (RuntimeException e) {
+
         }
         return textureHandle[0];
     }
