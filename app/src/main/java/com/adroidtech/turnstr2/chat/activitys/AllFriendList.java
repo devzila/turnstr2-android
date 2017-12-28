@@ -109,6 +109,8 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
                 if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
                     Log.e("TAG", "................... loading ...........");
 
+                    isLoading = true;
+
 //                    if(null!=next_page)
 //                    {
 //                        isLoading = true;
