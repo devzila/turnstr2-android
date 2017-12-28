@@ -48,17 +48,277 @@
         android:layout_height="1px"
         android:background="@color/gray_light" />
 
-    <FrameLayout
-        android:id="@+id/layout_frame1"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_gravity="center"></FrameLayout>
-
-    <HorizontalScrollView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <include layout="@layout/img_view" />
-    </HorizontalScrollView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/layout_frame1"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"></FrameLayout>
+
+            <TextView
+                android:id="@+id/txt_change_pic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="Change Profile Photo"
+                android:textColor="@color/yello_back"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/all_images"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="6">
+
+                    <ImageView
+                        android:id="@+id/avatar_face1"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/img_background"
+                        android:scaleType="centerCrop"
+                        android:src="@color/gray_light" />
+
+
+                    <ImageView
+                        android:id="@+id/avatar_face2"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/img_background"
+                        android:scaleType="centerCrop"
+                        android:src="@color/gray_light" />
+
+
+                    <ImageView
+                        android:id="@+id/avatar_face3"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/img_background"
+                        android:scaleType="centerCrop"
+                        android:src="@color/gray_light" />
+
+
+                    <ImageView
+                        android:id="@+id/avatar_face4"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/img_background"
+                        android:scaleType="centerCrop"
+                        android:src="@color/gray_light" />
+
+
+                    <ImageView
+                        android:id="@+id/avatar_face5"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/img_background"
+                        android:scaleType="centerCrop"
+                        android:src="@color/gray_light" />
+
+
+                    <ImageView
+                        android:id="@+id/avatar_face6"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/img_background"
+                        android:scaleType="centerCrop"
+                        android:src="@color/gray_light" />
+
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/txt_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:drawableLeft="@mipmap/id"
+                    android:drawablePadding="10dp"
+                    android:padding="10dp"
+                    android:text="Kim kardashian"
+                    android:textColor="@color/yello_back"
+                    android:textSize="14sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/gray_light" />
+
+                <EditText
+                    android:id="@+id/txt_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:drawableLeft="@mipmap/profile"
+                    android:drawablePadding="10dp"
+                    android:padding="10dp"
+                    android:text="Kimkardashian"
+                    android:textColor="@color/yello_back"
+                    android:textSize="14sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/gray_light" />
+
+                <EditText
+                    android:id="@+id/txt_website"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:drawableLeft="@mipmap/web"
+                    android:drawablePadding="10dp"
+                    android:padding="10dp"
+                    android:text="http://kimkardashian.com"
+                    android:textColor="@color/text_bliue"
+                    android:textSize="14sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/gray_light" />
+
+                <EditText
+                    android:id="@+id/txt_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:drawableLeft="@mipmap/info"
+                    android:drawablePadding="10dp"
+                    android:padding="10dp"
+                    android:text="I am super amazingly talented and I know one day I ll be famous more than anyone else."
+                    android:textColor="@color/yello_back"
+                    android:textSize="14sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/gray_light" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:padding="10dp"
+                        android:text="Online"
+                        android:textColor="@color/text_bliue"
+                        android:textSize="16sp" />
+
+                    <CheckBox
+                        android:id="@+id/cb_online"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:padding="10dp"
+                        android:text="Contact Me"
+                        android:textColor="@color/text_bliue"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/privacy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:padding="10dp"
+                        android:text="Everyone >"
+                        android:textColor="@color/text_bliue"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/gray_light" />
+
+                <EditText
+                    android:id="@+id/txt_user_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:drawableLeft="@mipmap/mail"
+                    android:drawablePadding="10dp"
+                    android:padding="10dp"
+                    android:text="Kimkardashian"
+                    android:textColor="@color/yello_back"
+                    android:textSize="14sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/gray_light" />
+
+                <EditText
+                    android:id="@+id/txt_user_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:drawableLeft="@mipmap/phone"
+                    android:drawablePadding="10dp"
+                    android:padding="10dp"
+                    android:text="9876543210"
+                    android:textColor="@color/yello_back"
+                    android:textSize="14sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/gray_light" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
 

@@ -30,7 +30,7 @@ public class SplashActivtiy extends Activity {
         Intent intent = null;
         SharedPreference sharedPreference = new SharedPreference(SplashActivtiy.this);
         if (sharedPreference.getBoolean(PreferenceKeys.IS_LOGIN)) {
-            intent = new Intent(this, LoginActivity.class);
+            intent = new Intent(this, ProfileActivity.class);
         } else {
             intent = new Intent(this, LoginActivity.class);
         }

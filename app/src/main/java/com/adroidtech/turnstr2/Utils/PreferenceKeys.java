@@ -13,5 +13,4 @@ public class PreferenceKeys {
 
     public static final String FIREBASE_TOKEN = "firebase_token";
 
-
 }

@@ -114,6 +114,8 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
         try {
             mJson.put("login", username);
             mJson.put("password", password);
+            mJson.put("device_name", "Android");
+            mJson.put("device_push_token", sharedPreference.getString(PreferenceKeys.FIREBASE_TOKEN));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -139,8 +141,10 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
             if (jsonObject1.has("success") && jsonObject1.getBoolean("success")) {
                 
  		LoginDetailModel data = new Gson().fromJson(jsonObject1.getString("data"), LoginDetailModel.class);
+                sharedPreference.putBoolean(PreferenceKeys.IS_LOGIN,true);
                 sharedPreference.putString(PreferenceKeys.APP_AUTH_TOKEN, data.getAuthToken());
                 sharedPreference.putSerializableObject(PreferenceKeys.USER_DETAIL, data);
+
                 //startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
 
                 connectToSendBird(String.valueOf(data.getUser().getId()), data.getUser().getFirstName());
