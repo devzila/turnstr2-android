@@ -21,7 +21,6 @@ import com.adroidtech.turnstr2.chat.adapters.AllFriendList_Adapter;
 import com.adroidtech.turnstr2.chat.groupchannel.GroupChannelActivity;
 import com.adroidtech.turnstr2.chat.groupchannel.SelectDistinctFragment;
 import com.adroidtech.turnstr2.chat.groupchannel.SelectUserFragment;
-import com.adroidtech.turnstr2.chat.listeners.OnLoadMoreListener;
 import com.adroidtech.turnstr2.chat.listeners.RecyclerItemClickListener;
 import com.adroidtech.turnstr2.chat.models.Member;
 import com.sendbird.android.GroupChannel;
@@ -55,11 +54,8 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
     private int visibleThreshold = 5;
     private int lastVisibleItem, totalItemCount;
     private boolean isLoading;
-    private OnLoadMoreListener onLoadMoreListener;
+    private String next_page;
 
-    public void setOnLoadMoreListener(OnLoadMoreListener mOnLoadMoreListener) {
-        this.onLoadMoreListener = mOnLoadMoreListener;
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,14 +65,14 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
 
         sharedPreference = new SharedPreference(getApplicationContext());
         init();
-        getMembersRequest();
+        getMembersRequest(GeneralValues.MEMBERS_URL);
 
     }
 
     private void init() {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
@@ -104,24 +100,22 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
                     }
                 })
         );
-
-        final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                totalItemCount = linearLayoutManager.getItemCount();
-                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-
-               Log.e("IsLoading", "......"+isLoading+" ........ "+(totalItemCount <= (lastVisibleItem + visibleThreshold)));
-
+                totalItemCount = mLayoutManager.getItemCount();
+                lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
                 if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
-                    if (onLoadMoreListener != null) {
-                        onLoadMoreListener.onLoadMore();
-                    }
-                    isLoading = true;
-                }
+                    Log.e("TAG", "................... loading ...........");
 
+//                    if(null!=next_page)
+//                    {
+//                        isLoading = true;
+//                        getMembersRequest(GeneralValues.MEMBERS_URL+"?page="+next_page);
+//                    }
+
+                }
             }
         });
 
@@ -216,7 +210,8 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
+            isLoading = true;
+            next_page=member.getNext_page();
             //
             mAdapter = new AllFriendList_Adapter(getApplicationContext(), member.getMemberList());
             recyclerView.setAdapter(mAdapter);
@@ -226,13 +221,13 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
 
     }
 
-    private void getMembersRequest() {
+    private void getMembersRequest(String memberUrl) {
 
         JSONObject mJson = new JSONObject();
         Log.e("Tag", "test................");
         HashMap<String, String> extraHeaders = new HashMap<>();
         extraHeaders.put("auth_token", sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN));
-        new CommonAsync(this, "GET", this, GeneralValues.MEMBERS_URL, mJson, extraHeaders).execute();
+        new CommonAsync(this, "GET", this, memberUrl, mJson, extraHeaders).execute();
         Log.e("Tag", "test................11");
 
 

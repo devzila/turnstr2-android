@@ -265,6 +265,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
                 }
 
                 Log.e("TAG", "Connected ......................."+user.getUserId()+"  ...  " + user.getProfileUrl());
+                PreferenceUtils.setUserId(LoginActivity.this, user.getUserId());
                 PreferenceUtils.setNickname(LoginActivity.this, user.getNickname());
                 PreferenceUtils.setProfileUrl(LoginActivity.this, user.getProfileUrl());
                 PreferenceUtils.setConnected(LoginActivity.this, true);

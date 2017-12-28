@@ -17,6 +17,7 @@ import com.adroidtech.turnstr2.Utils.PreferenceKeys;
 import com.adroidtech.turnstr2.Utils.SharedPreference;
 import com.adroidtech.turnstr2.WebServices.AsyncCallback;
 import com.adroidtech.turnstr2.WebServices.CommonAsync;
+import com.adroidtech.turnstr2.chat.groupchannel.GroupChatFragment;
 import com.opentok.android.BaseVideoRenderer;
 import com.opentok.android.OpentokError;
 import com.opentok.android.Publisher;
@@ -62,6 +63,7 @@ public class MainVideoActivity extends AppCompatActivity
     private FrameLayout mSubscriberViewContainer;
     private SharedPreference sharedPreference;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -70,6 +72,8 @@ public class MainVideoActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_chat);
 
+        String memberID = getIntent().getStringExtra(GroupChatFragment.MEMBER);
+
         sharedPreference = new SharedPreference(getApplicationContext());
         // initialize view objects from your layout
         mPublisherViewContainer = (FrameLayout)findViewById(R.id.publisher_container);
@@ -77,7 +81,7 @@ public class MainVideoActivity extends AppCompatActivity
 
         try {
 
-            getlive_sessionRequest();
+            getlive_sessionRequest(memberID);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -89,12 +93,13 @@ public class MainVideoActivity extends AppCompatActivity
 
     }
 
-    private void getlive_sessionRequest() throws JSONException {
+    private void getlive_sessionRequest(String memberID) throws JSONException {
 
+        Log.e(TAG, ".member id......."+memberID);
         JSONObject mJson = new JSONObject();
 
         mJson.put("call_type", "video_call");
-        mJson.put("invitees[]", "2");
+        mJson.put("invitees[]", memberID);
 
         Log.e("Tag", "test................");
         HashMap<String, String> extraHeaders = new HashMap<>();

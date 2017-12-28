@@ -83,7 +83,7 @@ public class GroupChatFragment extends Fragment implements View.OnClickListener 
     private static final int INTENT_REQUEST_CHOOSE_MEDIA = 301;
     private static final int PERMISSION_WRITE_EXTERNAL_STORAGE = 13;
     static final String EXTRA_CHANNEL_URL = "EXTRA_CHANNEL_URL";
-    private static final String MEMBER = "member";
+    public static final String MEMBER = "member";
 
     private InputMethodManager mIMM;
     private HashMap<BaseChannel.SendFileMessageWithProgressHandler, FileMessage> mFileProgressHandlerMap;
@@ -965,14 +965,25 @@ public class GroupChatFragment extends Fragment implements View.OnClickListener 
         {
             Intent intent = new Intent(getActivity(), MainVideoActivity.class);
 
+            String memberId = null;
             for(Member mm:mChannel.getMembers())
             {
-               Log.e("TAG......","....................."+mm.getUserId());
+
+               Log.e("TAG......","....................ID."+PreferenceUtils.getUserId(getActivity())+"........USER ID...."+mm.getUserId());
+
+               if(!PreferenceUtils.getUserId(getActivity()).toString().trim().equals(mm.getUserId()))
+               {
+
+                   memberId=mm.getUserId();
+
+               }
+
             }
-
-
-//            intent.putExtra(MEMBER, mChannel.getMembers());
-//            getActivity().startActivity(intent);
+            if(null!=memberId)
+            {
+                intent.putExtra(MEMBER, memberId);
+            }
+            getActivity().startActivity(intent);
         }
     }
 }
