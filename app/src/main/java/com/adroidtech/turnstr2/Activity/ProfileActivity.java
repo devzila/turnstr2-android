@@ -85,7 +85,7 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
 
     private void viewIntail() {
 
-        btnChat=(TextView)findViewById(R.id.btnChat);
+        btnChat = (TextView) findViewById(R.id.btnChat);
         btnChat.setOnClickListener(this);
 
         editProfile = (TextView) findViewById(R.id.edit_profile);

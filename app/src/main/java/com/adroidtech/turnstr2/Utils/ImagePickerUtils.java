@@ -16,6 +16,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -125,31 +126,57 @@ public class ImagePickerUtils {
      * @return
      */
     public static boolean checkAndRequestPermissions(Activity activity) {
-//        int permissionCamera = ContextCompat.checkSelfPermission(activity,
-//                Manifest.permission.CAMERA);
-//        int permissionWriteStorage = ContextCompat.checkSelfPermission(activity,
-//                Manifest.permission.WRITE_EXTERNAL_STORAGE);
-//        int permissionReadStorage = ContextCompat.checkSelfPermission(activity,
-//                Manifest.permission.READ_EXTERNAL_STORAGE);
-//        List<String> listPermissionsNeeded = new ArrayList<>();
-//
-//        if (permissionCamera != PackageManager.PERMISSION_GRANTED) {
-//            listPermissionsNeeded.add(Manifest.permission.CAMERA);
-//        }
-//        if (permissionWriteStorage != PackageManager.PERMISSION_GRANTED) {
-//            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-//        }
-//        if (permissionReadStorage != PackageManager.PERMISSION_GRANTED) {
-//            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-//        }
-//
-//        if (!listPermissionsNeeded.isEmpty()) {
-//            ActivityCompat.requestPermissions(activity, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), 124);
-//            return false;
-//        }
+        int permissionCamera = ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.CAMERA);
+        int permissionWriteStorage = ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int permissionReadStorage = ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.READ_EXTERNAL_STORAGE);
+        List<String> listPermissionsNeeded = new ArrayList<>();
+
+        if (permissionCamera != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.CAMERA);
+        }
+        if (permissionWriteStorage != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (permissionReadStorage != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        }
+
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(activity, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), 124);
+            return false;
+        }
         return true;
     }
 
+    public static void performCrop(Activity activity, Uri picUri, int PIC_CROP) {
+        try {
+            Intent cropIntent = new Intent("com.android.camera.action.CROP");
+            // indicate image type and Uri
+            cropIntent.setDataAndType(picUri, "image/*");
+            // set crop properties here
+            cropIntent.putExtra("crop", true);
+            // indicate aspect of desired crop
+            cropIntent.putExtra("aspectX", 1);
+            cropIntent.putExtra("aspectY", 1);
+            // indicate output X and Y
+            cropIntent.putExtra("outputX", 128);
+            cropIntent.putExtra("outputY", 128);
+            // retrieve data on return
+            cropIntent.putExtra("return-data", true);
+            // start the activity - we handle returning in onActivityResult
+            activity.startActivityForResult(cropIntent, PIC_CROP);
+        }
+        // respond to users whose devices do not support the crop action
+        catch (Exception anfe) {
+            // display an error message
+            String errorMessage = "Whoops - your device doesn't support the crop action!";
+            Toast toast = Toast.makeText(activity, errorMessage, Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
     /**
      * FileUriOfImage is used to convert the base document or camera uri to file uri ,
      * so that we can use this to get image data.
