@@ -1,6 +1,7 @@
 package com.adroidtech.turnstr2.Activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -33,6 +34,8 @@ import com.sendbird.android.User;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 
 /**
  * A login screen that offers login via email/password.
@@ -51,6 +54,7 @@ public class SignUpActivity extends AppCompatActivity implements AsyncCallback {
     private EditText confiPassword;
     private Button signUp;
     private SharedPreference sharedPreference;
+    private LoginDetailModel userData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,16 +152,18 @@ public class SignUpActivity extends AppCompatActivity implements AsyncCallback {
         try {
             JSONObject jsonObject1 = new JSONObject(jsonObject);
             if (jsonObject1.has("success") && jsonObject1.getBoolean("success")) {
-               // LoginDetailModel data = new Gson().fromJson(jsonObject, LoginDetailModel.class);
-                LoginDetailModel data = new Gson().fromJson(jsonObject1.getString("data"), LoginDetailModel.class);
+                if (txt.equalsIgnoreCase("LOGIN_URL")) {
+                    userData = new Gson().fromJson(jsonObject1.getString("data"), LoginDetailModel.class);
+                    sharedPreference.putString(PreferenceKeys.APP_AUTH_TOKEN, userData.getAuthToken());
+                    sharedPreference.putSerializableObject(PreferenceKeys.USER_DETAIL, userData);
 
-                Toast.makeText(SignUpActivity.this, "Login : " + data.getUser().getFirstName(), Toast.LENGTH_SHORT).show();
+                    sendDeviceInfoToServer();
+                    //startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
+                } else if (txt.equalsIgnoreCase("CREATE_NEW_DEVICE")) {
+                    sharedPreference.putBoolean(PreferenceKeys.IS_LOGIN, true);
+                    connectToSendBird(String.valueOf(userData.getUser().getId()), userData.getUser().getFirstName());
 
-                Log.e("Tag", "Signup ......"+data);
-                sharedPreference.putBoolean(PreferenceKeys.IS_LOGIN,true);
-                sharedPreference.putString(PreferenceKeys.APP_AUTH_TOKEN, data.getAuthToken());
-                connectToSendBird(String.valueOf(data.getUser().getId()), data.getUser().getFirstName());
-
+                }
             } else {
                 Toast.makeText(SignUpActivity.this, jsonObject1.getString("error"), Toast.LENGTH_LONG).show();
             }
@@ -166,11 +172,27 @@ public class SignUpActivity extends AppCompatActivity implements AsyncCallback {
         }
     }
 
+    private void sendDeviceInfoToServer() {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("auth_token", sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN));
+        JSONObject mJson = new JSONObject();
+        try {
+            mJson.put("device_ios", "Android : " + Build.VERSION.RELEASE);
+            mJson.put("device_name", "Android");
+            mJson.put("device_push_token", sharedPreference.getString(PreferenceKeys.FIREBASE_TOKEN));
+            mJson.put("device_udid", "");
+            mJson.put("voip_token", "");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        new CommonAsync(this, mJson, this, GeneralValues.CREATE_NEW_DEVICE, headers).execute();
+    }
 
     /**
      * Attempts to connect a user to SendBird.
-     * @param userId    The unique ID of the user.
-     * @param userNickname  The user's nickname, which will be displayed in chats.
+     *
+     * @param userId       The unique ID of the user.
+     * @param userNickname The user's nickname, which will be displayed in chats.
      */
     private void connectToSendBird(final String userId, final String userNickname) {
         // Show the loading indicator
@@ -197,7 +219,7 @@ public class SignUpActivity extends AppCompatActivity implements AsyncCallback {
                     return;
                 }
 
-                Log.e("TAG", "Connected ......................."+user.getUserId()+"  ...  " + user.getProfileUrl());
+                Log.e("TAG", "Connected ......................." + user.getUserId() + "  ...  " + user.getProfileUrl());
                 PreferenceUtils.setUserId(SignUpActivity.this, user.getUserId());
                 PreferenceUtils.setNickname(SignUpActivity.this, user.getNickname());
                 PreferenceUtils.setProfileUrl(SignUpActivity.this, user.getProfileUrl());
@@ -226,7 +248,8 @@ public class SignUpActivity extends AppCompatActivity implements AsyncCallback {
 
     /**
      * Updates the user's nickname.
-     * @param userNickname  The new nickname of the user.
+     *
+     * @param userNickname The new nickname of the user.
      */
     private void updateCurrentUserInfo(final String userNickname) {
         SendBird.updateCurrentUserInfo(userNickname, null, new SendBird.UserInfoUpdateHandler() {

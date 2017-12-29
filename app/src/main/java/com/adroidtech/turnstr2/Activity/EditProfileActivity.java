@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -12,6 +13,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.adroidtech.turnstr2.CubeView.Cubesurfaceview;
 import com.adroidtech.turnstr2.CubeView.URLImageParser;
@@ -22,13 +24,33 @@ import com.adroidtech.turnstr2.Utils.GeneralValues;
 import com.adroidtech.turnstr2.Utils.ImagePickerUtils;
 import com.adroidtech.turnstr2.Utils.PreferenceKeys;
 import com.adroidtech.turnstr2.Utils.SharedPreference;
+import com.adroidtech.turnstr2.WebServices.MultipartAsyncCallback;
+import com.adroidtech.turnstr2.WebServices.MultipartRequestAsync;
+import com.adroidtech.turnstr2.WebServices.OkHttpRequest;
+import com.adroidtech.turnstr2.WebServices.WebApi;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Stack;
 
-public class EditProfileActivity extends Activity implements View.OnClickListener {
+import okhttp3.MediaType;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+
+public class EditProfileActivity extends Activity implements View.OnClickListener, MultipartAsyncCallback {
     private static final int PIC_REQUEST = 1231;
+    private static final int PIC_CROP = 1101;
     Cubesurfaceview view;
     private ArrayList<Bitmap> mBbitmap = new ArrayList<>();
     private FrameLayout layout_frame_main;
@@ -63,12 +85,15 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
     private ImageView avatarFace5;
     private ImageView avatarFace6;
     private View currentViewSelected;
+    private HashMap<String, Uri> updatedImage;
+    private Uri fileUri;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+        updatedImage = new HashMap<String, Uri>();
         sharedPreference = new SharedPreference(this);
         userDetail = sharedPreference.getSerializableObject(PreferenceKeys.USER_DETAIL, LoginDetailModel.class);
         layout_frame_main = (FrameLayout) findViewById(R.id.layout_frame1);
@@ -97,7 +122,12 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         avatarFace4.setOnClickListener(this);
         avatarFace5.setOnClickListener(this);
         avatarFace6.setOnClickListener(this);
-
+        findViewById(R.id.txt_done).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploadImageToServer();
+            }
+        });
         view = new Cubesurfaceview(EditProfileActivity.this, mBbitmap);
         layout_frame_main.addView(view);
 //        viewIntail();
@@ -109,7 +139,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
     private void loadAllImages() {
         try {
             Picasso.with(this).load(userDetail.getUser().getAvatarFace1()).into(avatarFace1);
-            Picasso.with(this).load(userDetail.getUser().getAvatarFace2()).into(avatarFace2);
+            Picasso.with(this).load("https://lorempixel.com/100/100/").into(avatarFace2);
             Picasso.with(this).load(userDetail.getUser().getAvatarFace3()).into(avatarFace3);
             Picasso.with(this).load(userDetail.getUser().getAvatarFace4()).into(avatarFace4);
             Picasso.with(this).load(userDetail.getUser().getAvatarFace5()).into(avatarFace5);
@@ -197,14 +227,31 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-            Uri fileUri = ImagePickerUtils.getFileUriOfImage(this, data, mCameraUri);
+
+        if (resultCode == Activity.RESULT_OK && requestCode == PIC_REQUEST) {
+            fileUri = ImagePickerUtils.getFileUriOfImage(this, data, mCameraUri);
+            ImagePickerUtils.performCrop(this, fileUri, PIC_CROP);
+//            try {
+//                Bitmap bitmap = null;
+//                if (PIC_REQUEST == requestCode) {
+//                    bitmap = new BitmapUtils().getDo`wnsampledBitmap(this, fileUri, GeneralValues.getScreenWidth(this), GeneralValues.getScreenWidth(this));
+//                    includeView((ImageView) currentViewSelected, fileUri, bitmap);
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+        } else if (resultCode == Activity.RESULT_OK && requestCode == PIC_CROP) {
             try {
-                Bitmap bitmap = null;
-                if (PIC_REQUEST == requestCode) {
-                    bitmap = new BitmapUtils().getDownsampledBitmap(this, fileUri, GeneralValues.getScreenWidth(this), GeneralValues.getScreenWidth(this));
-                    includeView((ImageView) currentViewSelected, fileUri, bitmap);
+                if (data != null) {
+                    // get the returned data
+                    Bundle extras = data.getExtras();
+                    // get the cropped bitmap
+                    Bitmap selectedBitmap = extras.getParcelable("data");
+                    BitmapUtils.RewriteBitmapToFile(selectedBitmap, fileUri);
+//                    includeView((ImageView) currentViewSelected, fileUri, selectedBitmap);
                 }
+                Bitmap bitmap = new BitmapUtils().getDownsampledBitmap(this, fileUri, GeneralValues.getScreenWidth(this), GeneralValues.getScreenWidth(this));
+                includeView((ImageView) currentViewSelected, fileUri, bitmap);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -212,14 +259,76 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
     }
 
     public void includeView(ImageView currentViewSelected, Uri fileUri, Bitmap bitmap) {
-//        final View tagView = getLayoutInflater().inflate(R.layout.img_view, null);
-//        ImageView img = (ImageView) tagView.findViewById(R.id.img_view);
-//        img.setTag(fileUri);
         if (bitmap != null) {
             currentViewSelected.setImageBitmap(bitmap);
             currentViewSelected.setTag(fileUri);
+            switch (currentViewSelected.getId()) {
+                case R.id.avatar_face1:
+                    updatedImage.put("avatar_face1", fileUri);
+                    break;
+                case R.id.avatar_face2:
+                    updatedImage.put("avatar_face2", fileUri);
+                    break;
+                case R.id.avatar_face3:
+                    updatedImage.put("avatar_face3", fileUri);
+                    break;
+                case R.id.avatar_face4:
+                    updatedImage.put("avatar_face4", fileUri);
+                    break;
+                case R.id.avatar_face5:
+                    updatedImage.put("avatar_face5", fileUri);
+                    break;
+                case R.id.avatar_face6:
+                    updatedImage.put("avatar_face6", fileUri);
+                    break;
+
+            }
         }
+
 //        currentViewSelected.addView(tagView);
     }
 
+
+    private void uploadImageToServer() {
+        MultipartEntity multipartEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+        try {
+            multipartEntity.addPart("first_name", new StringBody(txtName.getText().toString()));
+            multipartEntity.addPart("last_name", new StringBody(txtUsername.getText().toString()));
+            multipartEntity.addPart("gender", new StringBody("Male"));
+            multipartEntity.addPart("website", new StringBody(txtWebsite.getText().toString()));
+            multipartEntity.addPart("bio", new StringBody(txtInfo.getText().toString()));
+            multipartEntity.addPart("address", new StringBody(txtName.getText().toString()));
+            multipartEntity.addPart("city", new StringBody(txtName.getText().toString()));
+            multipartEntity.addPart("state", new StringBody(txtName.getText().toString()));
+            multipartEntity.addPart("info", new StringBody(txtInfo.getText().toString()));
+            String[] allImagesName = updatedImage.keySet().toArray(new String[updatedImage.size()]);
+            for (int i = 0; i < allImagesName.length; i++) {
+                File selectedimageFile = new File(updatedImage.get(allImagesName[i]).getPath());
+                multipartEntity.addPart(allImagesName[i], new FileBody(selectedimageFile));
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String dataUrl = "/user/";
+        new MultipartRequestAsync(this, multipartEntity, this, GeneralValues.EDIT_PROFILE + dataUrl).execute();
+    }
+
+    @Override
+    public void getMultipartAsyncResult(JSONObject jsonObject, String txt) {
+//        MultipartRequestAsync
+        Log.e("Data", jsonObject.toString());
+        try {
+            if (jsonObject.has("success") && jsonObject.getBoolean("success")) {
+
+
+            } else {
+                Toast.makeText(EditProfileActivity.this, jsonObject.getString("error"), Toast.LENGTH_LONG).show();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

@@ -33,6 +33,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/txt_done"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -76,85 +77,85 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
-            <HorizontalScrollView
+            <!--<HorizontalScrollView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+
+            <LinearLayout
+                android:id="@+id/all_images"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="6">
 
-                <LinearLayout
-                    android:id="@+id/all_images"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="6">
-
-                    <ImageView
-                        android:id="@+id/avatar_face1"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_margin="1dp"
-                        android:layout_weight="1"
-                        android:background="@color/img_background"
-                        android:scaleType="centerCrop"
-                        android:src="@color/gray_light" />
+                <ImageView
+                    android:id="@+id/avatar_face1"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/img_background"
+                    android:scaleType="centerCrop"
+                    android:src="@color/gray_light" />
 
 
-                    <ImageView
-                        android:id="@+id/avatar_face2"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_margin="1dp"
-                        android:layout_weight="1"
-                        android:background="@color/img_background"
-                        android:scaleType="centerCrop"
-                        android:src="@color/gray_light" />
+                <ImageView
+                    android:id="@+id/avatar_face2"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/img_background"
+                    android:scaleType="centerCrop"
+                    android:src="@color/gray_light" />
 
 
-                    <ImageView
-                        android:id="@+id/avatar_face3"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_margin="1dp"
-                        android:layout_weight="1"
-                        android:background="@color/img_background"
-                        android:scaleType="centerCrop"
-                        android:src="@color/gray_light" />
+                <ImageView
+                    android:id="@+id/avatar_face3"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/img_background"
+                    android:scaleType="centerCrop"
+                    android:src="@color/gray_light" />
 
 
-                    <ImageView
-                        android:id="@+id/avatar_face4"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_margin="1dp"
-                        android:layout_weight="1"
-                        android:background="@color/img_background"
-                        android:scaleType="centerCrop"
-                        android:src="@color/gray_light" />
+                <ImageView
+                    android:id="@+id/avatar_face4"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/img_background"
+                    android:scaleType="centerCrop"
+                    android:src="@color/gray_light" />
 
 
-                    <ImageView
-                        android:id="@+id/avatar_face5"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_margin="1dp"
-                        android:layout_weight="1"
-                        android:background="@color/img_background"
-                        android:scaleType="centerCrop"
-                        android:src="@color/gray_light" />
+                <ImageView
+                    android:id="@+id/avatar_face5"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/img_background"
+                    android:scaleType="centerCrop"
+                    android:src="@color/gray_light" />
 
 
-                    <ImageView
-                        android:id="@+id/avatar_face6"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_margin="1dp"
-                        android:layout_weight="1"
-                        android:background="@color/img_background"
-                        android:scaleType="centerCrop"
-                        android:src="@color/gray_light" />
+                <ImageView
+                    android:id="@+id/avatar_face6"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/img_background"
+                    android:scaleType="centerCrop"
+                    android:src="@color/gray_light" />
 
 
-                </LinearLayout>
-            </HorizontalScrollView>
+            </LinearLayout>
+            <!--</HorizontalScrollView>-->
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -69,6 +69,24 @@ public class BitmapUtils {
 //        return bitmap;
     }
 
+    public static void RewriteBitmapToFile(Bitmap bitmap, Uri uri) {
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(uri.getPath());
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     /**
      * Get dimmension of Bitmap from Uri.
      *

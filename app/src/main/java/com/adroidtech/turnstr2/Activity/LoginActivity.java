@@ -1,6 +1,7 @@
 package com.adroidtech.turnstr2.Activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -25,8 +26,6 @@ import com.adroidtech.turnstr2.Utils.chatUtils.PreferenceUtils;
 import com.adroidtech.turnstr2.Utils.chatUtils.PushUtils;
 import com.adroidtech.turnstr2.WebServices.AsyncCallback;
 import com.adroidtech.turnstr2.WebServices.CommonAsync;
-import com.adroidtech.turnstr2.chat.activitys.AllFriendList;
-import com.adroidtech.turnstr2.chat.groupchannel.GroupChannelActivity;
 import com.facebook.login.widget.LoginButton;
 import com.google.gson.Gson;
 import com.sendbird.android.SendBird;
@@ -35,6 +34,8 @@ import com.sendbird.android.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
 
 
 /**
@@ -48,6 +49,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
     private TextView facebookLogin;
     private LoginButton loginButton;
     private SharedPreference sharedPreference;
+    private LoginDetailModel userData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,21 +141,39 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
         try {
             JSONObject jsonObject1 = new JSONObject(jsonObject);
             if (jsonObject1.has("success") && jsonObject1.getBoolean("success")) {
-                
- 		LoginDetailModel data = new Gson().fromJson(jsonObject1.getString("data"), LoginDetailModel.class);
-                sharedPreference.putBoolean(PreferenceKeys.IS_LOGIN,true);
-                sharedPreference.putString(PreferenceKeys.APP_AUTH_TOKEN, data.getAuthToken());
-                sharedPreference.putSerializableObject(PreferenceKeys.USER_DETAIL, data);
+                if (txt.equalsIgnoreCase(GeneralValues.LOGIN_URL)) {
+                    userData = new Gson().fromJson(jsonObject1.getString("data"), LoginDetailModel.class);
+                    sharedPreference.putString(PreferenceKeys.APP_AUTH_TOKEN, userData.getAuthToken());
+                    sharedPreference.putSerializableObject(PreferenceKeys.USER_DETAIL, userData);
+                    sendDeviceInfoToServer();
+                    //startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
+                } else if (txt.equalsIgnoreCase(GeneralValues.CREATE_NEW_DEVICE)) {
+                    sharedPreference.putBoolean(PreferenceKeys.IS_LOGIN, true);
+                    connectToSendBird(String.valueOf(userData.getUser().getId()), userData.getUser().getFirstName());
 
-                //startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
-
-                connectToSendBird(String.valueOf(data.getUser().getId()), data.getUser().getFirstName());
+                }
             } else {
                 Toast.makeText(LoginActivity.this, jsonObject1.getString("error"), Toast.LENGTH_LONG).show();
             }
         } catch (JSONException e) {
-
+            e.printStackTrace();
         }
+    }
+
+    private void sendDeviceInfoToServer() {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("auth_token", sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN));
+        JSONObject mJson = new JSONObject();
+        try {
+            mJson.put("device_ios", "Android : " + Build.VERSION.RELEASE);
+            mJson.put("device_name", "Android");
+            mJson.put("device_push_token", sharedPreference.getString(PreferenceKeys.FIREBASE_TOKEN));
+            mJson.put("device_udid", "");
+            mJson.put("voip_token", "");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        new CommonAsync(this, mJson, this, GeneralValues.CREATE_NEW_DEVICE, headers).execute();
     }
 
 
@@ -205,8 +225,8 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
     }
 
 //    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        callbackManager.onActivityResult(requestCode, resultCode, data);
+//    protected void onActivityResult(int requestCode, int resultCode, Intent userData) {
+//        callbackManager.onActivityResult(requestCode, resultCode, userData);
 //    }
 
 //    private void facebookLoginIntialization() {
@@ -236,12 +256,11 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
     }
 
 
-
-
     /**
      * Attempts to connect a user to SendBird.
-     * @param userId    The unique ID of the user.
-     * @param userNickname  The user's nickname, which will be displayed in chats.
+     *
+     * @param userId       The unique ID of the user.
+     * @param userNickname The user's nickname, which will be displayed in chats.
      */
     private void connectToSendBird(final String userId, final String userNickname) {
         // Show the loading indicator
@@ -268,7 +287,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
                     return;
                 }
 
-                Log.e("TAG", "Connected ......................."+user.getUserId()+"  ...  " + user.getProfileUrl());
+                Log.e("TAG", "Connected ......................." + user.getUserId() + "  ...  " + user.getProfileUrl());
                 PreferenceUtils.setUserId(LoginActivity.this, user.getUserId());
                 PreferenceUtils.setNickname(LoginActivity.this, user.getNickname());
                 PreferenceUtils.setProfileUrl(LoginActivity.this, user.getProfileUrl());
@@ -279,7 +298,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
                 updateCurrentUserPushToken();
 
                 startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
-               // finish();
+                // finish();
             }
         });
     }
@@ -293,7 +312,8 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
 
     /**
      * Updates the user's nickname.
-     * @param userNickname  The new nickname of the user.
+     *
+     * @param userNickname The new nickname of the user.
      */
     private void updateCurrentUserInfo(final String userNickname) {
         SendBird.updateCurrentUserInfo(userNickname, null, new SendBird.UserInfoUpdateHandler() {
