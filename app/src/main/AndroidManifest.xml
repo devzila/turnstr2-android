@@ -81,6 +81,7 @@
 
         <activity android:name=".Activity.EditProfileActivity"/>
 
+        <!-- Firebase Notifications -->
         <service android:name=".chat.fcm.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -94,8 +95,8 @@
 
 
 
-
         <activity android:name=".videoChat.MainVideoActivity"/>
+        <activity android:name=".chat.activitys.AllFriendListVideo"/>
     </application>
 
 

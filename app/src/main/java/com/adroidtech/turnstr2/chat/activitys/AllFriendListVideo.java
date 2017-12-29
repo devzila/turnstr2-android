@@ -23,6 +23,7 @@ import com.adroidtech.turnstr2.chat.groupchannel.SelectDistinctFragment;
 import com.adroidtech.turnstr2.chat.groupchannel.SelectUserFragment;
 import com.adroidtech.turnstr2.chat.listeners.RecyclerItemClickListener;
 import com.adroidtech.turnstr2.chat.models.Member;
+import com.adroidtech.turnstr2.videoChat.MainVideoActivity;
 import com.sendbird.android.GroupChannel;
 import com.sendbird.android.SendBirdException;
 
@@ -35,14 +36,17 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import static com.adroidtech.turnstr2.chat.groupchannel.GroupChatFragment.MEMBER;
+
 /**
  * Created by narinder on 18/12/17.
  */
 
-public class AllFriendList extends AppCompatActivity implements AsyncCallback , SelectUserFragment.UsersSelectedListener, SelectDistinctFragment.DistinctSelectedListener{
+public class AllFriendListVideo extends AppCompatActivity implements AsyncCallback , SelectUserFragment.UsersSelectedListener, SelectDistinctFragment.DistinctSelectedListener{
 
     public static final String EXTRA_NEW_CHANNEL_URL = "EXTRA_NEW_CHANNEL_URL";
     public static final String GROUP_CHANNEL_URL = "groupChannelUrl";
+    public static final String INVITE_MEMBER = "inviteMember";
 
     private RecyclerView recyclerView;
     private AllFriendList_Adapter mAdapter;
@@ -92,10 +96,15 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
                         if(null!=member)
                         {
 
-                            mSelectedIds=new ArrayList<>();
-                            mSelectedIds.add(member.getMemberList().get(position).getId());
-                            mIsDistinct = PreferenceUtils.getGroupChannelDistinct(AllFriendList.this);////CreateGroupChannelActivity
-                            createGroupChannel(mSelectedIds, mIsDistinct);
+//                            mSelectedIds=new ArrayList<>();
+//                            mSelectedIds.add(member.getMemberList().get(position).getId());
+//                            mIsDistinct = PreferenceUtils.getGroupChannelDistinct(AllFriendListVideo.this);////CreateGroupChannelActivity
+//                            createGroupChannel(mSelectedIds, mIsDistinct);
+
+                            Intent intent = new Intent(getApplicationContext(), MainVideoActivity.class);
+                            intent.putExtra(INVITE_MEMBER, memberList.get(position).getId());
+                            startActivity(intent);
+                            finish();
 
                         }
 

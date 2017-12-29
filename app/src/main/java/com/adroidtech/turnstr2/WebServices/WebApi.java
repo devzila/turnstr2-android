@@ -57,10 +57,11 @@ public class WebApi {
     public String webCallForGet(Context context, JSONObject jsonObject, String masterRequestType, HashMap<String, String> extraHeaders) {
         Common_URL = "";
         String url = GeneralValues.BASE_URL + masterRequestType;
+        Log.e("TAG", "WebApi 60"+url);
         Common_URL = appendGetFeildsToUrl(url, jsonObject);
         StringBuffer response = new StringBuffer();
         try {
-            Log.i("Request-" + masterRequestType, Common_URL);
+            Log.e("Request-" + masterRequestType, Common_URL);
             URL url_Connection = new URL(Common_URL);
             HttpURLConnection conn = (HttpURLConnection) url_Connection.openConnection();
             conn.setRequestMethod("GET");
@@ -98,13 +99,16 @@ public class WebApi {
         if ((jsonObject != null) && (jsonObject.length() > 0)) {
             Iterator<String> allKeys = jsonObject.keys();
             url = url + "?";
+            Log.e("TAG", "WebApi 102"+url);
             while (allKeys.hasNext()) {
                 String key = (String) allKeys.next();
                 String value = jsonObject.optString(key);
                 url += key + "=" + value + "&";
             }
         }
-        return url.substring(0, url.length() - 1);
+        Log.e("TAG", "........url..."+url);
+
+        return url;//url.substring(0, url.length() - 1);
     }
 
 
@@ -115,7 +119,8 @@ public class WebApi {
         try {
             jsonResponse = "";
             //constants
-            Log.i("Request-" + masterRequestType, Common_URL);
+            Log.e("Request-" + masterRequestType, Common_URL);
+            Log.e("Request-", jsonObject.toString());
             URL url = new URL(Common_URL);
             conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(60 * 1000 /*milliseconds*/);

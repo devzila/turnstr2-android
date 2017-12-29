@@ -36,7 +36,7 @@ public class SplashActivtiy extends Activity {
 
 
     private void callApp() {
-        Intent intent = null;
+
         SharedPreference sharedPreference = new SharedPreference(SplashActivtiy.this);
         if (sharedPreference.getBoolean(PreferenceKeys.IS_LOGIN)) {
           //  intent = new Intent(this, ProfileActivity.class);
@@ -45,10 +45,11 @@ public class SplashActivtiy extends Activity {
            connectToSendBird(String.valueOf(userDetail.getUser().getId()), userDetail.getUser().getFirstName());
 
         } else {
-            intent = new Intent(this, LoginActivity.class);
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
         }
-        startActivity(intent);
-        finish();
+
+        //finish();
     }
 
 
@@ -89,7 +90,7 @@ public class SplashActivtiy extends Activity {
                 updateCurrentUserPushToken();
 
                 startActivity(new Intent(SplashActivtiy.this, ProfileActivity.class));
-                // finish();
+                 finish();
             }
         });
     }

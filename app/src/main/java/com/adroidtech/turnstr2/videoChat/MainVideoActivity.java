@@ -3,12 +3,15 @@ package com.adroidtech.turnstr2.videoChat;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.adroidtech.turnstr2.R;
@@ -17,6 +20,7 @@ import com.adroidtech.turnstr2.Utils.PreferenceKeys;
 import com.adroidtech.turnstr2.Utils.SharedPreference;
 import com.adroidtech.turnstr2.WebServices.AsyncCallback;
 import com.adroidtech.turnstr2.WebServices.CommonAsync;
+import com.adroidtech.turnstr2.chat.activitys.AllFriendListVideo;
 import com.adroidtech.turnstr2.chat.groupchannel.GroupChatFragment;
 import com.opentok.android.BaseVideoRenderer;
 import com.opentok.android.OpentokError;
@@ -44,7 +48,7 @@ public class MainVideoActivity extends AppCompatActivity
                                         WebServiceCoordinator.Listener,
                                         Session.SessionListener,
                                         PublisherKit.PublisherListener,
-                                        SubscriberKit.SubscriberListener{
+                                        SubscriberKit.SubscriberListener, View.OnClickListener {
 
     private static final String LOG_TAG = MainVideoActivity.class.getSimpleName();
     private static final int RC_SETTINGS_SCREEN_PERM = 123;
@@ -62,6 +66,8 @@ public class MainVideoActivity extends AppCompatActivity
     private FrameLayout mPublisherViewContainer;
     private FrameLayout mSubscriberViewContainer;
     private SharedPreference sharedPreference;
+    private ImageView addMoreUser;
+    private String memberID;
 
 
     @Override
@@ -72,16 +78,31 @@ public class MainVideoActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_chat);
 
-        String memberID = getIntent().getStringExtra(GroupChatFragment.MEMBER);
+
+        memberID = getIntent().getStringExtra(GroupChatFragment.MEMBER);
+        String memberID_IN = getIntent().getStringExtra(AllFriendListVideo.INVITE_MEMBER);
+
+        Log.e(TAG, "....memberid..."+memberID);
+
 
         sharedPreference = new SharedPreference(getApplicationContext());
         // initialize view objects from your layout
         mPublisherViewContainer = (FrameLayout)findViewById(R.id.publisher_container);
         mSubscriberViewContainer = (FrameLayout)findViewById(R.id.subscriber_container);
 
+        addMoreUser=(ImageView)findViewById(R.id.addMoreUser);
+        addMoreUser.setOnClickListener(this);
+
         try {
 
-            getlive_sessionRequest(memberID);
+            if(null!=memberID)
+            {
+                getlive_sessionRequest(memberID);
+            }
+            else if(null!=memberID_IN)
+            {
+                getlive_sessionRequest(memberID);
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -104,6 +125,7 @@ public class MainVideoActivity extends AppCompatActivity
         Log.e("Tag", "test................");
         HashMap<String, String> extraHeaders = new HashMap<>();
         extraHeaders.put("auth_token", sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN));
+
         new CommonAsync(this, "POST", this, GeneralValues.LIVE_SESSION, mJson, extraHeaders).execute();
         Log.e("Tag", "test................11");
 
@@ -366,8 +388,6 @@ public class MainVideoActivity extends AppCompatActivity
                         name = keys.next();
                         System.out.println("key namn:::::::" + name);
                         if (name.equals("status")) {
-
-
                         }
                         if (name.equals("data")) {
 
@@ -391,23 +411,18 @@ public class MainVideoActivity extends AppCompatActivity
 
                                                 if(sessionName.equals("id")){
                                                     Log.e(TAG, "...id.."+sessionObject.getString(sessionName));
-
                                                 }if(sessionName.equals("completed")){
                                                     Log.e(TAG, "...completed.."+sessionObject.getString(sessionName));
                                                 }if(sessionName.equals("created_at")){
                                                     Log.e(TAG, "...created_at.."+sessionObject.getString(sessionName));
                                                 }if(sessionName.equals("session_id")){
                                                     Log.e(TAG, "...session_id.."+sessionObject.getString(sessionName));
-
                                                     OpenTokConfig.SESSION_ID=sessionObject.getString(sessionName);
-
                                                 }if(sessionName.equals("session_type")){
                                                     Log.e(TAG, "...session_type.."+sessionObject.getString(sessionName));
                                                 }if(sessionName.equals("token")){
                                                     Log.e(TAG, "...token.."+sessionObject.getString(sessionName));
-
                                                     OpenTokConfig.TOKEN=sessionObject.getString(sessionName);
-
                                                 }if(sessionName.equals("updated_at")){
                                                     Log.e(TAG, "...updated_at.."+sessionObject.getString(sessionName));
                                                 }if(sessionName.equals("user_id")){
@@ -428,10 +443,25 @@ public class MainVideoActivity extends AppCompatActivity
             if(null!=OpenTokConfig.TOKEN && !OpenTokConfig.TOKEN.isEmpty() && null!=OpenTokConfig.SESSION_ID && !OpenTokConfig.SESSION_ID.isEmpty())
             {
                 Log.e(TAG, "................ requestPermissions .....");
-                requestPermissions();
+
+                if(null!=memberID)
+                {
+                    requestPermissions();
+
+                }
+
             }
 
         }
 
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        if(v==addMoreUser)
+        {
+            startActivity(new Intent(getApplicationContext(), AllFriendListVideo.class));
+        }
     }
 }

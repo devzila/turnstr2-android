@@ -26,7 +26,11 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.adroidtech.turnstr2.Activity.SplashActivtiy;
+import com.adroidtech.turnstr2.Models.LoginDetailModel;
 import com.adroidtech.turnstr2.R;
+import com.adroidtech.turnstr2.Utils.PreferenceKeys;
+import com.adroidtech.turnstr2.Utils.SharedPreference;
 import com.adroidtech.turnstr2.Utils.chatUtils.PreferenceUtils;
 import com.adroidtech.turnstr2.chat.activitys.RecentChatFriendList;
 import com.adroidtech.turnstr2.chat.groupchannel.GroupChannelActivity;
@@ -65,8 +69,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
-            Log.e(TAG, "Message data payload: " + remoteMessage.getData());
+            Log.e(TAG, "Message data payload: ..." + remoteMessage.getData());
         }
+
+
 
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
@@ -78,6 +84,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             JSONObject sendBird = new JSONObject(remoteMessage.getData().get("sendbird"));
             JSONObject channel = (JSONObject) sendBird.get("channel");
             channelUrl = (String) channel.get("channel_url");
+
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

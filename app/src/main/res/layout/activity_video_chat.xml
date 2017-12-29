@@ -3,8 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:background="@color/black"
+        android:gravity="right|center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+            <ImageView
+                android:id="@+id/addMoreUser"
+                android:padding="10dp"
+                android:src="@drawable/ic_add_white_24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
 
     <FrameLayout
         android:layout_width="fill_parent"
@@ -13,7 +28,7 @@
         <FrameLayout
             android:id="@+id/subscriber_container"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"/>
+            android:layout_height="fill_parent" />
 
         <FrameLayout
             android:id="@+id/publisher_container"
@@ -23,8 +38,8 @@
             android:layout_marginBottom="@dimen/publisher_bottom_margin"
             android:layout_marginEnd="@dimen/publisher_right_margin"
             android:layout_marginRight="@dimen/publisher_end_margin"
-            android:padding="@dimen/publisher_padding"
-            android:background="@color/white" />
+            android:background="@color/white"
+            android:padding="@dimen/publisher_padding" />
 
     </FrameLayout>
 

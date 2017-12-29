@@ -22,7 +22,7 @@ public class GeneralValues {
     //Stagging
     public static final String BASE_URL = "https://fathomless-retreat-45620.herokuapp.com";
 
-    public static final String MEMBERS_URL = "/v1/members ";
+    public static final String MEMBERS_URL = "/v1/members";
     public static final String LIVE_SESSION = "/v1/user/live_session ";
 
     public static int getScreenWidth(Context context) {
