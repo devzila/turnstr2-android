@@ -121,6 +121,7 @@ public class WebApi {
             //constants
             Log.e("Request-" + masterRequestType, Common_URL);
             Log.e("Request-", jsonObject.toString());
+            Log.e("TAG", "auth_token........."+extraHeaders.get("auth_token"));
             URL url = new URL(Common_URL);
             conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(60 * 1000 /*milliseconds*/);
@@ -131,12 +132,14 @@ public class WebApi {
             addHeadersParm(conn, extraHeaders);
             //add json data to request connection
             String message = jsonObject.toString();
+            //conn.setRequestProperty("auth_token",extraHeaders.get("auth_token"));
             conn.setFixedLengthStreamingMode(message.getBytes().length);
             //make some HTTP header nicety
             conn.setInstanceFollowRedirects(true);
             conn.setRequestProperty("Content-Type", "application/json;charset=utf-8");
             conn.setRequestProperty("Accept", "application/json;charset=utf-8");
             conn.setRequestProperty("X-Requested-With", "XMLHttpRequest");
+
             conn.connect();
 
             os = new BufferedOutputStream(conn.getOutputStream());

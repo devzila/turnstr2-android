@@ -18,9 +18,14 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-    }
-}
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+//        maven { url 'https://maven.google.com' }
+        maven { url 'https://tokbox.bintray.com/maven' }
+    }
+
+
 }
+//
+//task clean(type: Delete) {
+//    delete rootProject.buildDir
+//}
