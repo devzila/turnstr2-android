@@ -119,8 +119,8 @@ public class MainVideoActivity extends AppCompatActivity
         Log.e(TAG, ".member id......."+memberID);
         JSONObject mJson = new JSONObject();
 
-        mJson.put("call_type", "video_call");
-        mJson.put("invitees[]", memberID);
+       // mJson.put("call_type", "video_call");
+        mJson.put("invitees", memberID);
 
         Log.e("Tag", "test................");
         HashMap<String, String> extraHeaders = new HashMap<>();

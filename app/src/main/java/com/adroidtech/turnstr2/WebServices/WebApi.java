@@ -121,7 +121,7 @@ public class WebApi {
             //constants
             Log.e("Request-" + masterRequestType, Common_URL);
             Log.e("Request-", jsonObject.toString());
-            Log.e("TAG", "auth_token........."+extraHeaders.get("auth_token"));
+           // Log.e("TAG", "auth_token........."+extraHeaders.get("auth_token"));
             URL url = new URL(Common_URL);
             conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(60 * 1000 /*milliseconds*/);
