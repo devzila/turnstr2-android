@@ -79,6 +79,29 @@ public class MainVideoActivity extends AppCompatActivity
         setContentView(R.layout.activity_video_chat);
 
 
+        Bundle bundle = getIntent().getExtras();
+        if(null!=bundle)
+        {
+
+            String sessionId = bundle.getString("sessionId");
+            String token = bundle.getString("token");
+
+            Log.e("TAG", "......bundle......"+sessionId+"........."+token);
+
+            if(null!=sessionId && !sessionId.isEmpty() && null!=token && !token.isEmpty())
+            {
+                OpenTokConfig.SESSION_ID=sessionId;
+                OpenTokConfig.TOKEN=token;
+
+                requestPermissions();
+
+            }
+
+
+        }
+
+
+
         memberID = getIntent().getStringExtra(GroupChatFragment.MEMBER);
         String memberID_IN = getIntent().getStringExtra(AllFriendListVideo.INVITE_MEMBER);
 
