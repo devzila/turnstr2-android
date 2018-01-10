@@ -113,7 +113,7 @@ public class SignUpActivity extends AppCompatActivity implements AsyncCallback {
             username.requestFocus();
         } else if (TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
-        } else if (TextUtils.isEmpty(confiPass) && !password.equals(confiPass)) {
+        } else if (!password.equals(confiPass)) {
             confiPassword.setError("Password not matched");
         } else {
             callSignUpAPI(name, user, email, password);
@@ -152,17 +152,15 @@ public class SignUpActivity extends AppCompatActivity implements AsyncCallback {
         try {
             JSONObject jsonObject1 = new JSONObject(jsonObject);
             if (jsonObject1.has("success") && jsonObject1.getBoolean("success")) {
-                if (txt.equalsIgnoreCase("LOGIN_URL")) {
+                if (txt.equalsIgnoreCase(GeneralValues.SIGNUP_URL)) {
                     userData = new Gson().fromJson(jsonObject1.getString("data"), LoginDetailModel.class);
                     sharedPreference.putString(PreferenceKeys.APP_AUTH_TOKEN, userData.getAuthToken());
                     sharedPreference.putSerializableObject(PreferenceKeys.USER_DETAIL, userData);
-
                     sendDeviceInfoToServer();
                     //startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
-                } else if (txt.equalsIgnoreCase("CREATE_NEW_DEVICE")) {
+                } else if (txt.equalsIgnoreCase(GeneralValues.CREATE_NEW_DEVICE)) {
                     sharedPreference.putBoolean(PreferenceKeys.IS_LOGIN, true);
                     connectToSendBird(String.valueOf(userData.getUser().getId()), userData.getUser().getFirstName());
-
                 }
             } else {
                 Toast.makeText(SignUpActivity.this, jsonObject1.getString("error"), Toast.LENGTH_LONG).show();
@@ -220,20 +218,19 @@ public class SignUpActivity extends AppCompatActivity implements AsyncCallback {
                 }
 
                 Log.e("TAG", "Connected ......................." + user.getUserId() + "  ...  " + user.getProfileUrl());
-                PreferenceUtils.setUserId(SignUpActivity.this, user.getUserId());
                 PreferenceUtils.setNickname(SignUpActivity.this, user.getNickname());
                 PreferenceUtils.setProfileUrl(SignUpActivity.this, user.getProfileUrl());
                 PreferenceUtils.setConnected(SignUpActivity.this, true);
-
                 // Update the user's nickname
                 updateCurrentUserInfo(userNickname);
                 updateCurrentUserPushToken();
 
-
                 // Proceed to MainActivity
                 // Intent intent = new Intent(LoginActivity.this, AllFriendList.class);
-                Intent intent = new Intent(SignUpActivity.this, GroupChannelActivity.class);
-                startActivity(intent);
+
+                startActivity(new Intent(SignUpActivity.this, ProfileActivity.class));
+//                Intent intent = new Intent(SignUpActivity.this, GroupChannelActivity.class);
+//                startActivity(intent);
                 finish();
             }
         });

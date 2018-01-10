@@ -61,6 +61,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
 //        facebookLoginIntialization();
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         Button signup = (Button) findViewById(R.id.signup);
+
         Button facebook_signup = (Button) findViewById(R.id.facebook_signup);
         signup.setOnClickListener(new OnClickListener() {
             @Override
@@ -288,7 +289,6 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
                 }
 
                 Log.e("TAG", "Connected ......................." + user.getUserId() + "  ...  " + user.getProfileUrl());
-                PreferenceUtils.setUserId(LoginActivity.this, user.getUserId());
                 PreferenceUtils.setNickname(LoginActivity.this, user.getNickname());
                 PreferenceUtils.setProfileUrl(LoginActivity.this, user.getProfileUrl());
                 PreferenceUtils.setConnected(LoginActivity.this, true);

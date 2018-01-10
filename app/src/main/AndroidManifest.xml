@@ -3,9 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.adroidtech.turnstr2">
 
+    <uses-sdk tools:overrideLibrary="com.stfalcon.multiimageview" />
+
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <!--<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />-->
+    <!-- <action android:name="android.net.conn.CONNECTIVITY_CHANGE" /> -->
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -22,11 +24,7 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
-
-
-
-    <uses-sdk tools:overrideLibrary="com.stfalcon.multiimageview"/> <!-- min 16 -->
-
+    <!-- min 16 -->
     <application
         android:name=".chat.activitys.BaseApplication"
         android:allowBackup="true"
@@ -37,43 +35,39 @@
         <activity android:name=".Activity.SplashActivtiy">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-        <activity android:name=".Activity.ProfileActivity">
-
-        </activity>
+        <activity android:name=".Activity.ProfileActivity" />
+        <activity android:name=".Activity.MyStoryActivity" />
         <activity
             android:name=".Activity.LoginActivity"
-            android:label="@string/title_activity_login"></activity>
+            android:label="@string/title_activity_login" />
         <activity
             android:name=".Activity.SignUpActivity"
-            android:label="@string/title_activity_login"></activity>
+            android:label="@string/title_activity_login" />
+        <activity
+            android:name=".chat.activitys.AllFriendList"
+            android:label="New Chat?" />
+
+        <!-- <meta-data -->
+        <!-- android:name="com.facebook.sdk.ApplicationId" -->
+        <!-- android:value="@string/facebook_app_id" /> -->
 
 
+        <!-- <activity -->
+        <!-- android:name="com.facebook.FacebookActivity" -->
+        <!-- android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" -->
+        <!-- android:label="@string/app_name" /> -->
 
-        <activity android:name=".chat.activitys.AllFriendList" android:label="New Chat?"/>
-
-        <!--<meta-data-->
-            <!--android:name="com.facebook.sdk.ApplicationId"-->
-            <!--android:value="@string/facebook_app_id" />-->
-
-        <!--<activity-->
-            <!--android:name="com.facebook.FacebookActivity"-->
-            <!--android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"-->
-            <!--android:label="@string/app_name" />-->
-
-
-
-        <activity android:name=".chat.groupchannel.CreateGroupChannelActivity"/>
-        <activity android:name=".chat.groupchannel.GroupChannelActivity"/>
+        <activity android:name=".chat.groupchannel.CreateGroupChannelActivity" />
+        <activity android:name=".chat.groupchannel.GroupChannelActivity" />
         <activity android:name=".chat.groupchannel.InviteMemberActivity" />
-        <activity android:name=".chat.groupchannel.MemberListActivity"/>
-        <activity android:name=".Utils.chatUtils.PhotoViewerActivity"/>
-        <activity android:name=".Utils.chatUtils.MediaPlayerActivity"/>
-
-        <activity android:name=".Activity.EditProfileActivity"/>
+        <activity android:name=".chat.groupchannel.MemberListActivity" />
+        <activity android:name=".Utils.chatUtils.PhotoViewerActivity" />
+        <activity android:name=".Utils.chatUtils.MediaPlayerActivity" />
+        <activity android:name=".Activity.EditProfileActivity" />
 
         <!-- Firebase Notifications -->
         <service android:name=".chat.fcm.MyFirebaseMessagingService">
@@ -86,13 +80,18 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+<<<<<<< .mine
+
+        <activity android:name=".Activity.CreateStoryActivity"></activity>
+||||||| .r28
+=======
 
 
 
         <activity android:name=".videoChat.MainVideoActivity"/>
         <activity android:name=".chat.activitys.AllFriendListVideo"/>
 
+>>>>>>> .r33
     </application>
-
 
 </manifest>

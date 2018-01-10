@@ -17,12 +17,13 @@ public class GeneralValues {
     public static final String SIGNUP_URL = "/v1/signup";
     public static final String FACEBOOK_LOGIN = "/v1/facebook/login";
     public static final String CREATE_NEW_DEVICE = "/v1/user/devices";
-    public static final String EDIT_PROFILE = "";
+    public static final String EDIT_PROFILE = "/v1/user/profile";
     public static String Push_Token = "";
     public static final String DEVICE_TYPE = "ANDROID";
     //Stagging
     public static final String BASE_URL = "https://fathomless-retreat-45620.herokuapp.com";
 
+    public static final String USER_STORIES = "/v1/user/stories";
 
     public static final String MEMBERS_URL = "/v1/members";
     public static final String LIVE_SESSION = "/v1/user/live_session ";

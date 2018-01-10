@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.adroidtech.turnstr2.Activity.CreateStoryActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/background_gradient"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:padding="5dp"
+            android:src="@mipmap/close_white" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:src="@mipmap/turnstr_logo_white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="NEXT"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/all_images"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="6">
+
+        <ImageView
+            android:id="@+id/avatar_face1"
+            android:layout_width="50dp"
+            android:layout_height="70dp"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@color/img_background"
+            android:scaleType="centerCrop"
+            android:src="@color/gray_light" />
+
+
+        <ImageView
+            android:id="@+id/avatar_face2"
+            android:layout_width="50dp"
+            android:layout_height="70dp"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@color/img_background"
+            android:scaleType="centerCrop"
+            android:src="@color/gray_light" />
+
+
+        <ImageView
+            android:id="@+id/avatar_face3"
+            android:layout_width="50dp"
+            android:layout_height="70dp"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@color/img_background"
+            android:scaleType="centerCrop"
+            android:src="@color/gray_light" />
+
+
+        <ImageView
+            android:id="@+id/avatar_face4"
+            android:layout_width="50dp"
+            android:layout_height="70dp"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@color/img_background"
+            android:scaleType="centerCrop"
+            android:src="@color/gray_light" />
+
+
+        <ImageView
+            android:id="@+id/avatar_face5"
+            android:layout_width="50dp"
+            android:layout_height="70dp"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@color/img_background"
+            android:scaleType="centerCrop"
+            android:src="@color/gray_light" />
+
+
+        <ImageView
+            android:id="@+id/avatar_face6"
+            android:layout_width="50dp"
+            android:layout_height="70dp"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@color/img_background"
+            android:scaleType="centerCrop"
+            android:src="@color/gray_light" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/background_gradient"
+            android:text="LIBRARY"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/black"
+            android:text="PHOTOS"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/black"
+            android:text="VIDEO"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</LinearLayout>

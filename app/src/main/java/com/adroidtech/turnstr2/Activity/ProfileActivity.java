@@ -9,8 +9,10 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -53,7 +55,12 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
     private TextView txtEmail;
     private Cubesurfaceview view1;
     private TextView btnChat;
+<<<<<<< .mine
+    private ImageView my_story;
+||||||| .r28
+=======
     private BroadcastReceiver mRegistrationBroadcastReceiver;
+>>>>>>> .r33
 
 
     @Override
@@ -129,10 +136,9 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
     }
 
     private void viewIntail() {
-
         btnChat = (TextView) findViewById(R.id.btnChat);
         btnChat.setOnClickListener(this);
-
+        my_story = (ImageView) findViewById(R.id.my_story);
         editProfile = (TextView) findViewById(R.id.edit_profile);
         search = (LinearLayout) findViewById(R.id.search);
         txtPosts = (TextView) findViewById(R.id.txt_posts);
@@ -143,11 +149,12 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
         txtAddress = (TextView) findViewById(R.id.txt_address);
         txtEmail = (TextView) findViewById(R.id.txt_email);
         layout_frame_main = (FrameLayout) findViewById(R.id.layout_frame1);
-        view = new Cubesurfaceview(ProfileActivity.this, mBbitmap);
+        view = new Cubesurfaceview(ProfileActivity.this, mBbitmap, false);
         layout_frame_main.addView(view);
         layoutFrame = (FrameLayout) findViewById(R.id.layout_frame);
-        view = new Cubesurfaceview(ProfileActivity.this, mBbitmap);
+        view = new Cubesurfaceview(ProfileActivity.this, mBbitmap, false);
         layoutFrame.addView(view);
+        layoutFrame.setOnClickListener(this);
         editProfile.setOnClickListener(this);
     }
 
@@ -172,7 +179,7 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
             public void getAsyncResult(ArrayList<Bitmap> bitmap, String txt) {
                 mBbitmap = bitmap;
                 layout_frame_main.removeAllViews();
-                view = new Cubesurfaceview(ProfileActivity.this, mBbitmap);
+                view = new Cubesurfaceview(ProfileActivity.this, mBbitmap, true);
                 layout_frame_main.addView(view);
             }
         }).execute();
@@ -187,13 +194,20 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
             public void getAsyncResult(ArrayList<Bitmap> bitmap, String txt) {
                 mBbitmap1 = bitmap;
                 layoutFrame.removeAllViews();
-                view1 = new Cubesurfaceview(ProfileActivity.this, mBbitmap1);
+                view1 = new Cubesurfaceview(ProfileActivity.this, mBbitmap1, false);
+                view1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(ProfileActivity.this, MyStoryActivity.class));
+                    }
+                });
                 layoutFrame.addView(view1);
+//                addTextView();
 
             }
         }).execute();
-
     }
+
 
     @Override
     protected void onResume() {
@@ -231,6 +245,9 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.layout_frame:
+                startActivity(new Intent(ProfileActivity.this, MyStoryActivity.class));
+                break;
             case R.id.edit_profile:
                 startActivity(new Intent(ProfileActivity.this, EditProfileActivity.class));
                 break;

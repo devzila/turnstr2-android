@@ -222,7 +222,7 @@ public class Cuberenderer implements GLSurfaceView.Renderer {
         glUnused.glDisable(GL10.GL_DITHER);
         glUnused.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
 //        GLES20.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-        glUnused.glClearColor(0, 0, 0, 0);
+        glUnused.glClearColor(1, 0, 0, 0);
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
 //		// Position the eye behind the origin.
         final float eyeX = 0.0f;

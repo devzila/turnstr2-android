@@ -35,8 +35,7 @@ public class URLImageParser extends AsyncTask<Object, Void, ArrayList<Bitmap>> {
                 try {
                     URL url = new URL(currentUrl);
                     Bitmap bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                    bitmap = addBorderColor(bitmap, 1, Color.WHITE);
-//                    bitmap = addBorderColor(bitmap, 1, Color.BLACK);
+                    bitmap = addBorderColor(bitmap, 1, Color.BLACK);
                     allBitMaps.add(bitmap);
                 } catch (Exception e) {
                     System.out.println(e);

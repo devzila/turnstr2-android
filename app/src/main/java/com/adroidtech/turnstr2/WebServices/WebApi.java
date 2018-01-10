@@ -9,6 +9,7 @@ import com.adroidtech.turnstr2.Utils.GeneralValues;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
@@ -57,17 +58,16 @@ public class WebApi {
     public String webCallForGet(Context context, JSONObject jsonObject, String masterRequestType, HashMap<String, String> extraHeaders) {
         Common_URL = "";
         String url = GeneralValues.BASE_URL + masterRequestType;
-        Log.e("TAG", "WebApi 60"+url);
         Common_URL = appendGetFeildsToUrl(url, jsonObject);
         StringBuffer response = new StringBuffer();
         try {
-            Log.e("Request-" + masterRequestType, Common_URL);
+            Log.i("Request-" + masterRequestType, Common_URL);
             URL url_Connection = new URL(Common_URL);
             HttpURLConnection conn = (HttpURLConnection) url_Connection.openConnection();
             conn.setRequestMethod("GET");
             conn.setDoInput(true);
             conn.setDoOutput(false);
-            conn.setRequestProperty("auth_token",extraHeaders.get("auth_token"));
+            conn.setRequestProperty("auth_token", extraHeaders.get("auth_token"));
             conn.setRequestProperty("Content-Type", "application/json;charset=utf-8");
             conn.setRequestProperty("Accept", "application/json;charset=utf-8");
             conn.setConnectTimeout(60 * 1000);
@@ -99,16 +99,14 @@ public class WebApi {
         if ((jsonObject != null) && (jsonObject.length() > 0)) {
             Iterator<String> allKeys = jsonObject.keys();
             url = url + "?";
-            Log.e("TAG", "WebApi 102"+url);
             while (allKeys.hasNext()) {
                 String key = (String) allKeys.next();
                 String value = jsonObject.optString(key);
                 url += key + "=" + value + "&";
             }
+            url= url.substring(0, url.length() - 1);
         }
-        Log.e("TAG", "........url..."+url);
-
-        return url;//url.substring(0, url.length() - 1);
+        return url;
     }
 
 
@@ -119,9 +117,7 @@ public class WebApi {
         try {
             jsonResponse = "";
             //constants
-            Log.e("Request-" + masterRequestType, Common_URL);
-            Log.e("Request-", jsonObject.toString());
-           // Log.e("TAG", "auth_token........."+extraHeaders.get("auth_token"));
+            Log.i("Request-" + masterRequestType, Common_URL);
             URL url = new URL(Common_URL);
             conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(60 * 1000 /*milliseconds*/);
@@ -132,14 +128,12 @@ public class WebApi {
             addHeadersParm(conn, extraHeaders);
             //add json data to request connection
             String message = jsonObject.toString();
-            //conn.setRequestProperty("auth_token",extraHeaders.get("auth_token"));
             conn.setFixedLengthStreamingMode(message.getBytes().length);
             //make some HTTP header nicety
             conn.setInstanceFollowRedirects(true);
             conn.setRequestProperty("Content-Type", "application/json;charset=utf-8");
             conn.setRequestProperty("Accept", "application/json;charset=utf-8");
             conn.setRequestProperty("X-Requested-With", "XMLHttpRequest");
-
             conn.connect();
 
             os = new BufferedOutputStream(conn.getOutputStream());
@@ -292,7 +286,7 @@ public class WebApi {
         }
     }
 
-    public InputStream connectionEstablished(String mUrl, MultipartEntity multipartEntity, String app_token) {
+    public InputStream connectionEstablished(String mUrl, MultipartEntity multipartEntity , String app_token) {
         InputStream mInputStreamis = null;
         HttpClient client = new DefaultHttpClient();
         HttpConnectionParams.setConnectionTimeout(client.getParams(), 600000); // Timeout
@@ -301,9 +295,32 @@ public class WebApi {
             HttpPost post = new HttpPost(mUrl);
             post.setEntity(multipartEntity);
             if ((app_token != null) && (!app_token.equals(""))) {
-                post.setHeader("Authorization", app_token);
+                post.setHeader("Auth-Token", app_token);
             }
             response = client.execute(post);
+            if (response != null) {
+                mInputStreamis = response.getEntity().getContent(); // Get the
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return mInputStreamis;
+
+    }
+
+    public InputStream putRequestMultipart(String mUrl, MultipartEntity multipartEntity, String app_token) {
+        InputStream mInputStreamis = null;
+        HttpClient client = new DefaultHttpClient();
+        HttpConnectionParams.setConnectionTimeout(client.getParams(), 600000); // Timeout
+        HttpResponse response;
+        try {
+            HttpPut httpPut = new HttpPut(mUrl);
+            httpPut.setEntity(multipartEntity);
+            if ((app_token != null) && (!app_token.equals(""))) {
+                httpPut.setHeader("Auth-Token", app_token);
+            }
+            response = client.execute(httpPut);
             if (response != null) {
                 mInputStreamis = response.getEntity().getContent(); // Get the
             }
@@ -346,7 +363,6 @@ public class WebApi {
             return mResult;
         }
     }
-
 
 
     public static InputStream openINputStreamConnection(String urlS) {

@@ -16,7 +16,8 @@ import java.io.InputStream;
 /**
  *
  */
-public class MultipartRequestAsync extends AsyncTask<Void, Void, JSONObject>{
+public class MultipartRequestAsync extends AsyncTask<Void, Void, JSONObject> {
+    String RequestType;
     boolean showLoader = true;
     ProgressDialog progress;
     public String url;
@@ -50,6 +51,20 @@ public class MultipartRequestAsync extends AsyncTask<Void, Void, JSONObject>{
         }
     }
 
+    public MultipartRequestAsync(Context context, MultipartEntity multipartEntity, String RequestType, MultipartAsyncCallback asyncCallback, String url, String app_token) {
+        this(context, multipartEntity, asyncCallback, url);
+        this.app_token = app_token;
+        this.RequestType = RequestType;
+//        try {
+//            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+//            multipartEntity.writeTo(bytes);
+//            String content = bytes.toString();
+//            System.out.println("My........." + content);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+    }
+
     @Override
     protected void onProgressUpdate(Void... values) {
         super.onProgressUpdate(values);
@@ -73,8 +88,12 @@ public class MultipartRequestAsync extends AsyncTask<Void, Void, JSONObject>{
 //        mUrl = GeneralValues.Image_UPLOAD_TO_SERVER;
         JSONObject jObj = null;
         try {
-            String urlMain = GeneralValues.BASE_URL + url;
-            mInputStreamis = sSetconnection.connectionEstablished(urlMain, multipartEntity, app_token);
+            String urlMain = url;
+            if (RequestType.equalsIgnoreCase("PUT")) {
+                mInputStreamis = sSetconnection.putRequestMultipart(urlMain, multipartEntity, app_token);
+            } else {
+                mInputStreamis = sSetconnection.connectionEstablished(urlMain, multipartEntity, app_token);
+            }
             if (mInputStreamis != null) {
                 mResult = sSetconnection.converResponseToString(mInputStreamis);
 

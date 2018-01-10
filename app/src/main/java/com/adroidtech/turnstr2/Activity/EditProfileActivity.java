@@ -88,12 +88,12 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
     private HashMap<String, Uri> updatedImage;
     private Uri fileUri;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
         updatedImage = new HashMap<String, Uri>();
+
         sharedPreference = new SharedPreference(this);
         userDetail = sharedPreference.getSerializableObject(PreferenceKeys.USER_DETAIL, LoginDetailModel.class);
         layout_frame_main = (FrameLayout) findViewById(R.id.layout_frame1);
@@ -128,18 +128,28 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
                 uploadImageToServer();
             }
         });
-        view = new Cubesurfaceview(EditProfileActivity.this, mBbitmap);
+        view = new Cubesurfaceview(EditProfileActivity.this, mBbitmap, false);
         layout_frame_main.addView(view);
 //        viewIntail();
 //        uiDataUpdate(userDetail);
         loadAllImages();
         loadAllImagesToCube();
+//        addAllImagesFromServer();
+    }
+
+    private void addAllImagesFromServer() {
+        updatedImage.put("avatar_face1", Uri.parse(userDetail.getUser().getAvatarFace1()));
+        updatedImage.put("avatar_face2", Uri.parse(userDetail.getUser().getAvatarFace1()));
+        updatedImage.put("avatar_face3", Uri.parse(userDetail.getUser().getAvatarFace3()));
+        updatedImage.put("avatar_face4", Uri.parse(userDetail.getUser().getAvatarFace4()));
+        updatedImage.put("avatar_face5", Uri.parse(userDetail.getUser().getAvatarFace5()));
+        updatedImage.put("avatar_face6", Uri.parse(userDetail.getUser().getAvatarFace6()));
     }
 
     private void loadAllImages() {
         try {
             Picasso.with(this).load(userDetail.getUser().getAvatarFace1()).into(avatarFace1);
-            Picasso.with(this).load("https://lorempixel.com/100/100/").into(avatarFace2);
+            Picasso.with(this).load(userDetail.getUser().getAvatarFace2()).into(avatarFace2);
             Picasso.with(this).load(userDetail.getUser().getAvatarFace3()).into(avatarFace3);
             Picasso.with(this).load(userDetail.getUser().getAvatarFace4()).into(avatarFace4);
             Picasso.with(this).load(userDetail.getUser().getAvatarFace5()).into(avatarFace5);
@@ -163,7 +173,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
             public void getAsyncResult(ArrayList<Bitmap> bitmap, String txt) {
                 mBbitmap = bitmap;
                 layout_frame_main.removeAllViews();
-                view = new Cubesurfaceview(EditProfileActivity.this, mBbitmap);
+                view = new Cubesurfaceview(EditProfileActivity.this, mBbitmap, false);
                 layout_frame_main.addView(view);
             }
         }).execute();
@@ -294,25 +304,27 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         try {
             multipartEntity.addPart("first_name", new StringBody(txtName.getText().toString()));
             multipartEntity.addPart("last_name", new StringBody(txtUsername.getText().toString()));
-            multipartEntity.addPart("gender", new StringBody("Male"));
+            multipartEntity.addPart("gender", new StringBody("Female"));
             multipartEntity.addPart("website", new StringBody(txtWebsite.getText().toString()));
             multipartEntity.addPart("bio", new StringBody(txtInfo.getText().toString()));
             multipartEntity.addPart("address", new StringBody(txtName.getText().toString()));
             multipartEntity.addPart("city", new StringBody(txtName.getText().toString()));
             multipartEntity.addPart("state", new StringBody(txtName.getText().toString()));
             multipartEntity.addPart("info", new StringBody(txtInfo.getText().toString()));
+            multipartEntity.addPart("phone", new StringBody(txtUserPhone.getText().toString()));
+            multipartEntity.addPart("username", new StringBody(txtUsername.getText().toString()));
+
             String[] allImagesName = updatedImage.keySet().toArray(new String[updatedImage.size()]);
             for (int i = 0; i < allImagesName.length; i++) {
                 File selectedimageFile = new File(updatedImage.get(allImagesName[i]).getPath());
                 multipartEntity.addPart(allImagesName[i], new FileBody(selectedimageFile));
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
         String dataUrl = "/user/";
-        new MultipartRequestAsync(this, multipartEntity, this, GeneralValues.EDIT_PROFILE + dataUrl).execute();
+        new MultipartRequestAsync(this, multipartEntity, "PUT", this, GeneralValues.BASE_URL + GeneralValues.EDIT_PROFILE,
+                sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN)).execute();
     }
 
     @Override
