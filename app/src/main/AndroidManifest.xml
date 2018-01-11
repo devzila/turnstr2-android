@@ -80,18 +80,18 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-<<<<<<< .mine
+
 
         <activity android:name=".Activity.CreateStoryActivity"></activity>
-||||||| .r28
-=======
+
+
 
 
 
         <activity android:name=".videoChat.MainVideoActivity"/>
         <activity android:name=".chat.activitys.AllFriendListVideo"/>
 
->>>>>>> .r33
+
     </application>
 
 </manifest>

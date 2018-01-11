@@ -55,12 +55,12 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
     private TextView txtEmail;
     private Cubesurfaceview view1;
     private TextView btnChat;
-<<<<<<< .mine
+
     private ImageView my_story;
-||||||| .r28
-=======
+
+
     private BroadcastReceiver mRegistrationBroadcastReceiver;
->>>>>>> .r33
+
 
 
     @Override
