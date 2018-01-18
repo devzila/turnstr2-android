@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -24,9 +27,12 @@ import com.adroidtech.turnstr2.Utils.GeneralValues;
 import com.adroidtech.turnstr2.Utils.ImagePickerUtils;
 import com.adroidtech.turnstr2.Utils.PreferenceKeys;
 import com.adroidtech.turnstr2.Utils.SharedPreference;
+import com.adroidtech.turnstr2.WebServices.AsyncCallback;
 import com.adroidtech.turnstr2.WebServices.MultipartAsyncCallback;
 import com.adroidtech.turnstr2.WebServices.MultipartRequestAsync;
+import com.adroidtech.turnstr2.WebServices.OkHttp3Helper;
 import com.adroidtech.turnstr2.WebServices.OkHttpRequest;
+import com.adroidtech.turnstr2.WebServices.OkHttpRequestSender;
 import com.adroidtech.turnstr2.WebServices.WebApi;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -45,10 +51,11 @@ import java.util.HashMap;
 import java.util.Stack;
 
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
-public class EditProfileActivity extends Activity implements View.OnClickListener, MultipartAsyncCallback {
+public class EditProfileActivity extends Activity implements View.OnClickListener, AsyncCallback {
     private static final int PIC_REQUEST = 1231;
     private static final int PIC_CROP = 1101;
     Cubesurfaceview view;
@@ -123,6 +130,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         avatarFace5.setOnClickListener(this);
         avatarFace6.setOnClickListener(this);
         findViewById(R.id.txt_done).setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
                 uploadImageToServer();
@@ -162,12 +170,12 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
 
     private void loadAllImagesToCube() {
         final Stack<String> strings = new Stack<>();
-        strings.push("https://lorempixel.com/100/100/");
-        strings.push("https://lorempixel.com/100/100/");
-        strings.push("https://lorempixel.com/100/100/");
-        strings.push("https://lorempixel.com/100/100/");
-        strings.push("https://lorempixel.com/100/100/");
-        strings.push("https://lorempixel.com/100/100/");
+        strings.push(userDetail.getUser().getAvatarFace1());
+        strings.push(userDetail.getUser().getAvatarFace2());
+        strings.push(userDetail.getUser().getAvatarFace3());
+        strings.push(userDetail.getUser().getAvatarFace4());
+        strings.push(userDetail.getUser().getAvatarFace5());
+        strings.push(userDetail.getUser().getAvatarFace6());
         new URLImageParser(strings, new URLImageParser.AsyncCallback() {
             @Override
             public void getAsyncResult(ArrayList<Bitmap> bitmap, String txt) {
@@ -299,41 +307,44 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void uploadImageToServer() {
-        MultipartEntity multipartEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
         try {
-            multipartEntity.addPart("first_name", new StringBody(txtName.getText().toString()));
-            multipartEntity.addPart("last_name", new StringBody(txtUsername.getText().toString()));
-            multipartEntity.addPart("gender", new StringBody("Female"));
-            multipartEntity.addPart("website", new StringBody(txtWebsite.getText().toString()));
-            multipartEntity.addPart("bio", new StringBody(txtInfo.getText().toString()));
-            multipartEntity.addPart("address", new StringBody(txtName.getText().toString()));
-            multipartEntity.addPart("city", new StringBody(txtName.getText().toString()));
-            multipartEntity.addPart("state", new StringBody(txtName.getText().toString()));
-            multipartEntity.addPart("info", new StringBody(txtInfo.getText().toString()));
-            multipartEntity.addPart("phone", new StringBody(txtUserPhone.getText().toString()));
-            multipartEntity.addPart("username", new StringBody(txtUsername.getText().toString()));
-
+            ArrayMap<String, String> formField = new ArrayMap<>();
+            ArrayMap<String, File> filePart = new ArrayMap<>();
+            formField.put("user[first_name]", (txtName.getText().toString()));
+            formField.put("user[last_name]", (txtUsername.getText().toString()));
+            formField.put("user[gender]", ("Female"));
+            formField.put("user[website]", (txtWebsite.getText().toString()));
+            formField.put("user[bio]", (txtInfo.getText().toString()));
+            formField.put("user[address]", (txtName.getText().toString()));
+            formField.put("user[city]", (txtName.getText().toString()));
+            formField.put("user[state]", (txtName.getText().toString()));
+            formField.put("user[info]", (txtInfo.getText().toString()));
+            formField.put("user[phone]", (txtUserPhone.getText().toString()));
+            formField.put("user[username]", (txtUsername.getText().toString()));
             String[] allImagesName = updatedImage.keySet().toArray(new String[updatedImage.size()]);
             for (int i = 0; i < allImagesName.length; i++) {
                 File selectedimageFile = new File(updatedImage.get(allImagesName[i]).getPath());
-                multipartEntity.addPart(allImagesName[i], new FileBody(selectedimageFile));
+                filePart.put("user[" + allImagesName[i] + "]", selectedimageFile);
             }
+            new OkHttpRequestSender(this, this, GeneralValues.BASE_URL + GeneralValues.EDIT_PROFILE, formField, filePart,
+                    sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN)).execute();
         } catch (Exception e) {
             e.printStackTrace();
+
         }
-        String dataUrl = "/user/";
-        new MultipartRequestAsync(this, multipartEntity, "PUT", this, GeneralValues.BASE_URL + GeneralValues.EDIT_PROFILE,
-                sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN)).execute();
     }
 
     @Override
-    public void getMultipartAsyncResult(JSONObject jsonObject, String txt) {
-//        MultipartRequestAsync
-        Log.e("Data", jsonObject.toString());
+    public void getAsyncResult(String json, String txt) {
+        Log.e("Data", json.toString());
         try {
+            JSONObject jsonObject = new JSONObject(json);
             if (jsonObject.has("success") && jsonObject.getBoolean("success")) {
-
+                LoginDetailModel userData = new Gson().fromJson(jsonObject.getString("data"), LoginDetailModel.class);
+                sharedPreference.putSerializableObject(PreferenceKeys.USER_DETAIL, userData);
+                finish();
 
             } else {
                 Toast.makeText(EditProfileActivity.this, jsonObject.getString("error"), Toast.LENGTH_LONG).show();

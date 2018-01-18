@@ -1,13 +1,9 @@
 package com.adroidtech.turnstr2.Activity;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -26,8 +22,6 @@ import com.adroidtech.turnstr2.Utils.SharedPreference;
 import com.adroidtech.turnstr2.WebServices.AsyncCallback;
 import com.adroidtech.turnstr2.WebServices.CommonAsync;
 import com.adroidtech.turnstr2.chat.groupchannel.GroupChannelActivity;
-import com.adroidtech.turnstr2.videoChat.Config;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONObject;
 import org.w3c.dom.Text;
@@ -55,12 +49,7 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
     private TextView txtEmail;
     private Cubesurfaceview view1;
     private TextView btnChat;
-
     private ImageView my_story;
-
-
-    private BroadcastReceiver mRegistrationBroadcastReceiver;
-
 
 
     @Override
@@ -73,45 +62,7 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
         uiDataUpdate(userDetail);
 //        getProfileDataFromServer();
         loadAllImagesToCube();
-
-
-
-        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-
-                String message = intent.getStringExtra("message");
-
-                Log.e("TAG","message......."+message);
-
-//                // checking for type intent filter
-//                if (intent.getAction().equals(Config.REGISTRATION_COMPLETE)) {
-//                    // gcm successfully registered
-//                    // now subscribe to `global` topic to receive app wide notifications
-//                    FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
-//
-//                    displayFirebaseRegId();
-//
-//                } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
-//                    // new push notification is received
-//
-//                    String message = intent.getStringExtra("message");
-//
-//                    Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
-//
-//                    txtMessage.setText(message);
-//                }
-            }
-        };
-
-
-
-
-
-
     }
-
-
 
     private void getProfileDataFromServer() {
         JSONObject mJson = new JSONObject();
@@ -161,18 +112,18 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
     private void loadAllImagesToCube() {
         final Stack<String> strings = new Stack<>();
         final Stack<String> strings1 = new Stack<>();
-//        strings.push(userDetail.getUser().getAvatarFace1());
-//        strings.push(userDetail.getUser().getAvatarFace2());
-//        strings.push(userDetail.getUser().getAvatarFace3());
-//        strings.push(userDetail.getUser().getAvatarFace4());
-//        strings.push(userDetail.getUser().getAvatarFace5());
-//        strings.push(userDetail.getUser().getAvatarFace6());
-        strings.push("https://lorempixel.com/100/100/");
-        strings.push("https://lorempixel.com/100/100/");
-        strings.push("https://lorempixel.com/100/100/");
-        strings.push("https://lorempixel.com/100/100/");
-        strings.push("https://lorempixel.com/100/100/");
-        strings.push("https://lorempixel.com/100/100/");
+        strings.push(userDetail.getUser().getAvatarFace1());
+        strings.push(userDetail.getUser().getAvatarFace2());
+        strings.push(userDetail.getUser().getAvatarFace3());
+        strings.push(userDetail.getUser().getAvatarFace4());
+        strings.push(userDetail.getUser().getAvatarFace5());
+        strings.push(userDetail.getUser().getAvatarFace6());
+//        strings.push("https://lorempixel.com/100/100/");
+//        strings.push("https://lorempixel.com/100/100/");
+//        strings.push("https://lorempixel.com/100/100/");
+//        strings.push("https://lorempixel.com/100/100/");
+//        strings.push("https://lorempixel.com/100/100/");
+//        strings.push("https://lorempixel.com/100/100/");
 
         new URLImageParser(strings, new URLImageParser.AsyncCallback() {
             @Override
@@ -183,12 +134,12 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
                 layout_frame_main.addView(view);
             }
         }).execute();
-        strings1.push("https://lorempixel.com/25/25/");
-        strings1.push("https://lorempixel.com/25/25/");
-        strings1.push("https://lorempixel.com/25/25/");
-        strings1.push("https://lorempixel.com/25/25/");
-        strings1.push("https://lorempixel.com/25/25/");
-        strings1.push("https://lorempixel.com/25/25/");
+        strings.push(userDetail.getUser().getAvatarFace1());
+        strings.push(userDetail.getUser().getAvatarFace2());
+        strings.push(userDetail.getUser().getAvatarFace3());
+        strings.push(userDetail.getUser().getAvatarFace4());
+        strings.push(userDetail.getUser().getAvatarFace5());
+        strings.push(userDetail.getUser().getAvatarFace6());
         new URLImageParser(strings1, new URLImageParser.AsyncCallback() {
             @Override
             public void getAsyncResult(ArrayList<Bitmap> bitmap, String txt) {
@@ -212,23 +163,11 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
     @Override
     protected void onResume() {
         super.onResume();
-
-        // register GCM registration complete receiver
-        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
-                new IntentFilter(Config.REGISTRATION_COMPLETE));
-
-        // register new push message receiver
-        // by doing this, the activity will be notified each time a new message arrives
-        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
-                new IntentFilter(Config.PUSH_NOTIFICATION));
-
-
         try {
 //            if (view != null) view.onResume();
         } catch (Exception e) {
 
         }
-
     }
 
 

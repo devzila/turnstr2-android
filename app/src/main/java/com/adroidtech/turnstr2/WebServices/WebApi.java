@@ -104,7 +104,7 @@ public class WebApi {
                 String value = jsonObject.optString(key);
                 url += key + "=" + value + "&";
             }
-            url= url.substring(0, url.length() - 1);
+            url = url.substring(0, url.length() - 1);
         }
         return url;
     }
@@ -286,7 +286,7 @@ public class WebApi {
         }
     }
 
-    public InputStream connectionEstablished(String mUrl, MultipartEntity multipartEntity , String app_token) {
+    public InputStream connectionEstablished(String mUrl, MultipartEntity multipartEntity, String app_token) {
         InputStream mInputStreamis = null;
         HttpClient client = new DefaultHttpClient();
         HttpConnectionParams.setConnectionTimeout(client.getParams(), 600000); // Timeout
@@ -318,6 +318,7 @@ public class WebApi {
             HttpPut httpPut = new HttpPut(mUrl);
             httpPut.setEntity(multipartEntity);
             if ((app_token != null) && (!app_token.equals(""))) {
+                httpPut.setHeader("content-type", "multipart/form-data");
                 httpPut.setHeader("Auth-Token", app_token);
             }
             response = client.execute(httpPut);

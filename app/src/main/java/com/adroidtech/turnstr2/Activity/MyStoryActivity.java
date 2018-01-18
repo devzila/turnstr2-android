@@ -46,7 +46,7 @@ public class MyStoryActivity extends Activity implements AsyncCallback, View.OnC
     private FrameLayout layoutFrame;
     private RecyclerView recycleView;
     private LoginDetailModel userDetail;
-
+    final Stack<String> strings = new Stack<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +66,6 @@ public class MyStoryActivity extends Activity implements AsyncCallback, View.OnC
         new CommonAsync(this, "GET", this, GeneralValues.USER_STORIES, null, headers).execute();
     }
 
-
     private void viewIntail() {
         recycleView = (RecyclerView) findViewById(R.id.recycler_listview);
         GridLayoutManager mGridManager = new GridLayoutManager(this, 3);
@@ -81,6 +80,21 @@ public class MyStoryActivity extends Activity implements AsyncCallback, View.OnC
         });
         view = new Cubesurfaceview(MyStoryActivity.this, mBbitmap, false);
         layoutFrame.addView(view);
+        strings.push(userDetail.getUser().getAvatarFace1());
+        strings.push(userDetail.getUser().getAvatarFace2());
+        strings.push(userDetail.getUser().getAvatarFace3());
+        strings.push(userDetail.getUser().getAvatarFace4());
+        strings.push(userDetail.getUser().getAvatarFace5());
+        strings.push(userDetail.getUser().getAvatarFace6());
+        new URLImageParser(strings, new URLImageParser.AsyncCallback() {
+            @Override
+            public void getAsyncResult(ArrayList<Bitmap> bitmap, String txt) {
+                mBbitmap = bitmap;
+                layoutFrame.removeAllViews();
+                view = new Cubesurfaceview(MyStoryActivity.this, mBbitmap, true);
+                layoutFrame.addView(view);
+            }
+        }).execute();
     }
 
     @Override
