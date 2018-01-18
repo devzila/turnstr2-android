@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.adroidtech.turnstr2.R;
@@ -34,6 +36,7 @@ import com.opentok.android.SubscriberKit;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -62,13 +65,22 @@ public class MainVideoActivity extends AppCompatActivity
     private Session mSession;
     private Publisher mPublisher;
     private Subscriber mSubscriber;
+    private Subscriber mSubscriber1;
+    private Subscriber mSubscriber2;
 
-    private FrameLayout mPublisherViewContainer;
-    private FrameLayout mSubscriberViewContainer;
+    private RelativeLayout mPublisherViewContainer;
+    private RelativeLayout mSubscriberViewContainer;
     private SharedPreference sharedPreference;
     private ImageView addMoreUser;
     private String memberID;
-
+    List<Stream> streamList=new ArrayList<>();
+    private RelativeLayout mSubscriberViewContainer1;
+    private RelativeLayout mSubscriberViewContainer2;
+    private LinearLayout topview;
+    private ImageView imgSpeaker;
+    private ImageView imgSwitchCamera;
+    private ImageView imgEndCall;
+    private ImageView imgMic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,11 +122,24 @@ public class MainVideoActivity extends AppCompatActivity
 
         sharedPreference = new SharedPreference(getApplicationContext());
         // initialize view objects from your layout
-        mPublisherViewContainer = (FrameLayout)findViewById(R.id.publisher_container);
-        mSubscriberViewContainer = (FrameLayout)findViewById(R.id.subscriber_container);
+        mPublisherViewContainer = (RelativeLayout)findViewById(R.id.publisher_container);
+        mSubscriberViewContainer = (RelativeLayout)findViewById(R.id.subscriber_container);
+        mSubscriberViewContainer1 = (RelativeLayout)findViewById(R.id.subscriber_container1);
+        mSubscriberViewContainer2 = (RelativeLayout)findViewById(R.id.subscriber_container2);
+        topview = (LinearLayout)findViewById(R.id.topview);
 
         addMoreUser=(ImageView)findViewById(R.id.addMoreUser);
         addMoreUser.setOnClickListener(this);
+
+        imgMic=(ImageView)findViewById(R.id.imgMic);
+        imgEndCall=(ImageView)findViewById(R.id.imgEndCall);
+        imgSwitchCamera=(ImageView)findViewById(R.id.imgSwitchCamera);
+        imgSpeaker=(ImageView)findViewById(R.id.imgSpeaker);
+        imgMic.setOnClickListener(this);
+        imgEndCall.setOnClickListener(this);
+        imgSwitchCamera.setOnClickListener(this);
+        imgSpeaker.setOnClickListener(this);
+
 
         try {
 
@@ -124,7 +149,8 @@ public class MainVideoActivity extends AppCompatActivity
             }
             else if(null!=memberID_IN)
             {
-                getlive_sessionRequest(memberID);
+                getlive_sessionRequest(memberID_IN);
+                finish();
             }
 
         } catch (JSONException e) {
@@ -298,13 +324,60 @@ public class MainVideoActivity extends AppCompatActivity
 
         Log.e(LOG_TAG, "onStreamReceived: New Stream Received "+stream.getStreamId() + " in session: "+session.getSessionId());
 
-        if (mSubscriber == null) {
-            mSubscriber = new Subscriber.Builder(this, stream).build();
-            mSubscriber.getRenderer().setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE, BaseVideoRenderer.STYLE_VIDEO_FILL);
-            mSubscriber.setSubscriberListener(this);
-            mSession.subscribe(mSubscriber);
-            mSubscriberViewContainer.addView(mSubscriber.getView());
+        if(!streamList.contains(stream))
+        {
+            streamList.add(stream);
         }
+
+
+        if(streamList.size()==1)
+        {
+            if (mSubscriber == null) {
+                topview.setVisibility(View.VISIBLE);
+                mSubscriberViewContainer.setVisibility(View.VISIBLE);
+                mSubscriber = new Subscriber.Builder(this, streamList.get(0)).build();
+                mSubscriber.getRenderer().setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE, BaseVideoRenderer.STYLE_VIDEO_FILL);
+                mSubscriber.setSubscriberListener(this);
+                mSession.subscribe(mSubscriber);
+                mSubscriberViewContainer.addView(mSubscriber.getView());
+
+            }
+        }
+        else if(streamList.size()==2)
+        {
+            if (mSubscriber1 == null) {
+                topview.setVisibility(View.VISIBLE);
+                mSubscriberViewContainer1.setVisibility(View.VISIBLE);
+                mSubscriber1 = new Subscriber.Builder(this, streamList.get(1)).build();
+                mSubscriber1.getRenderer().setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE, BaseVideoRenderer.STYLE_VIDEO_FILL);
+                mSubscriber1.setSubscriberListener(this);
+                mSession.subscribe(mSubscriber1);
+                mSubscriberViewContainer1.addView(mSubscriber1.getView());
+
+            }
+        }
+        else if(streamList.size()==3)
+        {
+            if (mSubscriber2 == null) {
+                mSubscriberViewContainer2.setVisibility(View.VISIBLE);
+                mSubscriber2 = new Subscriber.Builder(this, streamList.get(2)).build();
+                mSubscriber2.getRenderer().setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE, BaseVideoRenderer.STYLE_VIDEO_FILL);
+                mSubscriber2.setSubscriberListener(this);
+                mSession.subscribe(mSubscriber2);
+                mSubscriberViewContainer2.addView(mSubscriber2.getView());
+
+            }
+        }
+//        if (mSubscriber == null) {
+//            mSubscriber = new Subscriber.Builder(this, stream).build();
+//            mSubscriber.getRenderer().setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE, BaseVideoRenderer.STYLE_VIDEO_FILL);
+//            mSubscriber.setSubscriberListener(this);
+//            mSession.subscribe(mSubscriber);
+//            mSubscriberViewContainer.addView(mSubscriber.getView());
+//
+//        }
+
+
     }
 
     @Override
@@ -315,6 +388,13 @@ public class MainVideoActivity extends AppCompatActivity
         if (mSubscriber != null) {
             mSubscriber = null;
             mSubscriberViewContainer.removeAllViews();
+        }
+        if (mSubscriber1 != null) {
+            mSubscriber1 = null;
+            mSubscriberViewContainer1.removeAllViews();
+        }if (mSubscriber2 != null) {
+            mSubscriber2 = null;
+            mSubscriberViewContainer2.removeAllViews();
         }
     }
 
@@ -485,6 +565,37 @@ public class MainVideoActivity extends AppCompatActivity
         if(v==addMoreUser)
         {
             startActivity(new Intent(getApplicationContext(), AllFriendListVideo.class));
+        }
+        if(v==imgMic)
+        {
+            if(mPublisher.getPublishAudio())
+            {
+                imgMic.setImageDrawable(getResources().getDrawable(R.drawable.ic_mic_off));
+                mPublisher.setPublishAudio(false);
+            }
+            else
+            {
+                imgMic.setImageDrawable(getResources().getDrawable(R.drawable.ic_mic_on));
+                mPublisher.setPublishAudio(true);
+            }
+
+        }
+        if(v==imgEndCall)
+        {
+            if(null!=mSession)
+            {
+                mSession.disconnect();
+                finish();
+            }
+
+        }
+        if(v==imgSwitchCamera)
+        {
+            mPublisher.cycleCamera();
+        }
+        if(v==imgSpeaker)
+        {
+
         }
     }
 }
