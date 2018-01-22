@@ -110,6 +110,16 @@
             android:name=".Activity.HomePageActivity"
             android:screenOrientation="portrait"></activity>
 
+
+        <activity android:name=".videoChat.MainVideoActivity"/>
+        <activity android:name=".chat.activitys.AllFriendListVideo"/>
+
+
     </application>
+
+
+
+
+
 
 </manifest>

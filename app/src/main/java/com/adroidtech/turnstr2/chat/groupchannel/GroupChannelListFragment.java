@@ -2,6 +2,7 @@ package com.adroidtech.turnstr2.chat.groupchannel;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -15,10 +16,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.adroidtech.turnstr2.Activity.MyStoryActivity;
+import com.adroidtech.turnstr2.Activity.ProfileActivity;
+import com.adroidtech.turnstr2.CubeView.Cubesurfaceview;
+import com.adroidtech.turnstr2.CubeView.URLImageParser;
+import com.adroidtech.turnstr2.Models.LoginDetailModel;
 import com.adroidtech.turnstr2.R;
+import com.adroidtech.turnstr2.Utils.PreferenceKeys;
+import com.adroidtech.turnstr2.Utils.SharedPreference;
 import com.adroidtech.turnstr2.chat.activitys.AllFriendList;
 import com.sendbird.android.BaseChannel;
 import com.sendbird.android.BaseMessage;
@@ -27,7 +36,9 @@ import com.sendbird.android.GroupChannelListQuery;
 import com.sendbird.android.SendBird;
 import com.sendbird.android.SendBirdException;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -44,6 +55,11 @@ public class GroupChannelListFragment extends Fragment implements View.OnClickLi
     private GroupChannelListQuery mChannelListQuery;
     private SwipeRefreshLayout mSwipeRefresh;
     private TextView addNewChat;
+    private Cubesurfaceview view;
+    private ArrayList<Bitmap> mBbitmap = new ArrayList<>();
+    private SharedPreference sharedPreference;
+    private LoginDetailModel userDetail;
+    private FrameLayout layout_frame_main;
 
     public static GroupChannelListFragment newInstance() {
         GroupChannelListFragment fragment = new GroupChannelListFragment();
@@ -75,6 +91,12 @@ public class GroupChannelListFragment extends Fragment implements View.OnClickLi
 
         // Change action bar title
         //((GroupChannelActivity) getActivity()).setActionBarTitle(getResources().getString(R.string.all_group_channels));
+        sharedPreference = new SharedPreference(getActivity());
+        userDetail = sharedPreference.getSerializableObject(PreferenceKeys.USER_DETAIL, LoginDetailModel.class);
+         layout_frame_main = (FrameLayout) rootView.findViewById(R.id.layout_frame);
+        view = new Cubesurfaceview(getActivity(), mBbitmap, false);
+        layout_frame_main.addView(view);
+        loadAllImagesToCube();
 
 
         addNewChat=(TextView)rootView.findViewById(R.id.addNewChat);
@@ -102,6 +124,28 @@ public class GroupChannelListFragment extends Fragment implements View.OnClickLi
         setUpRecyclerView();
         setUpChannelListAdapter();
         return rootView;
+    }
+
+    private void loadAllImagesToCube() {
+        final Stack<String> strings = new Stack<>();
+
+        strings.push(userDetail.getUser().getAvatarFace1());
+        strings.push(userDetail.getUser().getAvatarFace2());
+        strings.push(userDetail.getUser().getAvatarFace3());
+        strings.push(userDetail.getUser().getAvatarFace4());
+        strings.push(userDetail.getUser().getAvatarFace5());
+        strings.push(userDetail.getUser().getAvatarFace6());
+
+        new URLImageParser(strings, new URLImageParser.AsyncCallback() {
+            @Override
+            public void getAsyncResult(ArrayList<Bitmap> bitmap, String txt) {
+                mBbitmap = bitmap;
+                layout_frame_main.removeAllViews();
+                view = new Cubesurfaceview(getActivity(), mBbitmap, true);
+                layout_frame_main.addView(view);
+            }
+        }).execute();
+
     }
 
     @Override

@@ -29,6 +29,14 @@ public class GeneralValues {
     public static final String MEMBERS_URL = "/v1/members ";
     public static final String USER_STORIES = "/v1/user/stories";
 
+
+    public static final String LIVE_SESSION = "/v1/user/live_session ";
+
+//    public static final String MEMBERS_URL = "/v1/members ";
+
+
+
+
     public static int getScreenWidth(Context context) {
         try {
             WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);

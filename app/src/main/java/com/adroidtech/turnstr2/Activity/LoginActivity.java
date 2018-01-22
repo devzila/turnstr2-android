@@ -297,7 +297,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
                 updateCurrentUserInfo(userNickname);
                 updateCurrentUserPushToken();
 
-                startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
+                startActivity(new Intent(LoginActivity.this, HomePageActivity.class));
                 // finish();
             }
         });

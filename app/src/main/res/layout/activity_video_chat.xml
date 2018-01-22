@@ -107,7 +107,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-
+                    android:background="@color/white"
                     android:gravity="center|bottom"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
@@ -118,28 +118,28 @@
                         android:elevation="10dp"
                         android:layout_margin="10dp"
                         android:background="@drawable/oval_green"
-                        android:padding="10dp"
+                        android:padding="5dp"
                         android:src="@drawable/ic_mic_on"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_width="50dp"
+                        android:layout_height="50dp" />
                     <ImageView
                         android:id="@+id/imgEndCall"
                         android:layout_margin="10dp"
                         android:elevation="10dp"
                         android:background="@drawable/oval_red"
-                        android:padding="10dp"
+                        android:padding="5dp"
                         android:src="@drawable/ic_call_end"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_width="50dp"
+                        android:layout_height="50dp" />
                     <ImageView
                         android:id="@+id/imgSwitchCamera"
                         android:layout_margin="10dp"
                         android:elevation="10dp"
                         android:background="@drawable/oval_green"
-                        android:padding="10dp"
+                        android:padding="5dp"
                         android:src="@drawable/ic_switch_camera"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_width="50dp"
+                        android:layout_height="50dp" />
 
                     <ImageView
                         android:visibility="gone"
