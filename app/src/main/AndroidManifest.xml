@@ -10,6 +10,7 @@
     <!-- <action android:name="android.net.conn.CONNECTIVITY_CHANGE" /> -->
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -30,26 +31,35 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.SplashActivtiy">
+        <activity
+            android:name=".Activity.SplashActivtiy"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.ProfileActivity" />
-        <activity android:name=".Activity.MyStoryActivity" />
+        <activity
+            android:name=".Activity.ProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.MyStoryActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.LoginActivity"
-            android:label="@string/title_activity_login" />
+            android:label="@string/title_activity_login"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.SignUpActivity"
-            android:label="@string/title_activity_login" />
+            android:label="@string/title_activity_login"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".chat.activitys.AllFriendList"
-            android:label="New Chat?" />
+            android:label="New Chat?"
+            android:screenOrientation="portrait" />
 
         <!-- <meta-data -->
         <!-- android:name="com.facebook.sdk.ApplicationId" -->
@@ -65,11 +75,17 @@
         <activity android:name=".chat.groupchannel.GroupChannelActivity" />
         <activity android:name=".chat.groupchannel.InviteMemberActivity" />
         <activity android:name=".chat.groupchannel.MemberListActivity" />
-        <activity android:name=".Utils.chatUtils.PhotoViewerActivity" />
-        <activity android:name=".Utils.chatUtils.MediaPlayerActivity" />
-        <activity android:name=".Activity.EditProfileActivity" />
+        <activity
+            android:name=".Utils.chatUtils.PhotoViewerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Utils.chatUtils.MediaPlayerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.EditProfileActivity"
+            android:screenOrientation="portrait" />
+        <!--<activity android:name=".imageFillters.ImageFillterSettingActivity" />-->
 
-        <!-- Firebase Notifications -->
         <service android:name=".chat.fcm.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -81,16 +97,18 @@
             </intent-filter>
         </service>
 
-
-        <activity android:name=".Activity.CreateStoryActivity"></activity>
-
-
-
-
-
-        <activity android:name=".videoChat.MainVideoActivity"/>
-        <activity android:name=".chat.activitys.AllFriendListVideo"/>
-
+        <activity
+            android:name=".Activity.CreateStoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.VideoPreviewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.GalleryImageActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Activity.HomePageActivity"
+            android:screenOrientation="portrait"></activity>
 
     </application>
 

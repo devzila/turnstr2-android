@@ -25,7 +25,7 @@ public class Cubesurfaceview extends GLSurfaceView {
         if (allBitmaps == null || allBitmaps.size() == 0) {
             allBitmaps = new ArrayList<>();
             for (int i = 0; i < 6; i++) {
-                allBitmaps.add(BitmapFactory.decodeResource(getResources(), R.mipmap.image_icon));
+                allBitmaps.add(BitmapFactory.decodeResource(getResources(), R.drawable.ic_image_cube));
             }
         }
         setRenderer(renderer = new Cuberenderer(this, allBitmaps));

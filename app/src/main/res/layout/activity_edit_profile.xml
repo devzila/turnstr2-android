@@ -13,12 +13,13 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
             android:padding="5dp"
             android:text="Cancel"
-            android:textColor="@color/text_bliue"
+            android:textColor="@color/text_blue"
             android:textSize="16sp" />
 
         <TextView
@@ -28,7 +29,7 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="Edit Profile"
-            android:textColor="@color/text_bliue"
+            android:textColor="@color/text_blue"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -39,7 +40,7 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="Done"
-            android:textColor="@color/text_bliue"
+            android:textColor="@color/text_blue"
             android:textSize="16sp" />
 
     </LinearLayout>
@@ -94,9 +95,8 @@
                     android:layout_height="50dp"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="@color/img_background"
-                    android:scaleType="centerCrop"
-                    android:src="@color/gray_light" />
+                    android:background="@drawable/ic_image_edit"
+                    android:scaleType="centerCrop" />
 
 
                 <ImageView
@@ -105,9 +105,8 @@
                     android:layout_height="50dp"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="@color/img_background"
-                    android:scaleType="centerCrop"
-                    android:src="@color/gray_light" />
+                    android:background="@drawable/ic_image_edit"
+                    android:scaleType="centerCrop" />
 
 
                 <ImageView
@@ -116,9 +115,8 @@
                     android:layout_height="50dp"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="@color/img_background"
-                    android:scaleType="centerCrop"
-                    android:src="@color/gray_light" />
+                    android:background="@drawable/ic_image_edit"
+                    android:scaleType="centerCrop" />
 
 
                 <ImageView
@@ -127,10 +125,8 @@
                     android:layout_height="50dp"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="@color/img_background"
-                    android:scaleType="centerCrop"
-                    android:src="@color/gray_light" />
-
+                    android:background="@drawable/ic_image_edit"
+                    android:scaleType="centerCrop" />
 
                 <ImageView
                     android:id="@+id/avatar_face5"
@@ -138,10 +134,8 @@
                     android:layout_height="50dp"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="@color/img_background"
-                    android:scaleType="centerCrop"
-                    android:src="@color/gray_light" />
-
+                    android:background="@drawable/ic_image_edit"
+                    android:scaleType="centerCrop" />
 
                 <ImageView
                     android:id="@+id/avatar_face6"
@@ -149,10 +143,8 @@
                     android:layout_height="50dp"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="@color/img_background"
-                    android:scaleType="centerCrop"
-                    android:src="@color/gray_light" />
-
+                    android:background="@drawable/ic_image_edit"
+                    android:scaleType="centerCrop" />
 
             </LinearLayout>
             <!--</HorizontalScrollView>-->
@@ -205,7 +197,7 @@
                     android:drawablePadding="10dp"
                     android:padding="10dp"
                     android:text="http://kimkardashian.com"
-                    android:textColor="@color/text_bliue"
+                    android:textColor="@color/text_blue"
                     android:textSize="14sp" />
 
                 <View
@@ -243,7 +235,7 @@
                         android:background="@android:color/transparent"
                         android:padding="10dp"
                         android:text="Online"
-                        android:textColor="@color/text_bliue"
+                        android:textColor="@color/text_blue"
                         android:textSize="16sp" />
 
                     <CheckBox
@@ -265,7 +257,7 @@
                         android:background="@android:color/transparent"
                         android:padding="10dp"
                         android:text="Contact Me"
-                        android:textColor="@color/text_bliue"
+                        android:textColor="@color/text_blue"
                         android:textSize="16sp" />
 
                     <TextView
@@ -275,7 +267,7 @@
                         android:background="@android:color/transparent"
                         android:padding="10dp"
                         android:text="Everyone >"
-                        android:textColor="@color/text_bliue"
+                        android:textColor="@color/text_blue"
                         android:textSize="16sp" />
                 </LinearLayout>
 

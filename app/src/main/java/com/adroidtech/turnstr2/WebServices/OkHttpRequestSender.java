@@ -24,6 +24,7 @@ import okhttp3.Response;
 
 public class OkHttpRequestSender extends AsyncTask<String, Void, String> {
     private final String app_token;
+    private final String url;
     ArrayMap<String, String> formField;
     ArrayMap<String, File> filePart;
     Request okRequest;
@@ -35,13 +36,17 @@ public class OkHttpRequestSender extends AsyncTask<String, Void, String> {
     private static int mRequestCount = 0;
     private SharedPreference sharedPreference;
     private String oldSessionId = "";
+    private String request_type;
 
-    public OkHttpRequestSender(Context context, AsyncCallback asyncCallback, String s, ArrayMap<String, String> formField, ArrayMap<String, File> filePart, String app_token) {
+    public OkHttpRequestSender(Context context, AsyncCallback asyncCallback, String url, ArrayMap<String, String> formField, ArrayMap<String,
+            File> filePart, String app_token, String request_type) {
         this.context_weak = new WeakReference<Context>(context);
-        this.asyncCallback=asyncCallback;
+        this.asyncCallback = asyncCallback;
         this.formField = formField;
         this.filePart = filePart;
+        this.url = url;
         this.app_token = app_token;
+        this.request_type = request_type;
     }
 
     @Override
@@ -71,8 +76,12 @@ public class OkHttpRequestSender extends AsyncTask<String, Void, String> {
         String responce = null;
         try {
             Context context = context_weak.get();
-            responce = new OkHttp3Helper(context).postMultiPartToServer(GeneralValues.BASE_URL + GeneralValues.EDIT_PROFILE,
-                    formField, filePart, app_token);
+            if ((request_type != null) && request_type.equals("POST")) {
+                responce = new OkHttp3Helper(context).postMultiPartToServer(url, formField, filePart, app_token);
+            } else if ((request_type != null) && request_type.equals("PUT")) {
+                responce = new OkHttp3Helper(context).putMultiPartToServer(url, formField, filePart, app_token);
+            } else if ((request_type != null) && request_type.equals("GET")) {
+            }
             Log.d("responce : ", responce);
         } catch (Exception e) {
             e.printStackTrace();

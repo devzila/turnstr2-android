@@ -225,7 +225,7 @@ public class SignUpActivity extends AppCompatActivity implements AsyncCallback {
                 updateCurrentUserInfo(userNickname);
                 updateCurrentUserPushToken();
 
-                // Proceed to MainActivity
+                // Proceed to ImageFillterSettingActivity
                 // Intent intent = new Intent(LoginActivity.this, AllFriendList.class);
 
                 startActivity(new Intent(SignUpActivity.this, ProfileActivity.class));

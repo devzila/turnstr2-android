@@ -49,18 +49,15 @@ public class MyStoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 Cubesurfaceview view1 = new Cubesurfaceview(context, mBbitmap1, false);
                 view.ll_main.addView(view1);
                 Stack<String> strings1 = new Stack<>();
-                strings1.push(allDataList.get(position).getUser().getAvatarFace1());
-                strings1.push(allDataList.get(position).getUser().getAvatarFace2());
-                strings1.push(allDataList.get(position).getUser().getAvatarFace3());
-                strings1.push(allDataList.get(position).getUser().getAvatarFace4());
-                strings1.push(allDataList.get(position).getUser().getAvatarFace5());
-                strings1.push(allDataList.get(position).getUser().getAvatarFace6());
+                for (int i = 0; i < allDataList.get(position).getMedia().size(); i++) {
+                    strings1.push(allDataList.get(position).getMedia().get(i).getThumbUrl());
+                }
                 new URLImageParser(strings1, new URLImageParser.AsyncCallback() {
                     @Override
                     public void getAsyncResult(ArrayList<Bitmap> bitmap, String txt) {
                         mBbitmap1 = bitmap;
                         view.ll_main.removeAllViews();
-                        Cubesurfaceview view1 = new Cubesurfaceview(context, mBbitmap1, false);
+                        Cubesurfaceview view1 = new Cubesurfaceview(context, mBbitmap1, true);
                         view.ll_main.addView(view1);
                     }
                 }).execute();

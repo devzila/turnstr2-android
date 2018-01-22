@@ -97,7 +97,7 @@ public class MyStoryModel implements Serializable {
             this.mediaUrl = mediaUrl;
         }
 
-        public Object getThumbUrl() {
+        public String getThumbUrl() {
             return thumbUrl;
         }
 

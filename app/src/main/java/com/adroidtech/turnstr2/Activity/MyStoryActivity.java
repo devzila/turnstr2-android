@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +48,9 @@ public class MyStoryActivity extends Activity implements AsyncCallback, View.OnC
     private RecyclerView recycleView;
     private LoginDetailModel userDetail;
     final Stack<String> strings = new Stack<>();
+    private TextView txtPosts;
+    private TextView txtFollowers;
+    private TextView txtFamily;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +65,8 @@ public class MyStoryActivity extends Activity implements AsyncCallback, View.OnC
 
     private void getAllStorieFromServer() {
         HashMap<String, String> headers = new HashMap<>();
-        headers.put("auth_token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOiIyMDE3LTA2LTE0IDA2OjU0OjM0IFVUQyJ9.M7pgzA4ktNVvuDFvKMqESJfHmLQCobp0WNjC6k2Kjac");
-//        headers.put("auth_token", sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN));
+//        headers.put("auth_token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOiIyMDE3LTA2LTE0IDA2OjU0OjM0IFVUQyJ9.M7pgzA4ktNVvuDFvKMqESJfHmLQCobp0WNjC6k2Kjac");
+        headers.put("auth_token", sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN));
         new CommonAsync(this, "GET", this, GeneralValues.USER_STORIES, null, headers).execute();
     }
 
@@ -72,6 +76,13 @@ public class MyStoryActivity extends Activity implements AsyncCallback, View.OnC
         recycleView.setLayoutManager(mGridManager);
         recycleView.setItemAnimator(new DefaultItemAnimator());
         layoutFrame = (FrameLayout) findViewById(R.id.layout_frame);
+        findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         findViewById(R.id.new_story).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,6 +106,12 @@ public class MyStoryActivity extends Activity implements AsyncCallback, View.OnC
                 layoutFrame.addView(view);
             }
         }).execute();
+        txtPosts = (TextView) findViewById(R.id.txt_posts);
+        txtFollowers = (TextView) findViewById(R.id.txt_followers);
+        txtFamily = (TextView) findViewById(R.id.txt_family);
+        txtFamily.setText(userDetail.getUser().getFamilyCount() + "");
+        txtFollowers.setText(userDetail.getUser().getFollowerCount() + "");
+        txtPosts.setText(userDetail.getUser().getPostCount() + "");
     }
 
     @Override
@@ -112,7 +129,7 @@ public class MyStoryActivity extends Activity implements AsyncCallback, View.OnC
     protected void onPause() {
         super.onPause();
         try {
-            if (view != null) view.onPause();
+//            if (view != null) view.onPause();
         } catch (Exception e) {
 
         }

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -24,42 +23,31 @@ import com.adroidtech.turnstr2.WebServices.CommonAsync;
 import com.adroidtech.turnstr2.chat.groupchannel.GroupChannelActivity;
 
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
-public class ProfileActivity extends Activity implements AsyncCallback, View.OnClickListener {
+public class ViewStoryActivity extends Activity implements AsyncCallback, View.OnClickListener {
     Cubesurfaceview view;
     private ArrayList<Bitmap> mBbitmap = new ArrayList<>();
     private ArrayList<Bitmap> mBbitmap1 = new ArrayList<>();
     private FrameLayout layout_frame_main;
     private SharedPreference sharedPreference;
     private LoginDetailModel userDetail;
-    private TextView editProfile;
-    private LinearLayout search;
-    private TextView txtPosts;
-    private TextView txtFollowers;
-    private TextView txtFamily;
-    private FrameLayout layoutFrame;
-    private TextView txtUsername;
-    private TextView txtAbout;
-    private TextView txtAddress;
-    private TextView txtEmail;
     private Cubesurfaceview view1;
     private TextView btnChat;
     private ImageView my_story;
+    private FrameLayout layoutFrame;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_view_story);
         sharedPreference = new SharedPreference(this);
         userDetail = sharedPreference.getSerializableObject(PreferenceKeys.USER_DETAIL, LoginDetailModel.class);
         viewIntail();
-        uiDataUpdate(userDetail);
 //        getProfileDataFromServer();
         loadAllImagesToCube();
     }
@@ -71,44 +59,16 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
         new CommonAsync(this, "GET", this, GeneralValues.LOGIN_URL, mJson, headers).execute();
     }
 
-    private void uiDataUpdate(LoginDetailModel userDetail) {
-        txtAbout.setText(userDetail.getUser().getBio());
-        txtAddress.setText(userDetail.getUser().getAddress());
-        txtEmail.setText(userDetail.getUser().getEmail());
-
-        txtFamily.setText(userDetail.getUser().getFamilyCount() + "");
-        txtFollowers.setText(userDetail.getUser().getFollowerCount() + "");
-        txtPosts.setText(userDetail.getUser().getPostCount() + "");
-
-        txtUsername.setText(userDetail.getUser().getFirstName() + "");
-        if (userDetail.getUser().getIsVerified()) {
-            txtUsername.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.star_verification, 0);
-        } else {
-            txtUsername.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-        }
-    }
-
     private void viewIntail() {
         btnChat = (TextView) findViewById(R.id.btnChat);
         btnChat.setOnClickListener(this);
-        my_story = (ImageView) findViewById(R.id.my_story);
-        editProfile = (TextView) findViewById(R.id.edit_profile);
-        search = (LinearLayout) findViewById(R.id.search);
-        txtPosts = (TextView) findViewById(R.id.txt_posts);
-        txtFollowers = (TextView) findViewById(R.id.txt_followers);
-        txtFamily = (TextView) findViewById(R.id.txt_family);
-        txtUsername = (TextView) findViewById(R.id.txt_username);
-        txtAbout = (TextView) findViewById(R.id.txt_about);
-        txtAddress = (TextView) findViewById(R.id.txt_address);
-        txtEmail = (TextView) findViewById(R.id.txt_email);
         layout_frame_main = (FrameLayout) findViewById(R.id.layout_frame1);
-        view = new Cubesurfaceview(ProfileActivity.this, mBbitmap, false);
+        view = new Cubesurfaceview(ViewStoryActivity.this, mBbitmap, false);
         layout_frame_main.addView(view);
         layoutFrame = (FrameLayout) findViewById(R.id.layout_frame);
-        view = new Cubesurfaceview(ProfileActivity.this, mBbitmap, false);
+        view = new Cubesurfaceview(ViewStoryActivity.this, mBbitmap, false);
         layoutFrame.addView(view);
         layoutFrame.setOnClickListener(this);
-        editProfile.setOnClickListener(this);
     }
 
     private void loadAllImagesToCube() {
@@ -120,19 +80,13 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
         strings.push(userDetail.getUser().getAvatarFace4());
         strings.push(userDetail.getUser().getAvatarFace5());
         strings.push(userDetail.getUser().getAvatarFace6());
-//        strings.push("https://lorempixel.com/100/100/");
-//        strings.push("https://lorempixel.com/100/100/");
-//        strings.push("https://lorempixel.com/100/100/");
-//        strings.push("https://lorempixel.com/100/100/");
-//        strings.push("https://lorempixel.com/100/100/");
-//        strings.push("https://lorempixel.com/100/100/");
 
         new URLImageParser(strings, new URLImageParser.AsyncCallback() {
             @Override
             public void getAsyncResult(ArrayList<Bitmap> bitmap, String txt) {
                 mBbitmap = bitmap;
                 layout_frame_main.removeAllViews();
-                view = new Cubesurfaceview(ProfileActivity.this, mBbitmap, true);
+                view = new Cubesurfaceview(ViewStoryActivity.this, mBbitmap, true);
                 layout_frame_main.addView(view);
             }
         }).execute();
@@ -147,11 +101,11 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
             public void getAsyncResult(ArrayList<Bitmap> bitmap, String txt) {
                 mBbitmap1 = bitmap;
                 layoutFrame.removeAllViews();
-                view1 = new Cubesurfaceview(ProfileActivity.this, mBbitmap1, false);
+                view1 = new Cubesurfaceview(ViewStoryActivity.this, mBbitmap1, false);
                 view1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startActivity(new Intent(ProfileActivity.this, MyStoryActivity.class));
+                        startActivity(new Intent(ViewStoryActivity.this, MyStoryActivity.class));
                     }
                 });
                 layoutFrame.addView(view1);
@@ -187,13 +141,13 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.layout_frame:
-                startActivity(new Intent(ProfileActivity.this, MyStoryActivity.class));
+                startActivity(new Intent(ViewStoryActivity.this, MyStoryActivity.class));
                 break;
             case R.id.edit_profile:
-                startActivity(new Intent(ProfileActivity.this, EditProfileActivity.class));
+                startActivity(new Intent(ViewStoryActivity.this, EditProfileActivity.class));
                 break;
             case R.id.btnChat:
-                startActivity(new Intent(ProfileActivity.this, GroupChannelActivity.class));
+                startActivity(new Intent(ViewStoryActivity.this, GroupChannelActivity.class));
                 break;
         }
     }

@@ -122,6 +122,42 @@ public class OkHttp3Helper {
                 }
             }
 //            requestBuilder.post(multipartBodyBuilder.build());
+            requestBuilder.post(multipartBodyBuilder.build());
+        }
+        okhttp3.Request request = requestBuilder.build();
+        okhttp3.Response response = client.newCall(request).execute();
+        if (!response.isSuccessful()) {
+            throw new IOException(response.message());
+        }
+        return response.body().string();
+    }
+
+    @NonNull
+    public String putMultiPartToServer(@NonNull String url,
+                                        @Nullable ArrayMap<String, String> formField,
+                                        @Nullable ArrayMap<String, File> filePart, String authToken)
+            throws Exception {
+        okhttp3.Request.Builder requestBuilder = new okhttp3.Request.Builder().url(url);
+        if (formField != null || filePart != null) {
+            okhttp3.MultipartBody.Builder multipartBodyBuilder = new okhttp3.MultipartBody.Builder();
+            multipartBodyBuilder.setType(okhttp3.MultipartBody.FORM);
+            requestBuilder.header("auth_token", authToken);
+            if (formField != null) {
+                for (Map.Entry<String, String> entry : formField.entrySet()) {
+                    multipartBodyBuilder.addFormDataPart(entry.getKey(), entry.getValue());
+                }
+            }
+            if (filePart != null) {
+                for (Map.Entry<String, File> entry : filePart.entrySet()) {
+                    File file = entry.getValue();
+                    multipartBodyBuilder.addFormDataPart(
+                            entry.getKey(),
+                            file.getName(),
+                            okhttp3.RequestBody.create(getMediaType(file.toURI()), file)
+                    );
+                }
+            }
+//            requestBuilder.post(multipartBodyBuilder.build());
             requestBuilder.put(multipartBodyBuilder.build());
         }
         okhttp3.Request request = requestBuilder.build();

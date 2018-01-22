@@ -105,6 +105,12 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         userDetail = sharedPreference.getSerializableObject(PreferenceKeys.USER_DETAIL, LoginDetailModel.class);
         layout_frame_main = (FrameLayout) findViewById(R.id.layout_frame1);
         txtChangePic = (TextView) findViewById(R.id.txt_change_pic);
+        findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         txtChangePic.setOnClickListener(this);
         allImages = (LinearLayout) findViewById(R.id.all_images);
         txtName = (EditText) findViewById(R.id.txt_name);
@@ -329,7 +335,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
                 filePart.put("user[" + allImagesName[i] + "]", selectedimageFile);
             }
             new OkHttpRequestSender(this, this, GeneralValues.BASE_URL + GeneralValues.EDIT_PROFILE, formField, filePart,
-                    sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN)).execute();
+                    sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN), "PUT").execute();
         } catch (Exception e) {
             e.printStackTrace();
 

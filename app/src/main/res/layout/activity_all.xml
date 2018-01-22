@@ -75,7 +75,7 @@
 
     </LinearLayout>
     <LinearLayout
-        android:background="@color/text_bliue"
+        android:background="@color/text_blue"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -96,7 +96,7 @@
         android:layout_height="1sp"/>
 
     <LinearLayout
-        android:background="@color/text_bliue"
+        android:background="@color/text_blue"
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="0dp">
