@@ -67,18 +67,18 @@
         <LinearLayout
             android:elevation="5dp"
             android:background="@color/groupChatAdminBackground"
-            android:layout_weight=".20"
+
             android:layout_width="match_parent"
-            android:layout_height="0dp">
+            android:layout_height="80dp">
             <LinearLayout
                 android:gravity="center"
                 android:layout_weight=".60"
                 android:layout_width="0dp"
                 android:layout_height="match_parent">
                 <ImageView
-                    android:src="@mipmap/ic_launcher"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:src="@mipmap/cube"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp" />
 
             </LinearLayout>
             <LinearLayout
@@ -86,6 +86,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent">
                 <TextView
+                    android:textSize="16dp"
                     android:id="@+id/chatUserName"
                     android:layout_margin="10dp"
                     android:text="Name"
@@ -115,7 +116,7 @@
 
                 <ImageView
                     android:id="@+id/btnVideoChat"
-                    android:src="@mipmap/ic_launcher"
+                    android:src="@drawable/ic_video_call_black_24dp"
                     android:layout_width="30dp"
                     android:layout_height="30dp" />
 
@@ -126,6 +127,10 @@
 
 
         </LinearLayout>
+        <View
+            android:background="@color/spliterLine"
+            android:layout_width="match_parent"
+            android:layout_height="1sp"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_group_chat"

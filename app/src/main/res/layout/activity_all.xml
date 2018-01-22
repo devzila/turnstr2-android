@@ -23,7 +23,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:src="@mipmap/ic_launcher"
+                android:src="@mipmap/cube"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -39,6 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <ImageView
+                    android:visibility="gone"
                     android:src="@mipmap/ic_launcher"
                     android:layout_width="24dp"
                     android:layout_height="24dp" />
