@@ -142,7 +142,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
                 uploadImageToServer();
             }
         });
-        view = new Cubesurfaceview(EditProfileActivity.this, mBbitmap, false);
+        view = new Cubesurfaceview(com.adroidtech.turnstr2.Activity.EditProfileActivity.this, mBbitmap, false);
         layout_frame_main.addView(view);
 //        viewIntail();
 //        uiDataUpdate(userDetail);
@@ -187,7 +187,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
             public void getAsyncResult(ArrayList<Bitmap> bitmap, String txt) {
                 mBbitmap = bitmap;
                 layout_frame_main.removeAllViews();
-                view = new Cubesurfaceview(EditProfileActivity.this, mBbitmap, false);
+                view = new Cubesurfaceview(com.adroidtech.turnstr2.Activity.EditProfileActivity.this, mBbitmap, false);
                 layout_frame_main.addView(view);
             }
         }).execute();
@@ -335,7 +335,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
                 filePart.put("user[" + allImagesName[i] + "]", selectedimageFile);
             }
             new OkHttpRequestSender(this, this, GeneralValues.BASE_URL + GeneralValues.EDIT_PROFILE, formField, filePart,
-                    sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN), "PUT").execute();
+                    sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN), "PUT", true).execute();
         } catch (Exception e) {
             e.printStackTrace();
 
@@ -353,7 +353,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
                 finish();
 
             } else {
-                Toast.makeText(EditProfileActivity.this, jsonObject.getString("error"), Toast.LENGTH_LONG).show();
+                Toast.makeText(com.adroidtech.turnstr2.Activity.EditProfileActivity.this, jsonObject.getString("error"), Toast.LENGTH_LONG).show();
             }
         } catch (JSONException e) {
             e.printStackTrace();
