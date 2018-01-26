@@ -4,12 +4,16 @@ android {
     compileSdkVersion 25
     buildToolsVersion '26.0.2'
 
+    dexOptions {
+       jumboMode true
+    }
     defaultConfig {
         applicationId "com.adroidtech.turnstr2"
         minSdkVersion 16
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     buildTypes {
         release {
