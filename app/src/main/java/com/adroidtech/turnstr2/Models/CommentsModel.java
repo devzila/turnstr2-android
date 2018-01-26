@@ -1,37 +1,25 @@
 package com.adroidtech.turnstr2.Models;
 
+import java.io.Serializable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
-import java.util.List;
-
-public class MyStoryModel implements Serializable {
+public class CommentsModel implements Serializable {
 
     @SerializedName("id")
     @Expose
     private Integer id;
-    @SerializedName("caption")
+    @SerializedName("body")
     @Expose
-    private String caption;
-    @SerializedName("likes_count")
+    private String body;
+    @SerializedName("created_at")
     @Expose
-    private Object likesCount;
-    @SerializedName("comments_count")
-    @Expose
-    private Object commentsCount;
-    @SerializedName("media")
-    @Expose
-    private List<Medium> media = null;
+    private String createdAt;
     @SerializedName("user")
     @Expose
     private User user;
-
-    @SerializedName("has_liked")
-    @Expose
-    private Boolean hasLiked = false;
-
-    private final static long serialVersionUID = -670978759132079579L;
+    private final static long serialVersionUID = -6117985018720154334L;
 
     public Integer getId() {
         return id;
@@ -41,36 +29,20 @@ public class MyStoryModel implements Serializable {
         this.id = id;
     }
 
-    public String getCaption() {
-        return caption;
+    public String getBody() {
+        return body;
     }
 
-    public void setCaption(String caption) {
-        this.caption = caption;
+    public void setBody(String body) {
+        this.body = body;
     }
 
-    public Object getLikesCount() {
-        return likesCount;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setLikesCount(Object likesCount) {
-        this.likesCount = likesCount;
-    }
-
-    public Object getCommentsCount() {
-        return commentsCount;
-    }
-
-    public void setCommentsCount(Object commentsCount) {
-        this.commentsCount = commentsCount;
-    }
-
-    public List<Medium> getMedia() {
-        return media;
-    }
-
-    public void setMedia(List<Medium> media) {
-        this.media = media;
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
     public User getUser() {
@@ -79,53 +51,6 @@ public class MyStoryModel implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Boolean getHasLiked() {
-        return hasLiked;
-    }
-
-    public void setHasLiked(Boolean hasLiked) {
-        this.hasLiked = hasLiked;
-    }
-
-    public class Medium implements Serializable {
-
-        @SerializedName("media_url")
-        @Expose
-        private String mediaUrl;
-        @SerializedName("thumb_url")
-        @Expose
-        private String thumbUrl;
-        @SerializedName("media_type")
-        @Expose
-        private String mediaType;
-        private final static long serialVersionUID = -1760225950629383723L;
-
-        public String getMediaUrl() {
-            return mediaUrl;
-        }
-
-        public void setMediaUrl(String mediaUrl) {
-            this.mediaUrl = mediaUrl;
-        }
-
-        public String getThumbUrl() {
-            return thumbUrl;
-        }
-
-        public void setThumbUrl(String thumbUrl) {
-            this.thumbUrl = thumbUrl;
-        }
-
-        public String getMediaType() {
-            return mediaType;
-        }
-
-        public void setMediaType(String mediaType) {
-            this.mediaType = mediaType;
-        }
-
     }
 
 
@@ -202,14 +127,14 @@ public class MyStoryModel implements Serializable {
         private String info;
         @SerializedName("contact_me")
         @Expose
-        private String contactMe;
+        private Object contactMe;
         @SerializedName("online")
         @Expose
         private Boolean online;
         @SerializedName("is_verified")
         @Expose
         private Boolean isVerified;
-        private final static long serialVersionUID = -5896074483590962083L;
+        private final static long serialVersionUID = -4461884621769217566L;
 
         public Integer getId() {
             return id;
@@ -395,11 +320,11 @@ public class MyStoryModel implements Serializable {
             this.info = info;
         }
 
-        public String getContactMe() {
+        public Object getContactMe() {
             return contactMe;
         }
 
-        public void setContactMe(String contactMe) {
+        public void setContactMe(Object contactMe) {
             this.contactMe = contactMe;
         }
 

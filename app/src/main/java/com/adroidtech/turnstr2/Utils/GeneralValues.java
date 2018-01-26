@@ -17,8 +17,13 @@ public class GeneralValues {
     public static final String SIGNUP_URL = "/v1/signup";
     public static final String FACEBOOK_LOGIN = "/v1/facebook/login";
     public static final String CREATE_NEW_DEVICE = "/v1/user/devices";
+    public static final String STORIES_LIKES = "/v1/stories/_STORY_ID_/likes";
+    public static final String STORIES_UNLIKES = "/v1/stories/_STORY_ID_/unlikes";
+    public static final String GET_STORIES_DETAIL = "/v1/stories/_STORY_ID_";
+    public static final String GET_STORIE_COMMENTS = "/v1/stories/_STORY_ID_/comments";
+    public static final String POST_STORIE_COMMENTS = "/v1/stories/_STORY_ID_/comments";
     public static final String GET_ALL_STORIES = "/v1/stories";
-    public static final String GET_FAVOURITES_FIVE ="/v1/members/_MEMBER_ID_/favourites";
+    public static final String GET_FAVOURITES_FIVE = "/v1/members/_MEMBER_ID_/favourites";
     public static final String EDIT_PROFILE = "/v1/user/profile";
     public static final String CREATE_STORIES = "/v1/user/stories";
     public static String Push_Token = "";

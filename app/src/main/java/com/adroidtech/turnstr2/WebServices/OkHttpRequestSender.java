@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.util.ArrayMap;
 import android.util.Log;
 
+import com.adroidtech.turnstr2.Activity.ViewStoryActivity;
 import com.adroidtech.turnstr2.Utils.GeneralValues;
 import com.adroidtech.turnstr2.Utils.SharedPreference;
 import com.adroidtech.turnstr2.Utils.Utils;
@@ -17,6 +18,7 @@ import java.lang.ref.WeakReference;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeUnit;
 
+import bolts.Bolts;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -37,13 +39,25 @@ public class OkHttpRequestSender extends AsyncTask<String, Void, String> {
     private SharedPreference sharedPreference;
     private String oldSessionId = "";
     private String request_type;
+    private boolean isMultipartRequest = false;
 
     public OkHttpRequestSender(Context context, AsyncCallback asyncCallback, String url, ArrayMap<String, String> formField, ArrayMap<String,
-            File> filePart, String app_token, String request_type) {
+            File> filePart, String app_token, String request_type, Boolean isMultipartRequest) {
         this.context_weak = new WeakReference<Context>(context);
         this.asyncCallback = asyncCallback;
         this.formField = formField;
         this.filePart = filePart;
+        this.url = url;
+        this.app_token = app_token;
+        this.request_type = request_type;
+        this.isMultipartRequest = isMultipartRequest;
+    }
+
+    public OkHttpRequestSender(Context context, AsyncCallback asyncCallback, String url, ArrayMap<String, String> formField,
+                               String app_token, String request_type) {
+        this.context_weak = new WeakReference<Context>(context);
+        this.asyncCallback = asyncCallback;
+        this.formField = formField;
         this.url = url;
         this.app_token = app_token;
         this.request_type = request_type;
@@ -76,11 +90,16 @@ public class OkHttpRequestSender extends AsyncTask<String, Void, String> {
         String responce = null;
         try {
             Context context = context_weak.get();
-            if ((request_type != null) && request_type.equals("POST")) {
-                responce = new OkHttp3Helper(context).postMultiPartToServer(url, formField, filePart, app_token);
-            } else if ((request_type != null) && request_type.equals("PUT")) {
-                responce = new OkHttp3Helper(context).putMultiPartToServer(url, formField, filePart, app_token);
-            } else if ((request_type != null) && request_type.equals("GET")) {
+            if (isMultipartRequest) {
+                if ((request_type != null) && request_type.equals("POST")) {
+                    responce = new OkHttp3Helper(context).postMultiPartToServer(url, formField, filePart, app_token);
+                } else if ((request_type != null) && request_type.equals("PUT")) {
+                    responce = new OkHttp3Helper(context).putMultiPartToServer(url, formField, filePart, app_token);
+                }
+            } else {
+                if ((request_type != null) && request_type.equals("POST")) {
+                    responce = new OkHttp3Helper(context).postToServer(url, formField, app_token);
+                }
             }
             Log.d("responce : ", responce);
         } catch (Exception e) {

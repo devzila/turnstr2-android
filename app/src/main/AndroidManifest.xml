@@ -114,7 +114,12 @@
         <activity android:name=".videoChat.MainVideoActivity"/>
         <activity android:name=".chat.activitys.AllFriendListVideo"/>
 
-
+        <activity
+            android:name=".Activity.ViewStoryActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Activity.ViewFullScrrenStoryActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 

@@ -8,7 +8,10 @@ import android.graphics.drawable.LevelListDrawable;
 import android.os.AsyncTask;
 import android.widget.TextView;
 
+import com.adroidtech.turnstr2.R;
+
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -18,12 +21,20 @@ public class URLImageParser extends AsyncTask<Object, Void, ArrayList<Bitmap>> {
     public AsyncCallback asyncCallback;
     private LevelListDrawable mDrawable;
     TextView textView;
-    Stack<String> allURL;
+    Stack<String> allURL = new Stack<>();
     ArrayList<Bitmap> allBitMaps = new ArrayList<>();
 
-
-    public URLImageParser(Stack<String> allURL, AsyncCallback asyncCallback) {
-        this.allURL = allURL;
+    public URLImageParser(Stack<String> strings, AsyncCallback asyncCallback) {
+        try {
+            for (int i = 0; i < strings.size(); i++)
+                if (strings.get(i) != null && strings.get(i).length() > 1)
+                    allURL.push(strings.get(i));
+            int loc = 0;
+            while (allURL.size() > 0 && allURL.size() < 6)
+                allURL.push(allURL.get(loc++));
+        } catch (Exception e) {
+            this.allURL = strings;
+        }
         this.asyncCallback = asyncCallback;
     }
 
@@ -34,7 +45,9 @@ public class URLImageParser extends AsyncTask<Object, Void, ArrayList<Bitmap>> {
                 String currentUrl = allURL.pop();
                 try {
                     URL url = new URL(currentUrl);
-                    Bitmap bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                    URLConnection Con = url.openConnection();
+                    Con.setUseCaches(true);
+                    Bitmap bitmap = BitmapFactory.decodeStream(Con.getInputStream());
                     bitmap = addBorderColor(bitmap, 1, Color.BLACK);
                     allBitMaps.add(bitmap);
                 } catch (Exception e) {
