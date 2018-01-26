@@ -39,6 +39,7 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -84,7 +85,7 @@
         <activity
             android:name=".Activity.EditProfileActivity"
             android:screenOrientation="portrait" />
-        <!--<activity android:name=".imageFillters.ImageFillterSettingActivity" />-->
+        <!-- <activity android:name=".imageFillters.ImageFillterSettingActivity" /> -->
 
         <service android:name=".chat.fcm.MyFirebaseMessagingService">
             <intent-filter>
@@ -105,26 +106,19 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.GalleryImageActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.HomePageActivity"
-            android:screenOrientation="portrait"></activity>
-
-
-        <activity android:name=".videoChat.MainVideoActivity"/>
-        <activity android:name=".chat.activitys.AllFriendListVideo"/>
-
+            android:screenOrientation="portrait" />
+        <activity android:name=".videoChat.MainVideoActivity" />
+        <activity android:name=".chat.activitys.AllFriendListVideo" />
         <activity
             android:name=".Activity.ViewStoryActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.ViewFullScrrenStoryActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activity.FriendsProfileActivity"></activity>
     </application>
-
-
-
-
-
 
 </manifest>

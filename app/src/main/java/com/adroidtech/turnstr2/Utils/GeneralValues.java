@@ -33,7 +33,7 @@ public class GeneralValues {
 
     public static final String MEMBERS_URL = "/v1/members ";
     public static final String USER_STORIES = "/v1/user/stories";
-
+    public static final String GET_USER_FAVE5  ="/v1/members/_MEMBER_ID_/favourites";
 
     public static final String LIVE_SESSION = "/v1/user/live_session ";
 

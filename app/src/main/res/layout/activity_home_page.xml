@@ -180,9 +180,11 @@
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="80dp"
+            android:layout_margin="5dp"
             android:scrollbars="none">
 
             <LinearLayout
+                android:id="@+id/ll_fav5_users"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_marginBottom="5dp"
@@ -197,126 +199,10 @@
                     android:padding="10dp"
                     android:text="Fave 5"
                     android:textColor="@color/text_blue"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <LinearLayout
-                    android:layout_width="70dp"
-                    android:layout_height="80dp"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:weightSum="1">
-
-                    <FrameLayout
-                        android:id="@+id/fram_fav1"
-                        android:layout_width="65dp"
-                        android:layout_height="65dp"
-                        android:layout_gravity="center" />
-
-                    <TextView
-                        android:id="@+id/name1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:maxLines="1"
-                        android:text="Kim Sophi"
-                        android:textSize="8sp" />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="70dp"
-                    android:layout_height="80dp"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:weightSum="1">
-
-                    <FrameLayout
-                        android:id="@+id/fram_fav2"
-                        android:layout_width="65dp"
-                        android:layout_height="65dp"
-                        android:layout_gravity="center" />
-
-                    <TextView
-                        android:id="@+id/name2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:maxLines="1"
-                        android:text="Kim Sophi"
-                        android:textSize="10dp" />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="70dp"
-                    android:layout_height="80dp"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:weightSum="1">
-
-                    <FrameLayout
-                        android:id="@+id/fram_fav3"
-                        android:layout_width="65dp"
-                        android:layout_height="65dp"
-                        android:layout_gravity="center" />
-
-                    <TextView
-                        android:id="@+id/name3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:maxLines="1"
-                        android:text="Kim Sophi"
-                        android:textSize="10dp" />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="70dp"
-                    android:layout_height="80dp"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:weightSum="1">
-
-                    <FrameLayout
-                        android:id="@+id/fram_fav4"
-                        android:layout_width="65dp"
-                        android:layout_height="65dp"
-                        android:layout_gravity="center" />
-
-                    <TextView
-                        android:id="@+id/name4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:maxLines="1"
-                        android:text="Kim Sophi"
-                        android:textSize="10dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="70dp"
-                    android:layout_height="80dp"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:weightSum="1">
-
-                    <FrameLayout
-                        android:id="@+id/fram_fav5"
-                        android:layout_width="65dp"
-                        android:layout_height="65dp"
-                        android:layout_gravity="center" />
-
-                    <TextView
-                        android:id="@+id/name5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:maxLines="1"
-                        android:text="Kim Sophi"
-                        android:textSize="10dp" />
-                </LinearLayout>
+                <include layout="@layout/fav_view_user" />
 
             </LinearLayout>
         </HorizontalScrollView>
@@ -329,7 +215,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_listview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
         <View
             android:layout_width="match_parent"

@@ -8,6 +8,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -20,6 +21,7 @@ import com.adroidtech.turnstr2.CubeView.Cubesurfaceview;
 import com.adroidtech.turnstr2.CubeView.URLImageParser;
 import com.adroidtech.turnstr2.Models.LoginDetailModel;
 import com.adroidtech.turnstr2.Models.MyStoryModel;
+import com.adroidtech.turnstr2.Models.UserFav5Model;
 import com.adroidtech.turnstr2.R;
 import com.adroidtech.turnstr2.Utils.GeneralValues;
 import com.adroidtech.turnstr2.Utils.PreferenceKeys;
@@ -61,35 +63,19 @@ public class HomePageActivity extends Activity implements AsyncCallback, View.On
     private ImageView my_story;
     private RecyclerView recycleView;
     private FrameLayout fram_fav1, fram_fav2, fram_fav3;
+    private LinearLayout ll_fav5_users;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
-        recycleView = (RecyclerView) findViewById(R.id.recycler_listview);
-        GridLayoutManager mGridManager = new GridLayoutManager(this, 3);
-        recycleView.setLayoutManager(mGridManager);
-        recycleView.setItemAnimator(new DefaultItemAnimator());
-        sharedPreference = new SharedPreference(this);
-        fram_fav1 = (FrameLayout) findViewById(R.id.fram_fav1);
-        fram_fav2 = (FrameLayout) findViewById(R.id.fram_fav2);
-        fram_fav3 = (FrameLayout) findViewById(R.id.fram_fav3);
-//        view1 = new Cubesurfaceview(this, mBbitmap, false);
-//        fram_fav1.addView(view);
-//        view2 = new Cubesurfaceview(this, mBbitmap, false);
-//        fram_fav2.addView(view);
-//        view3 = new Cubesurfaceview(this, mBbitmap, false);
-//        fram_fav3.addView(view);
-        findViewById(R.id.nav_contact).setOnClickListener(this);
-        findViewById(R.id.nav_box).setOnClickListener(this);
-        findViewById(R.id.nav_image).setOnClickListener(this);
-        findViewById(R.id.nav_video).setOnClickListener(this);
-        findViewById(R.id.nav_chat).setOnClickListener(this);
-
+        viewIntail();
         userDetail = sharedPreference.getSerializableObject(PreferenceKeys.USER_DETAIL, LoginDetailModel.class);
-//        getAllStorieFromServer();
-//        loadAllImagesToCube();
+        loadAllImagesToCube();
+        getFav5FromServer();
+        getAllStorieFromServer();
+
     }
 
     private void getAllStorieFromServer() {
@@ -97,6 +83,14 @@ public class HomePageActivity extends Activity implements AsyncCallback, View.On
 //        headers.put("auth_token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOiIyMDE3LTA2LTE0IDA2OjU0OjM0IFVUQyJ9.M7pgzA4ktNVvuDFvKMqESJfHmLQCobp0WNjC6k2Kjac");
         headers.put("auth_token", sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN));
         new CommonAsync(this, "GET", this, GeneralValues.GET_ALL_STORIES, null, headers).execute();
+    }
+
+    private void getFav5FromServer() {
+        HashMap<String, String> headers = new HashMap<>();
+//        headers.put("auth_token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOiIyMDE3LTA2LTE0IDA2OjU0OjM0IFVUQyJ9.M7pgzA4ktNVvuDFvKMqESJfHmLQCobp0WNjC6k2Kjac");
+        headers.put("auth_token", sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN));
+        new CommonAsync(this, "GET", this, GeneralValues.GET_USER_FAVE5
+                .replace("_MEMBER_ID_", userDetail.getUser().getId() + ""), null, headers).execute();
     }
 
     private void uiDataUpdate(LoginDetailModel userDetail) {
@@ -117,47 +111,27 @@ public class HomePageActivity extends Activity implements AsyncCallback, View.On
     }
 
     private void viewIntail() {
-        btnChat = (View) findViewById(R.id.btnChat);
-        btnChat.setOnClickListener(this);
-        my_story = (ImageView) findViewById(R.id.my_story);
-        editProfile = (TextView) findViewById(R.id.edit_profile);
-        search = (LinearLayout) findViewById(R.id.search);
-        txtPosts = (TextView) findViewById(R.id.txt_posts);
-        txtFollowers = (TextView) findViewById(R.id.txt_followers);
-        txtFamily = (TextView) findViewById(R.id.txt_family);
-        txtUsername = (TextView) findViewById(R.id.txt_username);
-        txtAbout = (TextView) findViewById(R.id.txt_about);
-        txtAddress = (TextView) findViewById(R.id.txt_address);
-        txtEmail = (TextView) findViewById(R.id.txt_email);
-        layout_frame_main = (FrameLayout) findViewById(R.id.layout_frame1);
-        view = new Cubesurfaceview(HomePageActivity.this, mBbitmap, false);
-        layout_frame_main.addView(view);
+        recycleView = (RecyclerView) findViewById(R.id.recycler_listview);
+        ll_fav5_users = (LinearLayout) findViewById(R.id.ll_fav5_users);
+        GridLayoutManager mGridManager = new GridLayoutManager(this, 3);
+        recycleView.setLayoutManager(mGridManager);
+        recycleView.setItemAnimator(new DefaultItemAnimator());
+        sharedPreference = new SharedPreference(this);
+        findViewById(R.id.nav_contact).setOnClickListener(this);
+        findViewById(R.id.nav_box).setOnClickListener(this);
+        findViewById(R.id.nav_image).setOnClickListener(this);
+        findViewById(R.id.nav_video).setOnClickListener(this);
+        findViewById(R.id.nav_chat).setOnClickListener(this);
+
+
         layoutFrame = (FrameLayout) findViewById(R.id.layout_frame);
         view = new Cubesurfaceview(HomePageActivity.this, mBbitmap, false);
         layoutFrame.addView(view);
         layoutFrame.setOnClickListener(this);
-        editProfile.setOnClickListener(this);
     }
 
     private void loadAllImagesToCube() {
-        final Stack<String> strings = new Stack<>();
         final Stack<String> strings1 = new Stack<>();
-        strings.push(userDetail.getUser().getAvatarFace1());
-        strings.push(userDetail.getUser().getAvatarFace2());
-        strings.push(userDetail.getUser().getAvatarFace3());
-        strings.push(userDetail.getUser().getAvatarFace4());
-        strings.push(userDetail.getUser().getAvatarFace5());
-        strings.push(userDetail.getUser().getAvatarFace6());
-
-        new URLImageParser(strings, new URLImageParser.AsyncCallback() {
-            @Override
-            public void getAsyncResult(ArrayList<Bitmap> bitmap, String txt) {
-                mBbitmap = bitmap;
-                layout_frame_main.removeAllViews();
-                view = new Cubesurfaceview(HomePageActivity.this, mBbitmap, true);
-                layout_frame_main.addView(view);
-            }
-        }).execute();
         strings1.push(userDetail.getUser().getAvatarFace1());
         strings1.push(userDetail.getUser().getAvatarFace2());
         strings1.push(userDetail.getUser().getAvatarFace3());
@@ -243,7 +217,12 @@ public class HomePageActivity extends Activity implements AsyncCallback, View.On
         try {
             JSONObject jsonObject1 = new JSONObject(jsonObject);
             if (jsonObject1.has("success") && jsonObject1.getBoolean("success")) {
-                if (txt.equalsIgnoreCase(GeneralValues.GET_ALL_STORIES)) {
+                if (txt.contains("/favourites")) {
+                    Type listType = new TypeToken<ArrayList<UserFav5Model>>() {
+                    }.getType();
+                    List<UserFav5Model> allStorylist = new Gson().fromJson(jsonObject1.getJSONObject("data").getString("favourites"), listType);
+                    updateFav5Views(allStorylist);
+                } else if (txt.equalsIgnoreCase(GeneralValues.GET_ALL_STORIES)) {
                     Type listType = new TypeToken<ArrayList<MyStoryModel>>() {
                     }.getType();
                     List<MyStoryModel> allStorylist = new Gson().fromJson(jsonObject1.getJSONObject("data").getString("stories"), listType);
@@ -257,6 +236,45 @@ public class HomePageActivity extends Activity implements AsyncCallback, View.On
             e.printStackTrace();
         }
 //
+    }
+
+    private void updateFav5Views(List<UserFav5Model> allStorylist) {
+        try {
+            for (int i = 0; i < allStorylist.size(); i++) {
+                LayoutInflater inflater = getLayoutInflater();
+                View view = inflater.inflate(R.layout.fav_view_user, ll_fav5_users, false);
+                final FrameLayout fram_fav = (FrameLayout) view.findViewById(R.id.fram_fav);
+                TextView name = (TextView) view.findViewById(R.id.name);
+                name.setText(allStorylist.get(i).getFirstName());
+                Stack<String> allUrls = new Stack<>();
+                allUrls.push(allStorylist.get(i).getAvatarFace1());
+                allUrls.push(allStorylist.get(i).getAvatarFace2());
+                allUrls.push(allStorylist.get(i).getAvatarFace3());
+                allUrls.push(allStorylist.get(i).getAvatarFace4());
+                allUrls.push(allStorylist.get(i).getAvatarFace5());
+                allUrls.push(allStorylist.get(i).getAvatarFace6());
+                new URLImageParser(allUrls, new URLImageParser.AsyncCallback() {
+                    @Override
+                    public void getAsyncResult(ArrayList<Bitmap> bitmap, String txt) {
+                        fram_fav.removeAllViews();
+                        Cubesurfaceview view = new Cubesurfaceview(HomePageActivity.this, bitmap, false);
+                        view.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(HomePageActivity.this, "User Page OPen", Toast.LENGTH_SHORT).show();
+//                                startActivity(new Intent(HomePageActivity.this, MyStoryActivity.class));
+                            }
+                        });
+                        fram_fav.addView(view);
+//                addTextView();
+
+                    }
+                }).execute();
+                ll_fav5_users.addView(view);
+            }
+        } catch (Exception e) {
+
+        }
     }
 
     @Override
