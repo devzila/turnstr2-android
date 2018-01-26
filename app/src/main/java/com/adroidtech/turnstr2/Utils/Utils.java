@@ -2225,33 +2225,19 @@ public class Utils {
         long years = Months * 12;
         if (millsendDifferance < 60) {
             if (millsendDifferance > 0)
-                return millsendDifferance + "s";
-            else return "0s";
+                return millsendDifferance + "sec ago";
+            else return "just now";
         } else if (millsendDifferance < hours) {
             if ((millsendDifferance / 60) > 0)
-                return ((int) (millsendDifferance / 60)) + "m";
-            else return "1m";
+                return ((int) (millsendDifferance / 60)) + "min ago";
+            else return "1 min ago";
         } else if (millsendDifferance < days) {
-            return ((int) (millsendDifferance / hours)) + "h";
+            return ((int) (millsendDifferance / hours)) + "hrs ago";
         } else if (millsendDifferance < week) {
-            return ((int) (millsendDifferance / days)) + "d";
-        } else if (millsendDifferance < Months) {
-            return ((int) (millsendDifferance / week)) + "w";
-        } else if (millsendDifferance < years) {
-            return ((int) (millsendDifferance / Months)) + "M";
+            return ((int) (millsendDifferance / days)) + "day ago";
         } else {
-            return ((int) (millsendDifferance / years)) + "Y";
+            return convertDateToTimeline(millsecands);
         }
-//        else{
-//            SimpleDateFormat formatter;
-//            if (todayCal.get(Calendar.YEAR) == cal.get(Calendar.YEAR)) {
-//                formatter = new SimpleDateFormat("dd MMMM");
-//            } else {
-//                formatter = new SimpleDateFormat("dd MMM yyyy");
-//            }
-//            String dateString = formatter.format(new Date(postMillisends));
-//            return dateString;
-//        }
     }
 
     public static String convertFileToBase64(File file) {
@@ -2338,7 +2324,6 @@ public class Utils {
         String strDate = sdfDate.format(now);
         return strDate.replace(" ", "T") + "Z";
     }
-
 
 
     private static void callPicassoForImageData(final Context context, String source, final LevelListDrawable mDrawable, final TextView textView) {
@@ -2586,7 +2571,7 @@ public class Utils {
         }
     }
 
-    public static void keyboardCloseListener(final EditText editText, final View btn, final View contentView) {
+    public static void keyboardCloseListener(final EditText editText, final View contentView) {
         try {
             editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
@@ -2605,7 +2590,6 @@ public class Utils {
                                             int keypadHeight = screenHeight - r.bottom;
                                             Log.d(TAG, "keypadHeight = " + keypadHeight);
                                             if (keypadHeight < 100) { // 0.15 ratio is perhaps enough to determine keypad mHeight.
-                                                btn.performClick();
                                                 editText.clearFocus();
                                                 contentView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                                             }

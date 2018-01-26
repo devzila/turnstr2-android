@@ -52,9 +52,10 @@ public class OkHttp3Helper {
      * @throws Exception
      */
     @NonNull
-    public String postToServer(@NonNull String url, @Nullable ArrayMap<String, String> formField)
+    public String postToServer(@NonNull String url, @Nullable ArrayMap<String, String> formField,String authToken)
             throws Exception {
         okhttp3.Request.Builder requestBuilder = new okhttp3.Request.Builder().url(url);
+        requestBuilder.header("auth_token", authToken);
         if (formField != null) {
             okhttp3.FormBody.Builder formBodyBuilder = new okhttp3.FormBody.Builder();
             for (Map.Entry<String, String> entry : formField.entrySet()) {

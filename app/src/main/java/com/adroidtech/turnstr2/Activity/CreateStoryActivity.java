@@ -95,6 +95,12 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
     private ImageView avatarFace4;
     private ImageView avatarFace5;
     private ImageView avatarFace6;
+    private ImageView icDelete1;
+    private ImageView icDelete2;
+    private ImageView icDelete3;
+    private ImageView icDelete4;
+    private ImageView icDelete5;
+    private ImageView icDelete6;
     private Button bnt_library;
     private Button bnt_photos;
     private Button bnt_video;
@@ -104,6 +110,7 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
     private ImageButton toggleCamera;
     private ImageView selectedView;
     HashMap<Integer, Uri> uriHashMap = new HashMap<>();
+    HashMap<Integer, Uri> uriHashMapThumb = new HashMap<>();
     private SharedPreference sharedPreference;
     private TextView next;
     private RecyclerView thumbListView;
@@ -124,6 +131,7 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
     private boolean isRecording;
     private int lastPerview = 0;
     private String StoryCaption = "";
+    private ImageView icDeleteSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,8 +153,7 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
                         selectedBitmap = bitmap;
                         selectedFileUri = RewriteBitmapToFile(bitmap, createFileForCamera());
                         uriHashMap.put(selectedView.getId(), selectedFileUri);
-//                        bitmap = ImageFilter.applyFilter(bitmap, ImageFilter.Filter.GRAY);
-//                        selectedView.setImageBitmap(bitmap);
+                        uriHashMapThumb.put(selectedView.getId(), selectedFileUri);
                         createFiltersDialog();
                     }
                 });
@@ -158,15 +165,37 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
                 selectedBitmap = ThumbnailUtils.createVideoThumbnail(video.getPath(), MediaStore.Video.Thumbnails.MINI_KIND);
                 selectedView.setImageBitmap(selectedBitmap);
                 uriHashMap.put(selectedView.getId(), selectedFileUri);
+                uriHashMapThumb.put(selectedView.getId(), saveBitmapTOFile(selectedBitmap));
                 progressBar.setVisibility(View.GONE);
                 progressBar.setProgress(0);
+                icDeleteSelected.setVisibility(View.VISIBLE);
                 isRecording = false;
                 captureVideo.setImageResource(R.mipmap.nav_video);
-                // The File is the same you passed before
-                // Now it holds a MP4 video.
             }
         });
     }
+
+    private Uri saveBitmapTOFile(Bitmap selectedBitmap) {
+        FileOutputStream out = null;
+        File filename = null;
+        try {
+            filename = new File(getFilesDir(), "Image_" + Calendar.getInstance().getTimeInMillis() + ".png");
+            out = new FileOutputStream(filename);
+            selectedBitmap.compress(Bitmap.CompressFormat.PNG, 50, out); // bmp is your Bitmap instance
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return Uri.fromFile(filename);
+    }
+
 
     private void uiInatial() {
         camera = (CameraView) findViewById(R.id.camera);
@@ -184,6 +213,18 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
         avatarFace4 = (ImageView) findViewById(R.id.avatar_face4);
         avatarFace5 = (ImageView) findViewById(R.id.avatar_face5);
         avatarFace6 = (ImageView) findViewById(R.id.avatar_face6);
+        icDelete1 = (ImageView) findViewById(R.id.ic_delete1);
+        icDelete2 = (ImageView) findViewById(R.id.ic_delete2);
+        icDelete3 = (ImageView) findViewById(R.id.ic_delete3);
+        icDelete4 = (ImageView) findViewById(R.id.ic_delete4);
+        icDelete5 = (ImageView) findViewById(R.id.ic_delete5);
+        icDelete6 = (ImageView) findViewById(R.id.ic_delete6);
+        icDelete1.setOnClickListener(this);
+        icDelete2.setOnClickListener(this);
+        icDelete3.setOnClickListener(this);
+        icDelete4.setOnClickListener(this);
+        icDelete5.setOnClickListener(this);
+        icDelete6.setOnClickListener(this);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,6 +234,7 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
         });
         next = (TextView) findViewById(R.id.next);
         selectedView = avatarFace1;
+        icDeleteSelected = icDelete1;
         next.setOnClickListener(this);
         avatarFace1.setOnClickListener(this);
         avatarFace2.setOnClickListener(this);
@@ -221,30 +263,85 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
 //                uploadImageToServer();
                 break;
             case R.id.avatar_face1:
-                avatarFace1.setBackgroundResource(R.drawable.border_blue_rounded);
                 selectedView = (ImageView) view;
+                icDeleteSelected = icDelete1;
                 break;
             case R.id.avatar_face2:
-                avatarFace2.setBackgroundResource(R.drawable.border_blue_rounded);
                 selectedView = (ImageView) view;
+                icDeleteSelected = icDelete2;
                 break;
             case R.id.avatar_face3:
-                avatarFace3.setBackgroundResource(R.drawable.border_blue_rounded);
+                icDeleteSelected = icDelete3;
                 selectedView = (ImageView) view;
                 break;
             case R.id.avatar_face4:
-                avatarFace4.setBackgroundResource(R.drawable.border_blue_rounded);
+                icDeleteSelected = icDelete4;
                 selectedView = (ImageView) view;
                 break;
             case R.id.avatar_face5:
-                avatarFace5.setBackgroundResource(R.drawable.border_blue_rounded);
+                icDeleteSelected = icDelete5;
                 selectedView = (ImageView) view;
                 break;
             case R.id.avatar_face6:
-                avatarFace6.setBackgroundResource(R.drawable.border_blue_rounded);
+                icDeleteSelected = icDelete6;
                 selectedView = (ImageView) view;
 
                 break;
+            case R.id.ic_delete1:
+                try {
+                    avatarFace1.setImageResource(R.color.gray_light);
+                    uriHashMap.remove(R.id.avatar_face1);
+                    uriHashMapThumb.remove(R.id.avatar_face1);
+                    icDelete1.setVisibility(View.GONE);
+                } catch (Exception e) {
+                }
+                break;
+            case R.id.ic_delete2:
+                try {
+                    avatarFace2.setImageResource(R.color.gray_light);
+                    uriHashMap.remove(R.id.avatar_face2);
+                    uriHashMapThumb.remove(R.id.avatar_face2);
+                    icDelete2.setVisibility(View.GONE);
+                } catch (Exception e) {
+                }
+                break;
+            case R.id.ic_delete3:
+                try {
+                    avatarFace3.setImageResource(R.color.gray_light);
+                    uriHashMap.remove(R.id.avatar_face3);
+                    uriHashMapThumb.remove(R.id.avatar_face3);
+                    icDelete3.setVisibility(View.GONE);
+                } catch (Exception e) {
+                }
+                break;
+            case R.id.ic_delete4:
+                try {
+                    avatarFace4.setImageResource(R.color.gray_light);
+                    uriHashMap.remove(R.id.avatar_face4);
+                    uriHashMapThumb.remove(R.id.avatar_face4);
+                    icDelete4.setVisibility(View.GONE);
+                } catch (Exception e) {
+                }
+                break;
+            case R.id.ic_delete5:
+                try {
+                    avatarFace5.setImageResource(R.color.gray_light);
+                    uriHashMap.remove(R.id.avatar_face5);
+                    uriHashMapThumb.remove(R.id.avatar_face5);
+                    icDelete5.setVisibility(View.GONE);
+                } catch (Exception e) {
+                }
+                break;
+            case R.id.ic_delete6:
+                try {
+                    avatarFace6.setImageResource(R.color.gray_light);
+                    uriHashMap.remove(R.id.avatar_face6);
+                    uriHashMapThumb.remove(R.id.avatar_face6);
+                    icDelete6.setVisibility(View.GONE);
+                } catch (Exception e) {
+                }
+                break;
+
             case R.id.library:
                 bnt_library.setBackgroundResource(R.color.background_gradient);
                 bnt_photos.setBackgroundResource(R.color.black);
@@ -332,7 +429,13 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
         } catch (Exception e) {
             e.printStackTrace();
         }
-        camera.startCapturingVideo(null, 10000);
+        File file = null;
+        try {
+            file = new File(getFilesDir(), "video_" + Calendar.getInstance().getTimeInMillis() + ".mp4");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        camera.startCapturingVideo(file, 10000);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -346,41 +449,42 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
 
             for (int i = 0; i < allImagesName.length; i++) {
                 File selectedView = new File(uriHashMap.get(allImagesName[i]).getPath());
+                File thumbFile = new File(uriHashMapThumb.get(allImagesName[i]).getPath());
                 switch (allImagesName[i]) {
                     case R.id.avatar_face1:
-                        filePart.put("story[face1_thumb]", selectedView);
+                        filePart.put("story[face1_thumb]", thumbFile);
                         filePart.put("story[story_face1]", selectedView);
                         filePart.put("story[face1_media]", selectedView);
                         break;
                     case R.id.avatar_face2:
-                        filePart.put("story[face2_thumb]", selectedView);
+                        filePart.put("story[face2_thumb]", thumbFile);
                         filePart.put("story[story_face2]", selectedView);
                         filePart.put("story[face2_media]", selectedView);
                         break;
                     case R.id.avatar_face3:
-                        filePart.put("story[face3_thumb]", selectedView);
+                        filePart.put("story[face3_thumb]", thumbFile);
                         filePart.put("story[story_face3]", selectedView);
                         filePart.put("story[face3_media]", selectedView);
                         break;
                     case R.id.avatar_face4:
-                        filePart.put("story[face4_thumb]", selectedView);
+                        filePart.put("story[face4_thumb]", thumbFile);
                         filePart.put("story[story_face4]", selectedView);
                         filePart.put("story[face4_media]", selectedView);
                         break;
                     case R.id.avatar_face5:
-                        filePart.put("story[face5_thumb]", selectedView);
+                        filePart.put("story[face5_thumb]", thumbFile);
                         filePart.put("story[story_face5]", selectedView);
                         filePart.put("story[face5_media]", selectedView);
                         break;
                     case R.id.avatar_face6:
-                        filePart.put("story[face6_thumb]", selectedView);
+                        filePart.put("story[face6_thumb]", thumbFile);
                         filePart.put("story[story_face6]", selectedView);
                         filePart.put("story[face6_media]", selectedView);
                         break;
                 }
             }
             new OkHttpRequestSender(this, this, GeneralValues.BASE_URL + GeneralValues.CREATE_STORIES, formField, filePart,
-                    sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN), "POST").execute();
+                    sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN), "POST", true).execute();
         } catch (Exception e) {
             e.printStackTrace();
 
@@ -514,6 +618,7 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
                     selectedFileUri = Uri.fromFile(new File(path));
                     selectedBitmap = uriToBitmap(selectedFileUri);
                     uriHashMap.put(selectedView.getId(), selectedFileUri);
+                    uriHashMapThumb.put(selectedView.getId(), selectedFileUri);
                     createFiltersDialog();
                     Uri urpath = ContentUris.withAppendedId(sourceUri, cursor.getInt(cursor.getColumnIndex(MediaStore.Images.ImageColumns._ID)));
                 } catch (Exception e) {
@@ -583,6 +688,7 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
                 try {
                     selectedFileUri = RewriteBitmapToFile(selectedBitmap, selectedFileUri);
                     selectedView.setImageBitmap(selectedBitmap);
+                    icDeleteSelected.setVisibility(View.VISIBLE);
                     dialog.dismiss();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -672,7 +778,8 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void createPerviewDialog() {
-        final Uri[] allPaths = uriHashMap.values().toArray(new Uri[uriHashMap.size()]);
+        final Uri[] allPaths = uriHashMapThumb.values().toArray(new Uri[uriHashMap.size()]);
+        if (allPaths.length <= 0) return;
         final Dialog dialog = new Dialog(this, R.style.MaterialDialogSheet);
         dialog.setContentView(R.layout.dialog_create_story_perview);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);

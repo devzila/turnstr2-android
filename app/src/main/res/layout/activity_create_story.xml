@@ -143,71 +143,143 @@
         android:orientation="horizontal"
         android:weightSum="6">
 
-        <ImageView
-            android:id="@+id/avatar_face1"
+        <FrameLayout
             android:layout_width="50dp"
             android:layout_height="70dp"
-            android:layout_margin="1dp"
-            android:layout_weight="1"
-            android:background="@drawable/border_blue_rounded"
-            android:padding="2dp"
-            android:scaleType="centerCrop"
-            android:src="@color/gray_light" />
+            android:layout_weight="1">
 
+            <ImageView
+                android:id="@+id/avatar_face1"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_margin="1dp"
+                android:layout_weight="1"
+                android:background="@color/gray_light"
+                android:scaleType="centerCrop" />
 
-        <ImageView
-            android:id="@+id/avatar_face2"
+            <ImageView
+                android:id="@+id/ic_delete1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="right"
+                android:src="@drawable/ic_delete"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <FrameLayout
             android:layout_width="50dp"
             android:layout_height="70dp"
-            android:layout_margin="1dp"
-            android:layout_weight="1"
-            android:background="@color/img_background"
-            android:scaleType="centerCrop"
-            android:src="@color/gray_light" />
+            android:layout_weight="1">
 
+            <ImageView
+                android:id="@+id/avatar_face2"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_margin="1dp"
+                android:layout_weight="1"
+                android:background="@color/gray_light"
+                android:scaleType="centerCrop" />
 
-        <ImageView
-            android:id="@+id/avatar_face3"
+            <ImageView
+                android:id="@+id/ic_delete2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="right"
+                android:src="@drawable/ic_delete"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <FrameLayout
             android:layout_width="50dp"
             android:layout_height="70dp"
-            android:layout_margin="1dp"
-            android:layout_weight="1"
-            android:background="@color/img_background"
-            android:scaleType="centerCrop"
-            android:src="@color/gray_light" />
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/avatar_face3"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_margin="1dp"
+                android:layout_weight="1"
+                android:background="@color/gray_light"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/ic_delete3"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="right"
+                android:src="@drawable/ic_delete"
+                android:visibility="gone" />
+        </FrameLayout>
 
 
-        <ImageView
-            android:id="@+id/avatar_face4"
+        <FrameLayout
             android:layout_width="50dp"
             android:layout_height="70dp"
-            android:layout_margin="1dp"
-            android:layout_weight="1"
-            android:background="@color/img_background"
-            android:scaleType="centerCrop"
-            android:src="@color/gray_light" />
+            android:layout_weight="1">
 
+            <ImageView
+                android:id="@+id/avatar_face4"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_margin="1dp"
+                android:layout_weight="1"
+                android:background="@color/gray_light"
+                android:scaleType="centerCrop" />
 
-        <ImageView
-            android:id="@+id/avatar_face5"
+            <ImageView
+                android:id="@+id/ic_delete4"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="right"
+                android:src="@drawable/ic_delete"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <FrameLayout
             android:layout_width="50dp"
             android:layout_height="70dp"
-            android:layout_margin="1dp"
-            android:layout_weight="1"
-            android:background="@color/img_background"
-            android:scaleType="centerCrop"
-            android:src="@color/gray_light" />
+            android:layout_weight="1">
 
+            <ImageView
+                android:id="@+id/avatar_face5"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_margin="1dp"
+                android:layout_weight="1"
+                android:background="@color/gray_light"
+                android:scaleType="centerCrop" />
 
-        <ImageView
-            android:id="@+id/avatar_face6"
+            <ImageView
+                android:id="@+id/ic_delete5"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="right"
+                android:src="@drawable/ic_delete"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <FrameLayout
             android:layout_width="50dp"
             android:layout_height="70dp"
-            android:layout_margin="1dp"
-            android:layout_weight="1"
-            android:background="@color/img_background"
-            android:scaleType="centerCrop"
-            android:src="@color/gray_light" />
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/avatar_face6"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_margin="1dp"
+                android:background="@color/gray_light"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/ic_delete6"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="right"
+                android:src="@drawable/ic_delete"
+                android:visibility="gone" />
+        </FrameLayout>
 
 
     </LinearLayout>

@@ -2,13 +2,16 @@ package com.adroidtech.turnstr2.Adapter;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.adroidtech.turnstr2.Activity.MyStoryActivity;
 import com.adroidtech.turnstr2.Activity.ProfileActivity;
+import com.adroidtech.turnstr2.Activity.ViewStoryActivity;
 import com.adroidtech.turnstr2.CubeView.Cubesurfaceview;
 import com.adroidtech.turnstr2.CubeView.URLImageParser;
 import com.adroidtech.turnstr2.Models.MyStoryModel;
@@ -57,7 +60,15 @@ public class MyStoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     public void getAsyncResult(ArrayList<Bitmap> bitmap, String txt) {
                         mBbitmap1 = bitmap;
                         view.ll_main.removeAllViews();
-                        Cubesurfaceview view1 = new Cubesurfaceview(context, mBbitmap1, true);
+                        Cubesurfaceview view1 = new Cubesurfaceview(context, mBbitmap1, false);
+                        view.ll_main.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(context, ViewStoryActivity.class);
+                                intent.putExtra("DATA", allDataList.get(position));
+                                context.startActivity(intent);
+                            }
+                        });
                         view.ll_main.addView(view1);
                     }
                 }).execute();
