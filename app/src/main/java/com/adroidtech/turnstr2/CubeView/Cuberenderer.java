@@ -24,6 +24,7 @@ import javax.microedition.khronos.opengles.GL10;
 public class Cuberenderer implements GLSurfaceView.Renderer {
     private static Bitmap mBbitmap;
     public final ArrayList<Bitmap> allBitmaps;
+    private long startTime;
     private int isSet;
     /**
      * Store the model matrix. This matrix is used to move models from object space (where each model can be thought
@@ -124,6 +125,7 @@ public class Cuberenderer implements GLSurfaceView.Renderer {
 
     GLSurfaceView glSurfaceView;
 
+    private long endTime;
     /**
      * Initialize the model data.
      */
@@ -142,6 +144,7 @@ public class Cuberenderer implements GLSurfaceView.Renderer {
         } catch (Exception e) {
 
         }
+        startTime = System.currentTimeMillis();
         DisplayMetrics data = glSurfaceView.getResources().getDisplayMetrics();
         float ratio = (float) data.widthPixels / (float) data.heightPixels;
         // Define points for equilateral triangles.
@@ -222,7 +225,7 @@ public class Cuberenderer implements GLSurfaceView.Renderer {
         glUnused.glDisable(GL10.GL_DITHER);
         glUnused.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
 //        GLES20.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-        glUnused.glClearColor(1, 0, 0, 0);
+        glUnused.glClearColor(0, 0, 0, 0);
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
 //		// Position the eye behind the origin.
         final float eyeX = 0.0f;
@@ -374,6 +377,15 @@ public class Cuberenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onDrawFrame(GL10 glUnused) {
+        endTime = System.currentTimeMillis();
+        long dt = endTime - startTime;
+        if (dt < 33)
+            try {
+                long da = (33 - dt);
+                Thread.sleep(da);
+            } catch (Exception e) {
+            }
+        startTime = System.currentTimeMillis();
         GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
 
         GLES20.glUseProgram(mProgramHandle);
@@ -470,14 +482,15 @@ public class Cuberenderer implements GLSurfaceView.Renderer {
 
 
     public static int loadTexture(GLSurfaceView mActivityContext2, final Bitmap bitmap) {
-        final int[]  textureHandle = new int[1];;
+        final int[] textureHandle = new int[1];
+        ;
         try {
             GLES20.glGenTextures(1, textureHandle, 0);
             if (textureHandle[0] != 0) {
                 final BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inScaled = true;   // No pre-scaling
                 // Read in the resource
-    //            final Bitmap bitmap = BitmapFactory.decodeResource(mActivityContext2.getResources(), resourceId, options);
+                //            final Bitmap bitmap = BitmapFactory.decodeResource(mActivityContext2.getResources(), resourceId, options);
                 // Bind to the texture in OpenGL
                 GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureHandle[0]);
                 // Set filtering

@@ -2,6 +2,7 @@ package com.adroidtech.turnstr2.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
@@ -25,6 +26,7 @@ import com.adroidtech.turnstr2.CubeView.URLImageParser;
 import com.adroidtech.turnstr2.CustomeViews.OnLoadMoreListener;
 import com.adroidtech.turnstr2.Models.LoginDetailModel;
 import com.adroidtech.turnstr2.Models.MyStoryModel;
+import com.adroidtech.turnstr2.Models.ViewUserDetailModel;
 import com.adroidtech.turnstr2.Models.UserFav5Model;
 import com.adroidtech.turnstr2.R;
 import com.adroidtech.turnstr2.Utils.GeneralValues;
@@ -45,50 +47,170 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
-public class HomePageActivity extends Activity implements AsyncCallback, OnLoadMoreListener, View.OnClickListener, MyStoryAdapter.OnItemClickListener {
+public class UserProfileViewActivity extends Activity implements AsyncCallback, OnLoadMoreListener, View.OnClickListener, MyStoryAdapter.OnItemClickListener {
     Cubesurfaceview view;
     private ArrayList<Bitmap> mBbitmap = new ArrayList<>();
     private ArrayList<Bitmap> mBbitmap1 = new ArrayList<>();
     private FrameLayout layout_frame_main;
     private SharedPreference sharedPreference;
-    private LoginDetailModel userDetail;
-    private TextView editProfile;
-    private LinearLayout search;
+    private UserFav5Model userDetail;
     private FrameLayout layoutFrame;
     private TextView txtUsername;
-    private TextView txtAbout;
-    private TextView txtAddress;
-    private TextView txtEmail;
     private CubeSurfaceColored view1, view2, view3;
-    private View btnChat;
-    private ImageView my_story;
     private RecyclerView recycleView;
     private FrameLayout fram_fav1, fram_fav2, fram_fav3;
     private LinearLayout ll_fav5_users;
     private LinearLayout turnt_stories;
     private List<UserFav5Model> favStorysList;
     private List<UserFav5Model> allPopularStory;
-    private List<MyStoryModel> mAllStorylisting = new ArrayList<>();
+    private List<MyStoryModel> allStorylisting;
     private TextView txtPosts;
     private TextView txtFollowers;
     private TextView txtFamily;
-    private int lastItemIndexForScroll = 0;
     private NestedScrollView nested_scroll;
+    private int lastItemIndexForScroll;
     private int mPageNo = 0;
     private int total_pages = 0;
     private int current_page = 0;
     private int mNextPage = 0;
+    private List<MyStoryModel> mAllStorylisting = new ArrayList<>();
     private MyStoryAdapter myStoryAdapter;
+    private TextView favFive;
+    private TextView follow;
+    private ViewUserDetailModel userDetailModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_page);
+        setContentView(R.layout.activity_others_profile);
         viewIntail();
-        userDetail = sharedPreference.getSerializableObject(PreferenceKeys.USER_DETAIL, LoginDetailModel.class);
+        getIntentData();
+        getUserDetail();
+        loadAllImagesToCube();
         getFav5FromServer();
-        getAllStorieFromServer();
+//        getAllStorieFromServer();
         getPopularStorieFromServer();
+    }
+
+    private void getUserDetail() {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("auth_token", sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN));
+        JSONObject mJson = new JSONObject();
+        new CommonAsync(this, "GET", new AsyncCallback() {
+            @Override
+            public void getAsyncResult(String jsonObject, String txt) {
+                try {
+                    JSONObject jsonObject1 = new JSONObject(jsonObject);
+                    if (jsonObject1.has("success") && jsonObject1.getBoolean("success")) {
+                        userDetailModel = new Gson().fromJson(jsonObject1.getJSONObject("data").getString("member"), ViewUserDetailModel.class);
+                        uiDataUpdate(userDetailModel);
+                    } else {
+                        Toast.makeText(UserProfileViewActivity.this, jsonObject1.getString("error"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, GeneralValues.GET_MEMBERS_DATA.replace("_MEMBER_ID_", userDetail.getId() + ""), mJson, headers).execute();
+    }
+
+    private void getIntentData() {
+        Intent recivedDataIntent = getIntent();
+        if (recivedDataIntent.hasExtra("USER_DATA")) {
+            userDetail = (UserFav5Model) recivedDataIntent.getSerializableExtra("USER_DATA");
+        }
+    }
+
+    private void postFollowUser() {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("auth_token", sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN));
+        JSONObject mJson = new JSONObject();
+        new CommonAsync(this, mJson, new AsyncCallback() {
+            @Override
+            public void getAsyncResult(String jsonObject, String txt) {
+                try {
+                    JSONObject jsonObject1 = new JSONObject(jsonObject);
+                    if (jsonObject1.has("success") && jsonObject1.getBoolean("success")) {
+                        userDetailModel.setFollowing(true);
+                        follow.setBackgroundResource(R.drawable.sold_blue_rounded);
+                        follow.setTextColor(getResources().getColor(R.color.white));
+                    } else {
+                        Toast.makeText(UserProfileViewActivity.this, jsonObject1.getString("error"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, GeneralValues.MEMBERS_FOLLOW.replace("_MEMBER_ID_", userDetail.getId() + ""), headers).execute();
+    }
+
+    private void postUnFollowUser() {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("auth_token", sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN));
+        JSONObject mJson = new JSONObject();
+        new CommonAsync(this, mJson, new AsyncCallback() {
+            @Override
+            public void getAsyncResult(String jsonObject, String txt) {
+                try {
+                    JSONObject jsonObject1 = new JSONObject(jsonObject);
+                    if (jsonObject1.has("success") && jsonObject1.getBoolean("success")) {
+                        userDetailModel.setFollowing(false);
+                        follow.setBackgroundResource(R.drawable.border_blue_rounded);
+                        follow.setTextColor(getResources().getColor(R.color.text_blue));
+                    } else {
+                        Toast.makeText(UserProfileViewActivity.this, jsonObject1.getString("error"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, GeneralValues.MEMBERS_UNFOLLOW.replace("_MEMBER_ID_", userDetail.getId() + ""), headers).execute();
+    }
+
+    private void deleteFavFiveUser() {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("auth_token", sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN));
+        JSONObject mJson = new JSONObject();
+        new CommonAsync(this, "DELETE", new AsyncCallback() {
+            @Override
+            public void getAsyncResult(String jsonObject, String txt) {
+                try {
+                    JSONObject jsonObject1 = new JSONObject(jsonObject);
+                    if (jsonObject1.has("success") && jsonObject1.getBoolean("success")) {
+                        userDetailModel.setFavourite(false);
+                        favFive.setBackgroundResource(R.drawable.border_blue_rounded);
+                        favFive.setTextColor(getResources().getColor(R.color.text_blue));
+                    } else {
+                        Toast.makeText(UserProfileViewActivity.this, jsonObject1.getString("error"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, GeneralValues.MEMBERS_FAVOURITES.replace("_MEMBER_ID_", userDetail.getId() + ""), mJson, headers).execute();
+    }
+
+    private void postFavFiveUser() {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("auth_token", sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN));
+        JSONObject mJson = new JSONObject();
+        new CommonAsync(this, mJson, new AsyncCallback() {
+            @Override
+            public void getAsyncResult(String jsonObject, String txt) {
+                try {
+                    JSONObject jsonObject1 = new JSONObject(jsonObject);
+                    if (jsonObject1.has("success") && jsonObject1.getBoolean("success")) {
+                        userDetailModel.setFavourite(true);
+                        favFive.setBackgroundResource(R.drawable.sold_blue_rounded);
+                        favFive.setTextColor(getResources().getColor(R.color.white));
+                    } else {
+                        Toast.makeText(UserProfileViewActivity.this, jsonObject1.getString("error"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, GeneralValues.MEMBERS_FAVOURITES.replace("_MEMBER_ID_", userDetail.getId() + ""), headers).execute();
     }
 
     private void getAllStorieFromServer() {
@@ -96,12 +218,12 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
             JSONObject mJson = new JSONObject();
             mJson.put("page", mNextPage + "");
             HashMap<String, String> headers = new HashMap<>();
+//        headers.put("auth_token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOiIyMDE3LTA2LTE0IDA2OjU0OjM0IFVUQyJ9.M7pgzA4ktNVvuDFvKMqESJfHmLQCobp0WNjC6k2Kjac");
             headers.put("auth_token", sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN));
             new CommonAsync(this, "GET", this, GeneralValues.GET_ALL_STORIES, null, headers).execute();
         } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
+        }
     }
 
     private void getPopularStorieFromServer() {
@@ -121,26 +243,38 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
 //        headers.put("auth_token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOiIyMDE3LTA2LTE0IDA2OjU0OjM0IFVUQyJ9.M7pgzA4ktNVvuDFvKMqESJfHmLQCobp0WNjC6k2Kjac");
             headers.put("auth_token", sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN));
             new CommonAsync(this, "GET", this, GeneralValues.GET_USER_FAVE5
-                    .replace("_MEMBER_ID_", userDetail.getUser().getId() + ""), null, headers).execute();
+                    .replace("_MEMBER_ID_", userDetail.getId() + ""), null, headers).execute();
         } else {
             updateFav5Views(favStorysList);
         }
     }
 
-    private void uiDataUpdate(LoginDetailModel userDetail) {
-        txtAbout.setText(userDetail.getUser().getBio());
-        txtAddress.setText(userDetail.getUser().getAddress());
-        txtEmail.setText(userDetail.getUser().getEmail());
-
-        txtFamily.setText(userDetail.getUser().getFamilyCount() + "");
-        txtFollowers.setText(userDetail.getUser().getFollowerCount() + "");
-        txtPosts.setText(userDetail.getUser().getPostCount() + "");
-
-        txtUsername.setText(userDetail.getUser().getFirstName() + "");
-        if (userDetail.getUser().getIsVerified()) {
-            txtUsername.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.star_verification, 0);
-        } else {
-            txtUsername.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+    private void uiDataUpdate(ViewUserDetailModel userDetail) {
+        try {
+            txtFollowers.setText(userDetail.getFollowerCount() + "");
+            txtPosts.setText(userDetail.getPostCount() + "");
+            txtUsername.setText(userDetail.getFirstName() + "");
+            if (userDetail.getIsVerified()) {
+                txtUsername.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.star_verification, 0);
+            } else {
+                txtUsername.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            }
+            if (userDetailModel.getFollowing()) {
+                follow.setBackgroundResource(R.drawable.sold_blue_rounded);
+                follow.setTextColor(getResources().getColor(R.color.white));
+            } else {
+                follow.setBackgroundResource(R.drawable.border_blue_rounded);
+                follow.setTextColor(getResources().getColor(R.color.text_blue));
+            }
+            if (userDetailModel.getFavourite()) {
+                favFive.setBackgroundResource(R.drawable.sold_blue_rounded);
+                favFive.setTextColor(getResources().getColor(R.color.white));
+            } else {
+                favFive.setBackgroundResource(R.drawable.border_blue_rounded);
+                favFive.setTextColor(getResources().getColor(R.color.text_blue));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -148,6 +282,31 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
         recycleView = (RecyclerView) findViewById(R.id.recycler_listview);
         ll_fav5_users = (LinearLayout) findViewById(R.id.ll_fav5_users);
         turnt_stories = (LinearLayout) findViewById(R.id.turnt_stories);
+        txtPosts = (TextView) findViewById(R.id.txt_posts);
+        favFive = (TextView) findViewById(R.id.fav_five);
+        follow = (TextView) findViewById(R.id.follow);
+        favFive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (userDetailModel.getFavourite()) {
+                    deleteFavFiveUser();
+                } else {
+                    postFavFiveUser();
+                }
+            }
+        });
+        follow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (userDetailModel.getFollowing()) {
+                    postUnFollowUser();
+                } else {
+                    postFollowUser();
+                }
+            }
+        });
+        txtFollowers = (TextView) findViewById(R.id.txt_followers);
+        txtFamily = (TextView) findViewById(R.id.txt_family);
         nested_scroll = (NestedScrollView) findViewById(R.id.nested_scroll);
         nested_scroll.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
@@ -157,7 +316,7 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
                     int totalItemCount = linearLayoutManager.getItemCount();
                     int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
                     if (totalItemCount == (lastVisibleItem + 1)) {
-                        HomePageActivity.this.onLoadMore();
+                        UserProfileViewActivity.this.onLoadMore();
                         lastItemIndexForScroll = linearLayoutManager.findFirstVisibleItemPosition();
                     }
                 }
@@ -166,27 +325,51 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
         GridLayoutManager mGridManager = new GridLayoutManager(this, 3);
         recycleView.setLayoutManager(mGridManager);
         recycleView.setItemAnimator(new DefaultItemAnimator());
-        recycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (dy > 0) {
-                    LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                    int totalItemCount = linearLayoutManager.getItemCount();
-                    int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-                    if (totalItemCount == (lastVisibleItem + 1)) {
-                        HomePageActivity.this.onLoadMore();
-                        lastItemIndexForScroll = linearLayoutManager.findFirstVisibleItemPosition();
-                    }
-                }
-            }
-        });
         sharedPreference = new SharedPreference(this);
         findViewById(R.id.nav_contact).setOnClickListener(this);
         findViewById(R.id.nav_box).setOnClickListener(this);
         findViewById(R.id.nav_image).setOnClickListener(this);
         findViewById(R.id.nav_video).setOnClickListener(this);
         findViewById(R.id.nav_chat).setOnClickListener(this);
+
+
+        layoutFrame = (FrameLayout) findViewById(R.id.layout_frame);
+        view = new Cubesurfaceview(UserProfileViewActivity.this, mBbitmap, false);
+        layoutFrame.addView(view);
+        layoutFrame.setOnClickListener(this);
+    }
+
+
+    private void loadAllImagesToCube() {
+        try {
+            final Stack<String> strings1 = new Stack<>();
+            strings1.push(userDetail.getAvatarFace1());
+            strings1.push(userDetail.getAvatarFace2());
+            strings1.push(userDetail.getAvatarFace3());
+            strings1.push(userDetail.getAvatarFace4());
+            strings1.push(userDetail.getAvatarFace5());
+            strings1.push(userDetail.getAvatarFace6());
+            new URLImageParser(strings1, new URLImageParser.AsyncCallback() {
+                @Override
+                public void getAsyncResult(ArrayList<Bitmap> bitmap, String txt) {
+                    mBbitmap1 = bitmap;
+                    layoutFrame.removeAllViews();
+                    view1 = new CubeSurfaceColored(UserProfileViewActivity.this, mBbitmap1, true, layoutFrame, "1:0.6f:0");
+                    view1.setZOrderOnTop(false);
+                    //                layoutFrame.setOnClickListener(new View.OnClickListener() {
+                    //                    @Override
+                    //                    public void onClick(View v) {
+                    //                        startActivity(new Intent(HomePageActivity.this, MyStoryActivity.class));
+                    //                    }
+                    //                });
+                    layoutFrame.addView(view1);
+                    //                addTextView();
+
+                }
+            }).execute();
+        } catch (Exception e) {
+
+        }
     }
 
 
@@ -217,11 +400,12 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
     public void onClick(View v) {
         switch (v.getId()) {
             case (R.id.nav_contact):
-                startActivity(new Intent(HomePageActivity.this, ProfileActivity.class));
+                startActivity(new Intent(UserProfileViewActivity.this, ProfileActivity.class));
                 finish();
                 break;
             case (R.id.nav_box):
-//                startActivity(new Intent(HomePageActivity.this,.class));
+                startActivity(new Intent(UserProfileViewActivity.this, HomePageActivity.class));
+                finish();
                 break;
             case (R.id.nav_image):
 //                startActivity(new Intent(HomePageActivity.this,. class));
@@ -230,16 +414,17 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
 //                startActivity(new Intent(HomePageActivity.this,. class));
                 break;
             case (R.id.nav_chat):
-                startActivity(new Intent(HomePageActivity.this, GroupChannelActivity.class));
+                startActivity(new Intent(UserProfileViewActivity.this, GroupChannelActivity.class));
                 finish();
                 break;
 
             case R.id.layout_frame:
-                startActivity(new Intent(HomePageActivity.this, MyStoryActivity.class));
+                startActivity(new Intent(UserProfileViewActivity.this, MyStoryActivity.class));
                 break;
             case R.id.edit_profile:
-                startActivity(new Intent(HomePageActivity.this, EditProfileActivity.class));
+                startActivity(new Intent(UserProfileViewActivity.this, EditProfileActivity.class));
                 break;
+
         }
     }
 
@@ -268,16 +453,15 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
                     if (myStoryAdapter != null) {
                         myStoryAdapter.notifyItemRangeChanged(size, allStorylisting.size());
                     } else {
-                        myStoryAdapter = new MyStoryAdapter(HomePageActivity.this, mAllStorylisting, this);
+                        myStoryAdapter = new MyStoryAdapter(UserProfileViewActivity.this, mAllStorylisting, this);
                         recycleView.setAdapter(myStoryAdapter);
                     }
                     mNextPage = jsonObject1.getJSONObject("data").getInt("next_page");
                     total_pages = jsonObject1.getJSONObject("data").getInt("total_pages");
                     current_page = jsonObject1.getJSONObject("data").getInt("current_page");
-
                 }
             } else {
-                Toast.makeText(HomePageActivity.this, jsonObject1.getString("error"), Toast.LENGTH_LONG).show();
+                Toast.makeText(UserProfileViewActivity.this, jsonObject1.getString("error"), Toast.LENGTH_LONG).show();
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -293,7 +477,7 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
                 LayoutInflater inflater = getLayoutInflater();
                 View view = inflater.inflate(R.layout.fav_view_user, turnt_stories, false);
                 final FrameLayout fram_fav = (FrameLayout) view.findViewById(R.id.fram_fav);
-                CubeSurfaceColored view2 = new CubeSurfaceColored(HomePageActivity.this, null, false, fram_fav, "1:1:1");
+                CubeSurfaceColored view2 = new CubeSurfaceColored(UserProfileViewActivity.this, null, false, fram_fav, "1:1:1");
                 view2.setZOrderOnTop(false);
                 fram_fav.addView(view2);
                 fram_fav.setTag(allStorylist.get(i));
@@ -309,16 +493,18 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
                     @Override
                     public void getAsyncResult(ArrayList<Bitmap> bitmap, String txt) {
                         fram_fav.removeAllViews();
-                        CubeSurfaceColored view = new CubeSurfaceColored(HomePageActivity.this, bitmap, false, fram_fav, "1:1:1");
+                        CubeSurfaceColored view = new CubeSurfaceColored(UserProfileViewActivity.this, bitmap, false, fram_fav, "1:1:1");
                         view.setZOrderOnTop(false);
                         fram_fav.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                UserFav5Model userData = (UserFav5Model) fram_fav.getTag();
-                                Intent intent = new Intent(HomePageActivity.this, UserProfileViewActivity.class);
-                                intent.putExtra("USER_DATA", userData);
+                                Toast.makeText(UserProfileViewActivity.this, "User Page OPen", Toast.LENGTH_SHORT).show();
+                                userDetail = (UserFav5Model) fram_fav.getTag();
+                                Intent intent = new Intent(UserProfileViewActivity.this, UserProfileViewActivity.class);
+                                intent.putExtra("USER_DATA", userDetail);
                                 startActivity(intent);
-                                Toast.makeText(HomePageActivity.this, "Page OPen", Toast.LENGTH_SHORT).show();
+                                finish();
+//                                startActivity(new Intent(HomePageActivity.this, MyStoryActivity.class));
                             }
                         });
                         fram_fav.addView(view);
@@ -341,7 +527,7 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
                 LayoutInflater inflater = getLayoutInflater();
                 View view = inflater.inflate(R.layout.fav_view_user, ll_fav5_users, false);
                 final FrameLayout fram_fav = (FrameLayout) view.findViewById(R.id.fram_fav);
-                CubeSurfaceColored view2 = new CubeSurfaceColored(HomePageActivity.this, null, false, fram_fav, "1:1:1");
+                CubeSurfaceColored view2 = new CubeSurfaceColored(UserProfileViewActivity.this, null, false, fram_fav, "1:1:1");
                 view2.setZOrderOnTop(false);
                 fram_fav.addView(view2);
                 fram_fav.setTag(allStorylist.get(i));
@@ -358,15 +544,17 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
                     @Override
                     public void getAsyncResult(ArrayList<Bitmap> bitmap, String txt) {
                         fram_fav.removeAllViews();
-                        CubeSurfaceColored view = new CubeSurfaceColored(HomePageActivity.this, bitmap, false, fram_fav, "1:1:1");
+                        CubeSurfaceColored view = new CubeSurfaceColored(UserProfileViewActivity.this, bitmap, false, fram_fav, "1:1:1");
                         view.setZOrderOnTop(false);
                         fram_fav.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                UserFav5Model userData = (UserFav5Model) fram_fav.getTag();
-                                Intent intent = new Intent(HomePageActivity.this, UserProfileViewActivity.class);
-                                intent.putExtra("USER_DATA", userData);
+                                userDetail = (UserFav5Model) fram_fav.getTag();
+                                Intent intent = new Intent(UserProfileViewActivity.this, UserProfileViewActivity.class);
+                                intent.putExtra("USER_DATA", userDetail);
                                 startActivity(intent);
+                                finish();
+//                                startActivity(new Intent(HomePageActivity.this, MyStoryActivity.class));
                             }
                         });
                         fram_fav.addView(view);

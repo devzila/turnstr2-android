@@ -1,11 +1,11 @@
 package com.adroidtech.turnstr2.Models;
 
-import java.io.Serializable;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class UserDetailModel implements Serializable {
+import java.io.Serializable;
+
+public class ViewUserDetailModel implements Serializable {
 
     @SerializedName("id")
     @Expose
@@ -85,15 +85,22 @@ public class UserDetailModel implements Serializable {
     @SerializedName("is_verified")
     @Expose
     private Boolean isVerified;
-    @SerializedName("live_session")
-    @Expose
-    private Object liveSession;
-
-
     @SerializedName("following")
     @Expose
     private Boolean following;
-    private final static long serialVersionUID = 8762282118809533586L;
+    @SerializedName("following_me")
+    @Expose
+    private Boolean followingMe;
+    @SerializedName("family_member")
+    @Expose
+    private Boolean familyMember;
+    @SerializedName("favourite")
+    @Expose
+    private Boolean favourite;
+    @SerializedName("live_session")
+    @Expose
+    private LiveSession liveSession;
+    private final static long serialVersionUID = -2832678596606925708L;
 
     public Integer getId() {
         return id;
@@ -303,22 +310,6 @@ public class UserDetailModel implements Serializable {
         this.isVerified = isVerified;
     }
 
-    public Object getLiveSession() {
-        return liveSession;
-    }
-
-    public void setLiveSession(Object liveSession) {
-        this.liveSession = liveSession;
-    }
-
-    public Boolean getVerified() {
-        return isVerified;
-    }
-
-    public void setVerified(Boolean verified) {
-        isVerified = verified;
-    }
-
     public Boolean getFollowing() {
         return following;
     }
@@ -327,4 +318,130 @@ public class UserDetailModel implements Serializable {
         this.following = following;
     }
 
+    public Boolean getFollowingMe() {
+        return followingMe;
+    }
+
+    public void setFollowingMe(Boolean followingMe) {
+        this.followingMe = followingMe;
+    }
+
+    public Boolean getFamilyMember() {
+        return familyMember;
+    }
+
+    public void setFamilyMember(Boolean familyMember) {
+        this.familyMember = familyMember;
+    }
+
+    public Boolean getFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(Boolean favourite) {
+        this.favourite = favourite;
+    }
+
+    public LiveSession getLiveSession() {
+        return liveSession;
+    }
+
+    public void setLiveSession(LiveSession liveSession) {
+        this.liveSession = liveSession;
+    }
+
+
+    public class LiveSession implements Serializable {
+
+        @SerializedName("id")
+        @Expose
+        private Integer id;
+        @SerializedName("user_id")
+        @Expose
+        private Integer userId;
+        @SerializedName("session_id")
+        @Expose
+        private String sessionId;
+        @SerializedName("completed")
+        @Expose
+        private Boolean completed;
+        @SerializedName("created_at")
+        @Expose
+        private String createdAt;
+        @SerializedName("updated_at")
+        @Expose
+        private String updatedAt;
+        @SerializedName("token")
+        @Expose
+        private String token;
+        @SerializedName("session_type")
+        @Expose
+        private String sessionType;
+        private final static long serialVersionUID = 5060110103033264091L;
+
+        public Integer getId() {
+            return id;
+        }
+
+        public void setId(Integer id) {
+            this.id = id;
+        }
+
+        public Integer getUserId() {
+            return userId;
+        }
+
+        public void setUserId(Integer userId) {
+            this.userId = userId;
+        }
+
+        public String getSessionId() {
+            return sessionId;
+        }
+
+        public void setSessionId(String sessionId) {
+            this.sessionId = sessionId;
+        }
+
+        public Boolean getCompleted() {
+            return completed;
+        }
+
+        public void setCompleted(Boolean completed) {
+            this.completed = completed;
+        }
+
+        public String getCreatedAt() {
+            return createdAt;
+        }
+
+        public void setCreatedAt(String createdAt) {
+            this.createdAt = createdAt;
+        }
+
+        public String getUpdatedAt() {
+            return updatedAt;
+        }
+
+        public void setUpdatedAt(String updatedAt) {
+            this.updatedAt = updatedAt;
+        }
+
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
+
+        public String getSessionType() {
+            return sessionType;
+        }
+
+        public void setSessionType(String sessionType) {
+            this.sessionType = sessionType;
+        }
+
+    }
 }

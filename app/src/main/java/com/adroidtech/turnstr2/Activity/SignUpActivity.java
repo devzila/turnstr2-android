@@ -49,7 +49,7 @@ public class SignUpActivity extends AppCompatActivity implements AsyncCallback {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    private AutoCompleteTextView firstname;
+    private AutoCompleteTextView firstname, lastname;
     private AutoCompleteTextView username;
     private EditText confiPassword;
     private Button signUp;
@@ -63,9 +63,16 @@ public class SignUpActivity extends AppCompatActivity implements AsyncCallback {
         sharedPreference = new SharedPreference(getApplicationContext());
         // Set up the login form.
         firstname = (AutoCompleteTextView) findViewById(R.id.firstname);
+        lastname = (AutoCompleteTextView) findViewById(R.id.lastname);
         username = (AutoCompleteTextView) findViewById(R.id.username);
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         mPasswordView = (EditText) findViewById(R.id.password);
+        findViewById(R.id.alreay_account).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+            }
+        });
         confiPassword = (EditText) findViewById(R.id.confi_password);
         confiPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -99,6 +106,8 @@ public class SignUpActivity extends AppCompatActivity implements AsyncCallback {
         String email = mEmailView.getText().toString();
         String user = username.getText().toString();
         String name = firstname.getText().toString();
+        String lastnam = lastname.getText().toString();
+
         String password = mPasswordView.getText().toString();
 
         String confiPass = confiPassword.getText().toString();
@@ -116,14 +125,15 @@ public class SignUpActivity extends AppCompatActivity implements AsyncCallback {
         } else if (!password.equals(confiPass)) {
             confiPassword.setError("Password not matched");
         } else {
-            callSignUpAPI(name, user, email, password);
+            callSignUpAPI(name, lastnam, user, email, password);
         }
     }
 
-    private void callSignUpAPI(String name, String user, String email, String password) {
+    private void callSignUpAPI(String name, String lastName, String user, String email, String password) {
         JSONObject mJson = new JSONObject();
         try {
             mJson.put("first_name", name);
+            mJson.put("last_name", lastName);
             mJson.put("username", user);
             mJson.put("email", email);
             mJson.put("password", password);

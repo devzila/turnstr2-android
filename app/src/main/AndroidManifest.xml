@@ -61,6 +61,11 @@
             android:name=".chat.activitys.AllFriendList"
             android:label="New Chat?"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.UserProfileViewActivity"
+            android:label="New Chat?"
+            android:screenOrientation="portrait" />
+
 
         <!-- <meta-data -->
         <!-- android:name="com.facebook.sdk.ApplicationId" -->
@@ -109,7 +114,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.HomePageActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"
+            />
         <activity android:name=".videoChat.MainVideoActivity" />
         <activity android:name=".chat.activitys.AllFriendListVideo" />
         <activity
@@ -118,7 +125,6 @@
         <activity
             android:name=".Activity.ViewFullScrrenStoryActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activity.FriendsProfileActivity"></activity>
     </application>
 
 </manifest>

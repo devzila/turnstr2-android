@@ -166,7 +166,8 @@
                 android:id="@+id/layout_frame"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_gravity="center"></FrameLayout>
+                android:layout_gravity="center"
+                android:clickable="false"></FrameLayout>
 
         </FrameLayout>
 

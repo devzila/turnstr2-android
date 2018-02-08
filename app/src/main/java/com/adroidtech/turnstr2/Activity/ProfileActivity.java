@@ -4,14 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.adroidtech.turnstr2.CubeView.CubeSurfaceColored;
 import com.adroidtech.turnstr2.CubeView.Cubesurfaceview;
 import com.adroidtech.turnstr2.CubeView.URLImageParser;
 import com.adroidtech.turnstr2.Models.LoginDetailModel;
@@ -22,9 +21,10 @@ import com.adroidtech.turnstr2.Utils.SharedPreference;
 import com.adroidtech.turnstr2.WebServices.AsyncCallback;
 import com.adroidtech.turnstr2.WebServices.CommonAsync;
 import com.adroidtech.turnstr2.chat.groupchannel.GroupChannelActivity;
+import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,16 +38,16 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
     private SharedPreference sharedPreference;
     private LoginDetailModel userDetail;
     private TextView editProfile;
-    private LinearLayout search;
+    private TextView txt_logout;
     private TextView txtPosts;
     private TextView txtFollowers;
     private TextView txtFamily;
     private FrameLayout layoutFrame;
     private TextView txtUsername;
     private TextView txtAbout;
-    private TextView txtAddress;
-    private TextView txtEmail;
-    private Cubesurfaceview view1;
+    private TextView txtName;
+    private TextView txtWebsite;
+    private CubeSurfaceColored view1;
     private TextView btnChat;
     private ImageView my_story;
 
@@ -58,10 +58,11 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
         setContentView(R.layout.activity_profile);
         sharedPreference = new SharedPreference(this);
         userDetail = sharedPreference.getSerializableObject(PreferenceKeys.USER_DETAIL, LoginDetailModel.class);
+
         viewIntail();
-        uiDataUpdate(userDetail);
 //        getProfileDataFromServer();
-        loadAllImagesToCube();
+//        uiDataUpdate(userDetail);
+//        loadAllImagesToCube();
     }
 
     private void getProfileDataFromServer() {
@@ -72,15 +73,15 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
     }
 
     private void uiDataUpdate(LoginDetailModel userDetail) {
-        txtAbout.setText(userDetail.getUser().getBio());
-        txtAddress.setText(userDetail.getUser().getAddress());
-        txtEmail.setText(userDetail.getUser().getEmail());
 
+        txtAbout.setText(userDetail.getUser().getBio());
+        txtName.setText(userDetail.getUser().getFirstName());
+        txtWebsite.setText(userDetail.getUser().getWebsite());
         txtFamily.setText(userDetail.getUser().getFamilyCount() + "");
         txtFollowers.setText(userDetail.getUser().getFollowerCount() + "");
         txtPosts.setText(userDetail.getUser().getPostCount() + "");
 
-        txtUsername.setText(userDetail.getUser().getFirstName() + "");
+        txtUsername.setText(userDetail.getUser().getUsername() + "");
         if (userDetail.getUser().getIsVerified()) {
             txtUsername.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.star_verification, 0);
         } else {
@@ -89,26 +90,36 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
     }
 
     private void viewIntail() {
-        btnChat = (TextView) findViewById(R.id.btnChat);
-        btnChat.setOnClickListener(this);
-        my_story = (ImageView) findViewById(R.id.my_story);
+        findViewById(R.id.my_story).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ProfileActivity.this, MyStoryActivity.class));
+            }
+        });
         editProfile = (TextView) findViewById(R.id.edit_profile);
-        search = (LinearLayout) findViewById(R.id.search);
+        txt_logout = (TextView) findViewById(R.id.txt_logout);
         txtPosts = (TextView) findViewById(R.id.txt_posts);
         txtFollowers = (TextView) findViewById(R.id.txt_followers);
         txtFamily = (TextView) findViewById(R.id.txt_family);
         txtUsername = (TextView) findViewById(R.id.txt_username);
         txtAbout = (TextView) findViewById(R.id.txt_about);
-        txtAddress = (TextView) findViewById(R.id.txt_address);
-        txtEmail = (TextView) findViewById(R.id.txt_email);
+        txtName = (TextView) findViewById(R.id.txt_name);
+        txtWebsite = (TextView) findViewById(R.id.txt_website);
         layout_frame_main = (FrameLayout) findViewById(R.id.layout_frame1);
         view = new Cubesurfaceview(ProfileActivity.this, mBbitmap, false);
         layout_frame_main.addView(view);
         layoutFrame = (FrameLayout) findViewById(R.id.layout_frame);
-        view = new Cubesurfaceview(ProfileActivity.this, mBbitmap, false);
-        layoutFrame.addView(view);
+        view1 = new CubeSurfaceColored(ProfileActivity.this, mBbitmap1, true, layoutFrame, "1:0.6f:0");
+        view1.setZOrderOnTop(false);
+        layoutFrame.addView(view1);
+        txt_logout.setOnClickListener(this);
         layoutFrame.setOnClickListener(this);
         editProfile.setOnClickListener(this);
+        findViewById(R.id.nav_contact).setOnClickListener(this);
+        findViewById(R.id.nav_box).setOnClickListener(this);
+        findViewById(R.id.nav_image).setOnClickListener(this);
+        findViewById(R.id.nav_video).setOnClickListener(this);
+        findViewById(R.id.nav_chat).setOnClickListener(this);
     }
 
     private void loadAllImagesToCube() {
@@ -147,13 +158,15 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
             public void getAsyncResult(ArrayList<Bitmap> bitmap, String txt) {
                 mBbitmap1 = bitmap;
                 layoutFrame.removeAllViews();
-                view1 = new Cubesurfaceview(ProfileActivity.this, mBbitmap1, false);
-                view1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startActivity(new Intent(ProfileActivity.this, MyStoryActivity.class));
-                    }
-                });
+                view1 = new CubeSurfaceColored(ProfileActivity.this, mBbitmap1, true, layoutFrame, "1:0.6f:0");
+                view1.setZOrderOnTop(false);
+//                view1 = new Cubesurfaceview(ProfileActivity.this, mBbitmap1, false);
+//                view1.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        startActivity(new Intent(ProfileActivity.this, MyStoryActivity.class));
+//                    }
+//                });
                 layoutFrame.addView(view1);
 //                addTextView();
 
@@ -166,6 +179,10 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
     protected void onResume() {
         super.onResume();
         try {
+            userDetail = sharedPreference.getSerializableObject(PreferenceKeys.USER_DETAIL, LoginDetailModel.class);
+            uiDataUpdate(userDetail);
+            loadAllImagesToCube();
+
 //            if (view != null) view.onResume();
         } catch (Exception e) {
 
@@ -186,20 +203,52 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case (R.id.nav_contact):
+//                startActivity(new Intent(ProfileActivity.this, ProfileActivity.class));
+                break;
+            case (R.id.nav_box):
+                startActivity(new Intent(ProfileActivity.this, HomePageActivity.class));
+                finish();
+                break;
+            case (R.id.nav_image):
+//                startActivity(new Intent(HomePageActivity.this,. class));
+                break;
+            case (R.id.nav_video):
+//                startActivity(new Intent(HomePageActivity.this,. class));
+                break;
+            case (R.id.nav_chat):
+                startActivity(new Intent(ProfileActivity.this, GroupChannelActivity.class));
+                finish();
+                break;
             case R.id.layout_frame:
                 startActivity(new Intent(ProfileActivity.this, MyStoryActivity.class));
                 break;
             case R.id.edit_profile:
                 startActivity(new Intent(ProfileActivity.this, EditProfileActivity.class));
                 break;
-            case R.id.btnChat:
-                startActivity(new Intent(ProfileActivity.this, GroupChannelActivity.class));
+            case R.id.txt_logout:
+                new SharedPreference(ProfileActivity.this).clearSharedPreference();
+                startActivity(new Intent(ProfileActivity.this, LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                finish();
                 break;
         }
     }
 
     @Override
     public void getAsyncResult(String jsonObject, String txt) {
-        Log.e("Data :", jsonObject.toString());
+        try {
+            JSONObject jsonObject1 = new JSONObject(jsonObject);
+            if (jsonObject1.has("success") && jsonObject1.getBoolean("success")) {
+                userDetail = new Gson().fromJson(jsonObject1.getString("data"), LoginDetailModel.class);
+                sharedPreference.putSerializableObject(PreferenceKeys.USER_DETAIL, userDetail);
+                uiDataUpdate(userDetail);
+                loadAllImagesToCube();
+            } else {
+                Toast.makeText(ProfileActivity.this, jsonObject1.getString("error"), Toast.LENGTH_LONG).show();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 }

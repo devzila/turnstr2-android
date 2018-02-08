@@ -51,6 +51,7 @@ public class MyStoryActivity extends Activity implements AsyncCallback, View.OnC
     private TextView txtPosts;
     private TextView txtFollowers;
     private TextView txtFamily;
+    public static Boolean isStoryCreated = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +119,10 @@ public class MyStoryActivity extends Activity implements AsyncCallback, View.OnC
     protected void onResume() {
         super.onResume();
         try {
+            if (isStoryCreated) {
+                isStoryCreated = false;
+                getAllStorieFromServer();
+            }
 //            if (view != null) view.onResume();
         } catch (Exception e) {
 

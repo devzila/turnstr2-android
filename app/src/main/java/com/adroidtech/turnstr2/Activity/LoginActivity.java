@@ -60,26 +60,16 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
         // Set up the login form.
 //        facebookLoginIntialization();
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        Button signup = (Button) findViewById(R.id.signup);
-
+        Button signup = (Button) findViewById(R.id.signup_email);
+        TextView sign_up = (TextView) findViewById(R.id.sign_up);
         Button facebook_signup = (Button) findViewById(R.id.facebook_signup);
-        signup.setOnClickListener(new OnClickListener() {
+        sign_up.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
             }
         });
         mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {

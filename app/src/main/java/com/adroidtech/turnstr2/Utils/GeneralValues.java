@@ -23,6 +23,7 @@ public class GeneralValues {
     public static final String GET_STORIE_COMMENTS = "/v1/stories/_STORY_ID_/comments";
     public static final String POST_STORIE_COMMENTS = "/v1/stories/_STORY_ID_/comments";
     public static final String GET_ALL_STORIES = "/v1/stories";
+    public static final String GET_POPULARS_STORIES = "/v1/populars";
     public static final String GET_FAVOURITES_FIVE = "/v1/members/_MEMBER_ID_/favourites";
     public static final String EDIT_PROFILE = "/v1/user/profile";
     public static final String CREATE_STORIES = "/v1/user/stories";
@@ -32,14 +33,16 @@ public class GeneralValues {
     public static final String BASE_URL = "https://fathomless-retreat-45620.herokuapp.com";
 
     public static final String MEMBERS_URL = "/v1/members ";
+    public static final String GET_MEMBERS_DATA = "/v1/members/_MEMBER_ID_";
     public static final String USER_STORIES = "/v1/user/stories";
-    public static final String GET_USER_FAVE5  ="/v1/members/_MEMBER_ID_/favourites";
+    public static final String GET_USER_FAVE5 = "/v1/members/_MEMBER_ID_/favourites";
 
     public static final String LIVE_SESSION = "/v1/user/live_session ";
+    public static final String MEMBERS_FOLLOW = "/v1/members/_MEMBER_ID_/follow";
+    public static final String MEMBERS_UNFOLLOW = "/v1/members/_MEMBER_ID_/unfollow";
+    public static final String MEMBERS_FAVOURITES = "/v1/members/_MEMBER_ID_/favourites";
 
 //    public static final String MEMBERS_URL = "/v1/members ";
-
-
 
 
     public static int getScreenWidth(Context context) {

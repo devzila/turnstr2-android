@@ -159,7 +159,7 @@ public class SharedPreference {
     /**
      * @param context
      */
-    public void clearSharedPreference(Context context) {
+    public void clearSharedPreference() {
         editor.clear();
         editor.commit();
     }
