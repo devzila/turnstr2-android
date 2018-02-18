@@ -5,7 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.opengl.GLSurfaceView;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,11 +54,10 @@ public class MyStoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             final MyStoryListingView view = (MyStoryListingView) holder;
             view.bind(listener, position);
             try {
-                float[] color = new float[3];
-                Color.colorToHSV(context.getResources().getColor(R.color.white), color);
-                CubeSurfaceColored view1 = new CubeSurfaceColored(context, mBbitmap1, false, "1:1:1");
-                view1.setZOrderOnTop(false);
-                view.ll_main.addView(view1);
+//                CubeSurfaceColored view1 = new CubeSurfaceColored(context, mBbitmap1, false, "1:1:1");
+//                view1.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+//                view1.setZOrderOnTop(false);
+//                view.ll_main.addView(view1);
                 Stack<String> strings1 = new Stack<>();
                 for (int i = 0; i < allDataList.get(position).getMedia().size(); i++) {
                     strings1.push(allDataList.get(position).getMedia().get(i).getThumbUrl());
@@ -65,9 +67,17 @@ public class MyStoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     public void getAsyncResult(ArrayList<Bitmap> bitmap, String txt) {
                         mBbitmap1 = bitmap;
                         view.ll_main.removeAllViews();
-
                         CubeSurfaceColored view1 = new CubeSurfaceColored(context, mBbitmap1, false, view.ll_main, "1:1:1");
+                        view1.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
                         view1.setZOrderOnTop(false);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            view1.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                                @Override
+                                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                                    Log.i("Scroll", scrollX + " " + scrollY);
+                                }
+                            });
+                        }
                         view.ll_main.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {

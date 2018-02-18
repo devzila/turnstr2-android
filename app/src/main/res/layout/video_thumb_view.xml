@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="80dp"
+    android:layout_height="100dp"
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="1dp"
+    android:weightSum="1">
+
+    <ImageView
+        android:id="@+id/thumb_image"
+        android:layout_width="80dp"
+        android:layout_height="100dp"
+        android:background="@color/text_blue"
+        android:padding="1dp"
+        android:src="@mipmap/img_ic" />
+
+</LinearLayout>
+

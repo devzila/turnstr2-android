@@ -52,10 +52,12 @@ public class OkHttp3Helper {
      * @throws Exception
      */
     @NonNull
-    public String postToServer(@NonNull String url, @Nullable ArrayMap<String, String> formField,String authToken)
+    public String postToServer(@NonNull String url, @Nullable ArrayMap<String, String> formField, String authToken)
             throws Exception {
         okhttp3.Request.Builder requestBuilder = new okhttp3.Request.Builder().url(url);
         requestBuilder.header("auth_token", authToken);
+        requestBuilder.header("auth-token", authToken);
+        requestBuilder.header("Authorization", authToken);
         if (formField != null) {
             okhttp3.FormBody.Builder formBodyBuilder = new okhttp3.FormBody.Builder();
             for (Map.Entry<String, String> entry : formField.entrySet()) {
@@ -107,6 +109,8 @@ public class OkHttp3Helper {
             okhttp3.MultipartBody.Builder multipartBodyBuilder = new okhttp3.MultipartBody.Builder();
             multipartBodyBuilder.setType(okhttp3.MultipartBody.FORM);
             requestBuilder.header("auth_token", authToken);
+            requestBuilder.header("auth-token", authToken);
+            requestBuilder.header("Authorization", authToken);
             if (formField != null) {
                 for (Map.Entry<String, String> entry : formField.entrySet()) {
                     multipartBodyBuilder.addFormDataPart(entry.getKey(), entry.getValue());
@@ -135,14 +139,16 @@ public class OkHttp3Helper {
 
     @NonNull
     public String putMultiPartToServer(@NonNull String url,
-                                        @Nullable ArrayMap<String, String> formField,
-                                        @Nullable ArrayMap<String, File> filePart, String authToken)
+                                       @Nullable ArrayMap<String, String> formField,
+                                       @Nullable ArrayMap<String, File> filePart, String authToken)
             throws Exception {
         okhttp3.Request.Builder requestBuilder = new okhttp3.Request.Builder().url(url);
         if (formField != null || filePart != null) {
             okhttp3.MultipartBody.Builder multipartBodyBuilder = new okhttp3.MultipartBody.Builder();
             multipartBodyBuilder.setType(okhttp3.MultipartBody.FORM);
             requestBuilder.header("auth_token", authToken);
+            requestBuilder.header("auth-token", authToken);
+            requestBuilder.header("Authorization", authToken);
             if (formField != null) {
                 for (Map.Entry<String, String> entry : formField.entrySet()) {
                     multipartBodyBuilder.addFormDataPart(entry.getKey(), entry.getValue());

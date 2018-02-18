@@ -10,9 +10,11 @@ import android.opengl.GLUtils;
 import android.opengl.Matrix;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -46,6 +48,7 @@ import javax.microedition.khronos.opengles.GL10;
 //import es2.learning.ViewPortRenderer;
 
 public class CubeSurfaceColored extends GLSurfaceView {
+    boolean rendererHasBeenSet;
     ArrayList<Integer> allViews = new ArrayList<>();
     final Handler handler = new Handler();
     FrameLayout layoutFrame;
@@ -56,31 +59,53 @@ public class CubeSurfaceColored extends GLSurfaceView {
     Cuberenderer renderer;
     private boolean mRotateEnable = true;
     private boolean LastActionActionDown = false;
-    private static Bitmap mBbitmap;
     public ArrayList<Bitmap> allBitmaps;
     private int isSet;
     private long endTime;
     private long startTime;
 
+    @Override
+    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
+        super.onVisibilityChanged(changedView, visibility);
+        if (rendererHasBeenSet) {
+
+        }
+    }
+
+    @Override
+    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
+        Log.e("Scroll", "Checnges");
+    }
+
+    @Override
+    public long getDrawingTime() {
+        return getDrawingTime();
+    }
+
     public CubeSurfaceColored(Context context, ArrayList<Bitmap> allBitmaps, boolean mRotateEnable, String colorCode) {
         super(context);
-        this.context = context;
-        this.mRotateEnable = mRotateEnable;
-        setEGLContextClientVersion(2);
-        if (allBitmaps == null || allBitmaps.size() == 0) {
-            allBitmaps = new ArrayList<>();
-            for (int i = 0; i < 6; i++) {
-                allBitmaps.add(BitmapFactory.decodeResource(getResources(), R.drawable.ic_image_cube));
-            }
-        }
         try {
-            String[] colors = colorCode.split(":");
-            red = Float.parseFloat(colors[0]);
-            green = Float.parseFloat(colors[1]);
-            blue = Float.parseFloat(colors[2]);
+            this.context = context;
+            this.mRotateEnable = mRotateEnable;
+            setEGLContextClientVersion(2);
+            if (allBitmaps == null || allBitmaps.size() == 0) {
+                allBitmaps = new ArrayList<>();
+                for (int i = 0; i < 6; i++) {
+                    allBitmaps.add(BitmapFactory.decodeResource(getResources(), R.drawable.ic_image_cube));
+                }
+            }
+            try {
+                String[] colors = colorCode.split(":");
+                red = Float.parseFloat(colors[0]);
+                green = Float.parseFloat(colors[1]);
+                blue = Float.parseFloat(colors[2]);
+            } catch (Exception e) {
+            }
+            setRenderer(renderer = new Cuberenderer(this, allBitmaps));
+            rendererHasBeenSet = true;
         } catch (Exception e) {
+
         }
-        setRenderer(renderer = new Cuberenderer(this, allBitmaps));
     }
 
     public CubeSurfaceColored(Context context, ArrayList<Bitmap> allBitmaps, boolean mRotateEnable, FrameLayout layoutFrame, String colorCode) {
@@ -119,26 +144,29 @@ public class CubeSurfaceColored extends GLSurfaceView {
                 handler.postDelayed(mLongPressed, 500);
                 break;
             case MotionEvent.ACTION_MOVE:
-                if ((mPreviousX - 1 >= x || mPreviousX + 1 <= x) && (mPreviousY - 1 >= y || mPreviousY + 1 <= y)) {
-                    handler.removeCallbacks(mLongPressed);
-                }
-                float dx = x - mPreviousX;
-                float dy = y - mPreviousY;
-                // reverse direction of rotation above the mid-line
-                renderer.xAngle = (renderer.xAngle + (-(dx) * TOUCH_SCALE_FACTOR / 5f)) % 360;
-                float xAngle = 0;
-                if (renderer.xAngle < 0) {
-                    xAngle = 360 + renderer.xAngle;
-                } else {
-                    xAngle = renderer.xAngle;
-                }
-                if ((xAngle < 90 || xAngle > 260)) {
-                    renderer.yAngle = renderer.yAngle + (((dy) * TOUCH_SCALE_FACTOR / 5f)) % 360;
-                } else {
+                try {
+                    if ((mPreviousX - 1 >= x || mPreviousX + 1 <= x) && (mPreviousY - 1 >= y || mPreviousY + 1 <= y)) {
+                        handler.removeCallbacks(mLongPressed);
+                    }
+                    float dx = x - mPreviousX;
+                    float dy = y - mPreviousY;
+                    // reverse direction of rotation above the mid-line
+                    renderer.xAngle = (renderer.xAngle + (-(dx) * TOUCH_SCALE_FACTOR / 5f)) % 360;
+                    float xAngle = 0;
+                    if (renderer.xAngle < 0) {
+                        xAngle = 360 + renderer.xAngle;
+                    } else {
+                        xAngle = renderer.xAngle;
+                    }
+                    if ((xAngle < 90 || xAngle > 260)) {
+                        renderer.yAngle = renderer.yAngle + (((dy) * TOUCH_SCALE_FACTOR / 5f)) % 360;
+                    } else {
+                        renderer.yAngle = renderer.yAngle + (-((dy) * TOUCH_SCALE_FACTOR / 5f)) % 360;
+                    }
                     renderer.yAngle = renderer.yAngle + (-((dy) * TOUCH_SCALE_FACTOR / 5f)) % 360;
+//                    requestRender();
+                } catch (Exception e1) {
                 }
-//                renderer.yAngle = renderer.yAngle + (-((dy) * TOUCH_SCALE_FACTOR / 5f)) % 360;
-                requestRender();
                 break;
             default:
                 if ((mPreviousX - 1 >= x || mPreviousX + 1 <= x) && (mPreviousY - 1 >= y || mPreviousY + 1 <= y)) {
@@ -300,17 +328,17 @@ public class CubeSurfaceColored extends GLSurfaceView {
             // This triangle is red, green, and blue.
             final float[] triangle1VerticesData = {// X, Y, Z,
                     //front
-                    -0.6f, -0.6f, 0.6f, 0.6f, -0.6f, 0.6f, 0.6f, 0.6f, 0.6f, -0.6f, 0.6f, 0.6f,
+                    -0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, 0.5f, 0.5f, 0.5f, -0.5f, 0.5f, 0.5f,
                     // Right
-                    0.6f, -0.6f, 0.6f, 0.6f, -0.6f, -0.6f, 0.6f, 0.6f, -0.6f, 0.6f, 0.6f, 0.6f,
+                    0.5f, -0.5f, 0.5f, 0.5f, -0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, 0.5f, 0.5f,
                     // Back
-                    0.6f, -0.6f, -0.6f, -0.6f, -0.6f, -0.6f, -0.6f, 0.6f, -0.6f, 0.6f, 0.6f, -0.6f,
+                    0.5f, -0.5f, -0.5f, -0.5f, -0.5f, -0.5f, -0.5f, 0.5f, -0.5f, 0.5f, 0.5f, -0.5f,
                     // Left
-                    -0.6f, -0.6f, -0.6f, -0.6f, -0.6f, 0.6f, -0.6f, 0.6f, 0.6f, -0.6f, 0.6f, -0.6f,
+                    -0.5f, -0.5f, -0.5f, -0.5f, -0.5f, 0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, -0.5f,
                     // Top
-                    -0.6f, 0.6f, 0.6f, 0.6f, 0.6f, 0.6f, 0.6f, 0.6f, -0.6f, -0.6f, 0.6f, -0.6f,
+                    -0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, -0.5f, -0.5f, 0.5f, -0.5f,
                     // Bottom
-                    -0.6f, -0.6f, 0.6f, 0.6f, -0.6f, 0.6f, 0.6f, -0.6f, -0.6f, -0.6f, -0.6f, -0.6f,
+                    -0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, 0.5f, -0.5f, -0.5f, -0.5f, -0.5f, -0.5f,
             };
             // R, G, B, A
             final float[] cubeColorData = {       // Front face (red)
@@ -467,32 +495,27 @@ public class CubeSurfaceColored extends GLSurfaceView {
 
             if (mProgramHandle != 0) {
                 // Bind the vertex shader to the program.
-                GLES20.glAttachShader(mProgramHandle, vertexShaderHandle);
-
-                // Bind the fragment shader to the program.
-                GLES20.glAttachShader(mProgramHandle, fragmentShaderHandle);
-                // Bind attributes
-                GLES20.glBindAttribLocation(mProgramHandle, 0, "a_Position");
-                GLES20.glBindAttribLocation(mProgramHandle, 1, "a_Color");
-                GLES20.glBindAttribLocation(mProgramHandle, 2, "a_TexCoordinate");
-//            loadImageFromServer();
-                // Link the two shaders together into a program.
-                GLES20.glLinkProgram(mProgramHandle);
-
-                mTextureDataHandle0 = loadTexture(glSurfaceView, allBitmaps.get(0));
-                mTextureDataHandle1 = loadTexture(glSurfaceView, allBitmaps.get(1));
-                mTextureDataHandle2 = loadTexture(glSurfaceView, allBitmaps.get(2));
-                mTextureDataHandle3 = loadTexture(glSurfaceView, allBitmaps.get(3));
-                mTextureDataHandle4 = loadTexture(glSurfaceView, allBitmaps.get(4));
-                mTextureDataHandle5 = loadTexture(glSurfaceView, allBitmaps.get(5));
-                // Get the link status.
-                final int[] linkStatus = new int[1];
-                GLES20.glGetProgramiv(mProgramHandle, GLES20.GL_LINK_STATUS, linkStatus, 0);
-
-                // If the link failed, delete the program.
-                if (linkStatus[0] == 0) {
-                    GLES20.glDeleteProgram(mProgramHandle);
-                    mProgramHandle = 0;
+                try {
+                    GLES20.glAttachShader(mProgramHandle, vertexShaderHandle);
+                    GLES20.glAttachShader(mProgramHandle, fragmentShaderHandle);
+                    GLES20.glBindAttribLocation(mProgramHandle, 0, "a_Position");
+                    GLES20.glBindAttribLocation(mProgramHandle, 1, "a_Color");
+                    GLES20.glBindAttribLocation(mProgramHandle, 2, "a_TexCoordinate");
+                    GLES20.glLinkProgram(mProgramHandle);
+                    mTextureDataHandle0 = loadTexture(glSurfaceView, allBitmaps.get(0));
+                    mTextureDataHandle1 = loadTexture(glSurfaceView, allBitmaps.get(1));
+                    mTextureDataHandle2 = loadTexture(glSurfaceView, allBitmaps.get(2));
+                    mTextureDataHandle3 = loadTexture(glSurfaceView, allBitmaps.get(3));
+                    mTextureDataHandle4 = loadTexture(glSurfaceView, allBitmaps.get(4));
+                    mTextureDataHandle5 = loadTexture(glSurfaceView, allBitmaps.get(5));
+                    final int[] linkStatus = new int[1];
+                    GLES20.glGetProgramiv(mProgramHandle, GLES20.GL_LINK_STATUS, linkStatus, 0);
+                    if (linkStatus[0] == 0) {
+                        GLES20.glDeleteProgram(mProgramHandle);
+                        mProgramHandle = 0;
+                    }
+                    allBitmaps.clear();
+                } catch (Exception e) {
                 }
             }
             StartTime = SystemClock.uptimeMillis() / 1000;
@@ -526,17 +549,14 @@ public class CubeSurfaceColored extends GLSurfaceView {
         public void onDrawFrame(GL10 glUnused) {
             endTime = System.currentTimeMillis();
             long dt = endTime - startTime;
-            if (dt < 33)
+            if (dt < 50)
                 try {
-                    long da = (33 - dt);
+                    long da = (50 - dt);
                     Thread.sleep(da);
                 } catch (Exception e) {
                 }
             startTime = System.currentTimeMillis();
-//            try {
-//                Thread.sleep(10);
-//            } catch (Exception e) {
-//            }
+
             GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
             GLES20.glUseProgram(mProgramHandle);
             try {
@@ -588,8 +608,9 @@ public class CubeSurfaceColored extends GLSurfaceView {
                 GLES20.glUniform1i(mTextureUniformHandle, 5);
                 draw(mcubeVertices, 5);
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
+
         }
 
 
@@ -630,15 +651,9 @@ public class CubeSurfaceColored extends GLSurfaceView {
 
     public static int loadTexture(GLSurfaceView mActivityContext2, final Bitmap bitmap) {
         final int[] textureHandle = new int[1];
-        ;
         try {
             GLES20.glGenTextures(1, textureHandle, 0);
             if (textureHandle[0] != 0) {
-                final BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inScaled = true;   // No pre-scaling
-                // Read in the resource
-                //            final Bitmap bitmap = BitmapFactory.decodeResource(mActivityContext2.getResources(), resourceId, options);
-                // Bind to the texture in OpenGL
                 GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureHandle[0]);
                 // Set filtering
                 GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_NEAREST);

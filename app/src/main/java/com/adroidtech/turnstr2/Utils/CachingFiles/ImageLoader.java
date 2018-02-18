@@ -11,6 +11,8 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -154,6 +156,13 @@ public class ImageLoader {
                 os.close();
             }
             bitmap = decodeFile(f);
+            try {
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 0, out);
+                bitmap = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return bitmap;
         } catch (Throwable ex) {
             ex.printStackTrace();

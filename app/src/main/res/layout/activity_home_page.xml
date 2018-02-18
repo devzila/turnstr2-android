@@ -17,7 +17,7 @@
         <LinearLayout
             android:id="@+id/search"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="35dp"
             android:layout_margin="5dp"
             android:background="@drawable/rounder_search_back"
             android:gravity="center_vertical"
@@ -30,13 +30,19 @@
                 android:src="@mipmap/search" />
 
             <EditText
+                android:id="@+id/et_search"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:gravity="center_vertical"
                 android:hint="Search"
+                android:imeOptions="actionDone"
+                android:maxLines="1"
+                android:singleLine="true"
                 android:textColor="@color/text_blue"
                 android:textSize="16sp" />
+
         </LinearLayout>
 
         <View
@@ -109,7 +115,7 @@
                         android:id="@+id/ll_fav5_users"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        android:layout_gravity="center"
+                        android:gravity="center"
                         android:orientation="horizontal"
                         android:weightSum="1"></LinearLayout>
                 </HorizontalScrollView>
@@ -139,17 +145,21 @@
                         android:textSize="14sp" />
                 </FrameLayout>
 
-
-                <LinearLayout
-                    android:id="@+id/turnt_stories"
+                <HorizontalScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="85dp"
-                    android:layout_gravity="center"
+                    android:layout_height="104dp"
                     android:background="@color/text_blue"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"></LinearLayout>
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:id="@+id/turnt_stories"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/text_blue"
+                        android:gravity="center"
+                        android:orientation="horizontal"></LinearLayout>
+                </HorizontalScrollView>
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -179,7 +189,8 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_listview"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:nestedScrollingEnabled="false" />
 
                 <View
                     android:layout_width="match_parent"
@@ -191,7 +202,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
         android:gravity="center">
 
         <ImageView

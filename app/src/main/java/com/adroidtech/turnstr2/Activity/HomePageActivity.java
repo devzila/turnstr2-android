@@ -3,6 +3,7 @@ package com.adroidtech.turnstr2.Activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -10,8 +11,11 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,6 +30,7 @@ import com.adroidtech.turnstr2.CustomeViews.OnLoadMoreListener;
 import com.adroidtech.turnstr2.Models.LoginDetailModel;
 import com.adroidtech.turnstr2.Models.MyStoryModel;
 import com.adroidtech.turnstr2.Models.UserFav5Model;
+import com.adroidtech.turnstr2.Models.VideoStoryModel;
 import com.adroidtech.turnstr2.R;
 import com.adroidtech.turnstr2.Utils.GeneralValues;
 import com.adroidtech.turnstr2.Utils.PreferenceKeys;
@@ -35,6 +40,7 @@ import com.adroidtech.turnstr2.WebServices.CommonAsync;
 import com.adroidtech.turnstr2.chat.groupchannel.GroupChannelActivity;
 import com.google.gson.Gson;
 import com.sendbird.android.shadow.com.google.gson.reflect.TypeToken;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -77,8 +83,12 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
     private int mPageNo = 0;
     private int total_pages = 0;
     private int current_page = 0;
-    private int mNextPage = 0;
+    private int mNextPage = 1;
     private MyStoryAdapter myStoryAdapter;
+    private int mPagLoaded = 1;
+    private EditText et_search;
+    private ArrayList<Integer> mAllLoadedPages = new ArrayList<>();
+    private ArrayList<VideoStoryModel> allVideoStoryModel = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,27 +97,36 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
         viewIntail();
         userDetail = sharedPreference.getSerializableObject(PreferenceKeys.USER_DETAIL, LoginDetailModel.class);
         getFav5FromServer();
+        getAllVideos();
         getAllStorieFromServer();
-        getPopularStorieFromServer();
+//        getPopularStorieFromServer();
+    }
+
+    private void getAllVideos() {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("auth_token", sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN));
+        new CommonAsync(this, "GET", this, GeneralValues.GET_VIDEOS, null, headers).execute();
     }
 
     private void getAllStorieFromServer() {
         try {
-            JSONObject mJson = new JSONObject();
-            mJson.put("page", mNextPage + "");
-            HashMap<String, String> headers = new HashMap<>();
-            headers.put("auth_token", sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN));
-            new CommonAsync(this, "GET", this, GeneralValues.GET_ALL_STORIES, null, headers).execute();
+            if (!mAllLoadedPages.contains(mNextPage)) {
+                mPagLoaded = mNextPage;
+                mAllLoadedPages.add(mNextPage);
+                JSONObject mJson = new JSONObject();
+                mJson.put("page", mNextPage + "");
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("auth_token", sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN));
+                new CommonAsync(this, "GET", this, GeneralValues.GET_ALL_STORIES, mJson, headers).execute();
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
     private void getPopularStorieFromServer() {
         if (allPopularStory == null || allPopularStory.size() == 0) {
             HashMap<String, String> headers = new HashMap<>();
-//        headers.put("auth_token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOiIyMDE3LTA2LTE0IDA2OjU0OjM0IFVUQyJ9.M7pgzA4ktNVvuDFvKMqESJfHmLQCobp0WNjC6k2Kjac");
             headers.put("auth_token", sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN));
             new CommonAsync(this, "GET", this, GeneralValues.GET_POPULARS_STORIES, null, headers).execute();
         } else {
@@ -118,7 +137,6 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
     private void getFav5FromServer() {
         if (favStorysList == null || favStorysList.size() == 0) {
             HashMap<String, String> headers = new HashMap<>();
-//        headers.put("auth_token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOiIyMDE3LTA2LTE0IDA2OjU0OjM0IFVUQyJ9.M7pgzA4ktNVvuDFvKMqESJfHmLQCobp0WNjC6k2Kjac");
             headers.put("auth_token", sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN));
             new CommonAsync(this, "GET", this, GeneralValues.GET_USER_FAVE5
                     .replace("_MEMBER_ID_", userDetail.getUser().getId() + ""), null, headers).execute();
@@ -145,6 +163,25 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
     }
 
     private void viewIntail() {
+        et_search = (EditText) findViewById(R.id.et_search);
+        et_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.FLAG_EDITOR_ACTION)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    try {
+                        String searchText = et_search.getText().toString();
+                        Intent intent = new Intent(HomePageActivity.this, SearchStoryActivity.class);
+                        intent.putExtra("SEARCH_TEXT", searchText);
+                        startActivity(intent);
+
+//                        searchApi(searchText);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                return false;
+            }
+        });
         recycleView = (RecyclerView) findViewById(R.id.recycler_listview);
         ll_fav5_users = (LinearLayout) findViewById(R.id.ll_fav5_users);
         turnt_stories = (LinearLayout) findViewById(R.id.turnt_stories);
@@ -152,13 +189,13 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
         nested_scroll.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int dx, int dy, int oldScrollX, int oldScrollY) {
-                if (dy > 0) {
-                    LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recycleView.getLayoutManager();
+                if (dy > 0 && oldScrollY < dy) {
+                    GridLayoutManager linearLayoutManager = (GridLayoutManager) recycleView.getLayoutManager();
                     int totalItemCount = linearLayoutManager.getItemCount();
-                    int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+                    int lastVisibleItem = linearLayoutManager.findLastCompletelyVisibleItemPosition();
                     if (totalItemCount == (lastVisibleItem + 1)) {
                         HomePageActivity.this.onLoadMore();
-                        lastItemIndexForScroll = linearLayoutManager.findFirstVisibleItemPosition();
+                        lastItemIndexForScroll = linearLayoutManager.findLastCompletelyVisibleItemPosition();
                     }
                 }
             }
@@ -166,27 +203,19 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
         GridLayoutManager mGridManager = new GridLayoutManager(this, 3);
         recycleView.setLayoutManager(mGridManager);
         recycleView.setItemAnimator(new DefaultItemAnimator());
-        recycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (dy > 0) {
-                    LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                    int totalItemCount = linearLayoutManager.getItemCount();
-                    int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-                    if (totalItemCount == (lastVisibleItem + 1)) {
-                        HomePageActivity.this.onLoadMore();
-                        lastItemIndexForScroll = linearLayoutManager.findFirstVisibleItemPosition();
-                    }
-                }
-            }
-        });
         sharedPreference = new SharedPreference(this);
         findViewById(R.id.nav_contact).setOnClickListener(this);
         findViewById(R.id.nav_box).setOnClickListener(this);
         findViewById(R.id.nav_image).setOnClickListener(this);
         findViewById(R.id.nav_video).setOnClickListener(this);
         findViewById(R.id.nav_chat).setOnClickListener(this);
+    }
+
+    private void searchApi(String searchText) {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("auth_token", sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN));
+        new CommonAsync(this, "GET", this, GeneralValues.SEARCH_STORIES + searchText, null, headers).execute();
+
     }
 
 
@@ -245,11 +274,15 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
 
     @Override
     public void getAsyncResult(String jsonObject, String txt) {
-        Log.e("Data", jsonObject.toString());
         try {
             JSONObject jsonObject1 = new JSONObject(jsonObject);
             if (jsonObject1.has("success") && jsonObject1.getBoolean("success")) {
-                if (txt.contains("/populars")) {
+                if (txt.contains("/videos")) {
+                    Type listType = new TypeToken<ArrayList<VideoStoryModel>>() {
+                    }.getType();
+                    allVideoStoryModel = new Gson().fromJson(jsonObject1.getJSONObject("data").getString("stories"), listType);
+                    updateVideoStorieViews(allVideoStoryModel);
+                } else if (txt.contains("/populars")) {
                     Type listType = new TypeToken<ArrayList<UserFav5Model>>() {
                     }.getType();
                     allPopularStory = new Gson().fromJson(jsonObject1.getJSONObject("data").getString("members"), listType);
@@ -264,14 +297,18 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
                     }.getType();
                     List<MyStoryModel> allStorylisting = new Gson().fromJson(jsonObject1.getJSONObject("data").getString("stories"), listType);
                     int size = mAllStorylisting.size();
-                    this.mAllStorylisting.addAll(allStorylisting);
                     if (myStoryAdapter != null) {
-                        myStoryAdapter.notifyItemRangeChanged(size, allStorylisting.size());
+                        for (int i = 0; i < allStorylisting.size(); i++) {
+                            this.mAllStorylisting.add(allStorylisting.get(i));
+                            myStoryAdapter.notifyItemChanged(mAllStorylisting.size());
+                        }
+//                        myStoryAdapter.notifyItemRangeChanged(size, allStorylisting.size());
                     } else {
+                        this.mAllStorylisting.addAll(allStorylisting);
                         myStoryAdapter = new MyStoryAdapter(HomePageActivity.this, mAllStorylisting, this);
                         recycleView.setAdapter(myStoryAdapter);
                     }
-                    mNextPage = jsonObject1.getJSONObject("data").getInt("next_page");
+                    mNextPage = 1 + mPagLoaded;
                     total_pages = jsonObject1.getJSONObject("data").getInt("total_pages");
                     current_page = jsonObject1.getJSONObject("data").getInt("current_page");
 
@@ -285,6 +322,33 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
 //
     }
 
+    private void updateVideoStorieViews(ArrayList<VideoStoryModel> allVideoStoryModel) {
+        try {
+            turnt_stories.removeAllViews();
+            for (int i = 0; i < allVideoStoryModel.size(); i++) {
+                LayoutInflater inflater = getLayoutInflater();
+                View view = inflater.inflate(R.layout.video_thumb_view, turnt_stories, false);
+                final ImageView thumb_image = (ImageView) view.findViewById(R.id.thumb_image);
+                thumb_image.setTag(allVideoStoryModel.get(i));
+                Picasso.with(this).load(allVideoStoryModel.get(i).getThumbUrl()).into(thumb_image);
+                thumb_image.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        VideoStoryModel userData = (VideoStoryModel) thumb_image.getTag();
+                        Intent intent = new Intent(HomePageActivity.this, ViewVideoActivity.class);
+                        intent.putExtra("VIDEO_DATA", userData);
+                        startActivity(intent);
+                        Toast.makeText(HomePageActivity.this, "Page OPen", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                turnt_stories.addView(view);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     private void updatePopularStorieViews(List<UserFav5Model> allStorylist) {
         try {
@@ -294,6 +358,7 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
                 View view = inflater.inflate(R.layout.fav_view_user, turnt_stories, false);
                 final FrameLayout fram_fav = (FrameLayout) view.findViewById(R.id.fram_fav);
                 CubeSurfaceColored view2 = new CubeSurfaceColored(HomePageActivity.this, null, false, fram_fav, "1:1:1");
+                view2.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
                 view2.setZOrderOnTop(false);
                 fram_fav.addView(view2);
                 fram_fav.setTag(allStorylist.get(i));
@@ -310,6 +375,7 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
                     public void getAsyncResult(ArrayList<Bitmap> bitmap, String txt) {
                         fram_fav.removeAllViews();
                         CubeSurfaceColored view = new CubeSurfaceColored(HomePageActivity.this, bitmap, false, fram_fav, "1:1:1");
+                        view.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
                         view.setZOrderOnTop(false);
                         fram_fav.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -329,7 +395,7 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
                 turnt_stories.addView(view);
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 
@@ -340,10 +406,12 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
             for (int i = 0; i < allStorylist.size(); i++) {
                 LayoutInflater inflater = getLayoutInflater();
                 View view = inflater.inflate(R.layout.fav_view_user, ll_fav5_users, false);
-                final FrameLayout fram_fav = (FrameLayout) view.findViewById(R.id.fram_fav);
-                CubeSurfaceColored view2 = new CubeSurfaceColored(HomePageActivity.this, null, false, fram_fav, "1:1:1");
-                view2.setZOrderOnTop(false);
-                fram_fav.addView(view2);
+                final FrameLayout fram_fav =
+                        (FrameLayout) view.findViewById(R.id.fram_fav);
+//                CubeSurfaceColored view2 = new CubeSurfaceColored(HomePageActivity.this, null, false, fram_fav, "1:1:1");
+//                view2.setZOrderOnTop(false);
+//                view2.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+//                fram_fav.addView(view2);
                 fram_fav.setTag(allStorylist.get(i));
                 TextView name = (TextView) view.findViewById(R.id.name);
                 name.setText(allStorylist.get(i).getFirstName());
@@ -359,7 +427,9 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
                     public void getAsyncResult(ArrayList<Bitmap> bitmap, String txt) {
                         fram_fav.removeAllViews();
                         CubeSurfaceColored view = new CubeSurfaceColored(HomePageActivity.this, bitmap, false, fram_fav, "1:1:1");
+                        view.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
                         view.setZOrderOnTop(false);
+                        view.setZOrderMediaOverlay(true);
                         fram_fav.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -388,7 +458,7 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
 
     @Override
     public void onLoadMore() {
-        getAllStorieFromServer();
-        Toast.makeText(this, "Load data", Toast.LENGTH_SHORT).show();
+        if (mPagLoaded < total_pages)
+            getAllStorieFromServer();
     }
 }

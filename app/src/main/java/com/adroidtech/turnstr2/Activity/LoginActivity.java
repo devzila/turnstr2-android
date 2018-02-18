@@ -125,7 +125,6 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
         return password.length() > 4;
     }
 
-
     @Override
     public void getAsyncResult(String jsonObject, String txt) {
         Log.e("Data", jsonObject.toString());

@@ -56,7 +56,7 @@ public class URLImageParser extends AsyncTask<Object, Void, ArrayList<Bitmap>> {
                 String currentUrl = allURL.pop();
                 try {
                     Bitmap bitmap = imageLoader.getCachedBitmap(currentUrl);
-                    bitmap = Bitmap.createScaledBitmap(bitmap, 50, 50, false);
+                    bitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, false);
 //                    URL url = new URL(currentUrl);
 //                    URLConnection Con = url.openConnection();
 //                    Con.setUseCaches(true);

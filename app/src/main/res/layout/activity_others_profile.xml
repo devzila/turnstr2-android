@@ -13,13 +13,25 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-
         <LinearLayout
             android:id="@+id/search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:gravity="right">
+            android:gravity="right|center">
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="left"
+                android:paddingLeft="5dp"
+                android:src="@drawable/ic_back_arrow" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
 
             <TextView
                 android:id="@+id/follow"
@@ -170,8 +182,8 @@
 
             <FrameLayout
                 android:id="@+id/layout_frame"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
                 android:layout_gravity="center"
                 android:windowIsTranslucent="true"></FrameLayout>
 
@@ -189,38 +201,45 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="3dp"
+                    android:weightSum="1">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_gravity="center"
+                        android:background="@color/text_blue" />
+
+                    <TextView
+                        android:id="@+id/username_fav"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@color/white"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:text="Fave 5"
+                        android:textColor="@color/text_blue"
+                        android:textSize="16sp" />
+                </FrameLayout>
+
                 <HorizontalScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="90dp"
+                    android:layout_height="100dp"
                     android:layout_margin="5dp"
                     android:scrollbars="none">
 
                     <LinearLayout
+                        android:id="@+id/ll_fav5_users"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginTop="5dp"
+                        android:layout_height="90dp"
                         android:gravity="center"
                         android:orientation="horizontal"
-                        android:weightSum="1">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="10dp"
-                            android:text="Fave 5"
-                            android:textColor="@color/text_blue"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <LinearLayout
-                            android:id="@+id/ll_fav5_users"
-                            android:layout_width="match_parent"
-                            android:layout_height="80dp"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:weightSum="1"></LinearLayout>
-                    </LinearLayout>
+                        android:weightSum="1"></LinearLayout>
                 </HorizontalScrollView>
 
                 <FrameLayout
@@ -248,17 +267,21 @@
                         android:textSize="16sp" />
                 </FrameLayout>
 
-
-                <LinearLayout
-                    android:id="@+id/turnt_stories"
+                <HorizontalScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:layout_gravity="center"
+                    android:layout_height="104dp"
                     android:background="@color/text_blue"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"></LinearLayout>
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:id="@+id/turnt_stories"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/text_blue"
+                        android:gravity="center"
+                        android:orientation="horizontal"></LinearLayout>
+                </HorizontalScrollView>
 
                 <FrameLayout
                     android:layout_width="match_parent"

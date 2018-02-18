@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
+
 import com.adroidtech.turnstr2.Utils.CommanFunctions;
 import com.adroidtech.turnstr2.Utils.GeneralValues;
 import com.adroidtech.turnstr2.Utils.PreferenceKeys;
@@ -52,7 +53,6 @@ public class CommonAsync extends AsyncTask<String, Void, String> {
         this.asyncCallback = asyncCallback;
         this.extraHeaders = extraHeaders;
     }
-
 
 
     public CommonAsync(Context context, JSONObject jsonObject, AsyncCallback asyncCallback, String masterCall, String app_token) {
@@ -121,6 +121,11 @@ public class CommonAsync extends AsyncTask<String, Void, String> {
         WebApi webApi = WebApi.getInstance();
         String s = null;
         try {
+            if (extraHeaders != null) {
+                String auth = extraHeaders.get("auth_token");
+                extraHeaders.put("Authorization", auth);
+                extraHeaders.put("auth-token", auth);
+            }
             if ((request_type != null) && request_type.equals("GET")) {
                 s = webApi.webCallForGet(context, jsonObject, masterCall, extraHeaders);
             } else if ((request_type != null) && request_type.equals("PUT")) {
