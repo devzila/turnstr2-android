@@ -123,8 +123,8 @@ public class CommonAsync extends AsyncTask<String, Void, String> {
         try {
             if (extraHeaders != null) {
                 String auth = extraHeaders.get("auth_token");
-                extraHeaders.put("Authorization", auth);
-                extraHeaders.put("auth-token", auth);
+//                extraHeaders.put("Authorization", auth);
+//                extraHeaders.put("auth-token", auth);
             }
             if ((request_type != null) && request_type.equals("GET")) {
                 s = webApi.webCallForGet(context, jsonObject, masterCall, extraHeaders);
