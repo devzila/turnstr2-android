@@ -46,14 +46,14 @@ public class GeneralValues {
     public static final String GET_USER_FAVE5 = "/v1/members/_MEMBER_ID_/favourites";
 
     public static final String LIVE_SESSION = "/v1/user/live_session ";
-<<<<<<< HEAD
+
     public static final String GOLIVE_SESSION = "/v1/user/golive_session ";
     public static final String LIVE_NOTIFY = "/v1/user/live_notify";
-=======
+
     public static final String MEMBERS_FOLLOW = "/v1/members/_MEMBER_ID_/follow";
     public static final String MEMBERS_UNFOLLOW = "/v1/members/_MEMBER_ID_/unfollow";
     public static final String MEMBERS_FAVOURITES = "/v1/members/_MEMBER_ID_/favourites";
->>>>>>> 333bcd1339db26ced6d63924ed8ead52146c3f63
+
 
 //    public static final String MEMBERS_URL = "/v1/members ";
 

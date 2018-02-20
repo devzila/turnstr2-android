@@ -64,16 +64,16 @@
             android:name=".chat.activitys.AllFriendList"
             android:label="New Chat?"
             android:screenOrientation="portrait" />
-<<<<<<< HEAD
+
         <activity android:name=".GoLive.StartGoLive_Activity" android:screenOrientation="portrait"/>
-=======
+
         <activity
             android:name=".Activity.UserProfileViewActivity"
             android:label="New Chat?"
             android:screenOrientation="portrait" />
 
 
->>>>>>> 333bcd1339db26ced6d63924ed8ead52146c3f63
+
         <!-- <meta-data -->
         <!-- android:name="com.facebook.sdk.ApplicationId" -->
         <!-- android:value="@string/facebook_app_id" /> -->
@@ -121,43 +121,31 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.HomePageActivity"
-<<<<<<< HEAD
+
             android:screenOrientation="portrait"></activity>
 
         <activity android:name=".GoLive.MainVideoActivity"/>
         <activity android:name=".videoChat.MainVideoActivity"/>
         <activity android:name=".chat.activitys.AllFriendListVideo"/>
 
-=======
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".videoChat.MainVideoActivity" />
-        <activity android:name=".chat.activitys.AllFriendListVideo" />
->>>>>>> 333bcd1339db26ced6d63924ed8ead52146c3f63
+
         <activity
             android:name=".Activity.ViewStoryActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.ViewFullScrrenStoryActivity"
-<<<<<<< HEAD
+
             android:screenOrientation="portrait"></activity>
 
 
 
-    </application>
-
-
-
-
-=======
-            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.SearchStoryActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.ViewVideoActivity"
             android:screenOrientation="portrait" />
->>>>>>> 333bcd1339db26ced6d63924ed8ead52146c3f63
+
 
     </application>
 

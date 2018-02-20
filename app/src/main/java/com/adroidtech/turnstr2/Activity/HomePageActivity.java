@@ -26,11 +26,11 @@ import com.adroidtech.turnstr2.Adapter.MyStoryAdapter;
 import com.adroidtech.turnstr2.CubeView.CubeSurfaceColored;
 import com.adroidtech.turnstr2.CubeView.Cubesurfaceview;
 import com.adroidtech.turnstr2.CubeView.URLImageParser;
-<<<<<<< HEAD
+
 import com.adroidtech.turnstr2.GoLive.StartGoLive_Activity;
-=======
+
 import com.adroidtech.turnstr2.CustomeViews.OnLoadMoreListener;
->>>>>>> 333bcd1339db26ced6d63924ed8ead52146c3f63
+
 import com.adroidtech.turnstr2.Models.LoginDetailModel;
 import com.adroidtech.turnstr2.Models.MyStoryModel;
 import com.adroidtech.turnstr2.Models.UserFav5Model;
