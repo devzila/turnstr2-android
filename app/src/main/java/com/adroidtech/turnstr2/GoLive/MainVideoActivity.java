@@ -75,7 +75,7 @@ public class MainVideoActivity extends AppCompatActivity
     private RelativeLayout mPublisherViewContainer;
   //  private RelativeLayout mSubscriberViewContainer;
     private SharedPreference sharedPreference;
-    private ImageView addMoreUser;
+
   //  private String memberID;
     List<Stream> streamList=new ArrayList<>();
   //  private RelativeLayout mSubscriberViewContainer1;
@@ -161,8 +161,6 @@ public class MainVideoActivity extends AppCompatActivity
         btnSend=(ImageView)findViewById(R.id.btnSend);
         btnSend.setOnClickListener(this);
         edtSend=(EditText)findViewById(R.id.edtSend);
-        addMoreUser=(ImageView)findViewById(R.id.addMoreUser);
-        addMoreUser.setOnClickListener(this);
 
         imgMic=(ImageView)findViewById(R.id.imgMic);
         imgEndCall=(ImageView)findViewById(R.id.imgEndCall);
@@ -372,7 +370,7 @@ public class MainVideoActivity extends AppCompatActivity
                         BaseVideoRenderer.STYLE_VIDEO_FILL);
                 mPublisherViewContainer.addView(mPublisher.getView());
                 if (mPublisher.getView() instanceof GLSurfaceView) {
-                    ((GLSurfaceView) mPublisher.getView()).setZOrderOnTop(true);
+                    ((GLSurfaceView) mPublisher.getView()).setZOrderOnTop(false);
                 }
 
                 mSession.publish(mPublisher);
@@ -412,8 +410,10 @@ public class MainVideoActivity extends AppCompatActivity
 //            }
         mPublisherViewContainer.addView(mSubscriber.getView());
         if (mSubscriber.getView() instanceof GLSurfaceView) {
-            ((GLSurfaceView) mSubscriber.getView()).setZOrderOnTop(true);
+            ((GLSurfaceView) mSubscriber.getView()).setZOrderOnTop(false);
+
         }
+
 
 
       //  }
@@ -606,10 +606,10 @@ public class MainVideoActivity extends AppCompatActivity
     @Override
     public void onClick(View v) {
 
-        if(v==addMoreUser)
-        {
-            startActivity(new Intent(getApplicationContext(), AllFriendListVideo.class));
-        }
+//        if(v==addMoreUser)
+//        {
+//            startActivity(new Intent(getApplicationContext(), AllFriendListVideo.class));
+//        }
         if(v==imgMic)
         {
             if(mPublisher.getPublishAudio())
