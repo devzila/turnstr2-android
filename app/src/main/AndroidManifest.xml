@@ -60,7 +60,7 @@
             android:name=".chat.activitys.AllFriendList"
             android:label="New Chat?"
             android:screenOrientation="portrait" />
-
+        <activity android:name=".GoLive.StartGoLive_Activity" android:screenOrientation="portrait"/>
         <!-- <meta-data -->
         <!-- android:name="com.facebook.sdk.ApplicationId" -->
         <!-- android:value="@string/facebook_app_id" /> -->
@@ -110,7 +110,7 @@
             android:name=".Activity.HomePageActivity"
             android:screenOrientation="portrait"></activity>
 
-
+        <activity android:name=".GoLive.MainVideoActivity"/>
         <activity android:name=".videoChat.MainVideoActivity"/>
         <activity android:name=".chat.activitys.AllFriendListVideo"/>
 
@@ -120,6 +120,9 @@
         <activity
             android:name=".Activity.ViewFullScrrenStoryActivity"
             android:screenOrientation="portrait"></activity>
+
+
+
     </application>
 
 

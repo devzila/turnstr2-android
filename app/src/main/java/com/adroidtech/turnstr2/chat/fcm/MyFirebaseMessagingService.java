@@ -99,9 +99,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                Log.e("TAG", ":::::  "+remoteMessage.getData().get("caller_id"));
                Log.e("TAG", ":::::  "+remoteMessage.getData().get("sender_id"));
                Log.e("TAG", ":::::  "+remoteMessage.getData().get("token"));
+               Log.e("TAG", ":::::  "+remoteMessage.getData().get("call_type"));
                 //JSONObject tokbox=new JSONObject(remoteMessage.getData().get("caller_tokbox_session_id"));
 
-                sendTokboxNotification(this, remoteMessage.getData().get("message"), remoteMessage.getData().get("caller_tokbox_session_id"), remoteMessage.getData().get("token"));
+                if(remoteMessage.getData().get("call_type").toString().trim().equals("go_live_subscription"))
+                {
+                    sendTokboxNotification_go_live(this, remoteMessage.getData().get("message"), remoteMessage.getData().get("caller_tokbox_session_id"), remoteMessage.getData().get("token"));
+                }
+                else {
+                    sendTokboxNotification(this, remoteMessage.getData().get("message"), remoteMessage.getData().get("caller_tokbox_session_id"), remoteMessage.getData().get("token"));
+                }
+
 
 
             } catch (Exception e1) {
@@ -165,6 +173,38 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_call_black_24dp)
                 .setContentTitle("Calling")//context.getResources().getString(R.string.app_name))
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setPriority(Notification.PRIORITY_MAX)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setContentIntent(pendingIntent);
+
+        if (PreferenceUtils.getNotificationsShowPreviews(context)) {
+            notificationBuilder.setContentText(messageBody);
+        } else {
+            notificationBuilder.setContentText("Somebody sent you a message.");
+        }
+
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+    }
+
+    public static void sendTokboxNotification_go_live(Context context, String messageBody, String sessionId, String token) {
+        Intent intent = new Intent(context, com.adroidtech.turnstr2.GoLive.MainVideoActivity.class);
+        intent.putExtra("sessionId", sessionId);
+        intent.putExtra("token", token);
+        intent.putExtra("call_type", "go_live_subscription");
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 /* Request code */, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
+                .setSmallIcon(R.drawable.ic_video_call_black_24dp)
+                .setContentTitle("Go live")//context.getResources().getString(R.string.app_name))
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setPriority(Notification.PRIORITY_MAX)

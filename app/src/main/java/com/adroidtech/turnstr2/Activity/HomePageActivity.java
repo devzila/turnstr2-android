@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.adroidtech.turnstr2.Adapter.MyStoryAdapter;
 import com.adroidtech.turnstr2.CubeView.Cubesurfaceview;
 import com.adroidtech.turnstr2.CubeView.URLImageParser;
+import com.adroidtech.turnstr2.GoLive.StartGoLive_Activity;
 import com.adroidtech.turnstr2.Models.LoginDetailModel;
 import com.adroidtech.turnstr2.Models.MyStoryModel;
 import com.adroidtech.turnstr2.R;
@@ -219,7 +220,7 @@ public class HomePageActivity extends Activity implements AsyncCallback, View.On
 //                startActivity(new Intent(HomePageActivity.this,. class));
                 break;
             case (R.id.nav_video):
-//                startActivity(new Intent(HomePageActivity.this,. class));
+                startActivity(new Intent(HomePageActivity.this, StartGoLive_Activity.class));
                 break;
             case (R.id.nav_chat):
                 startActivity(new Intent(HomePageActivity.this, GroupChannelActivity.class));

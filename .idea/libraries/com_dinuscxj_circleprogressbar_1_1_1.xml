@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="com.dinuscxj:circleprogressbar-1.1.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../android-sdk-macosx/gradle-3.3/caches/transforms-1/files-1.1/circleprogressbar-1.1.1.aar/ccdfd13002e517d6a71ed848cd000921/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../../android-sdk-macosx/gradle-3.3/caches/transforms-1/files-1.1/circleprogressbar-1.1.1.aar/ccdfd13002e517d6a71ed848cd000921/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../android-sdk-macosx/gradle-3.3/caches/modules-2/files-2.1/com.dinuscxj/circleprogressbar/1.1.1/1a9b145ed9bcf800dde71d1f31211d612954921b/circleprogressbar-1.1.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

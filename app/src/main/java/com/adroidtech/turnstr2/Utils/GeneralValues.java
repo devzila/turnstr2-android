@@ -36,6 +36,8 @@ public class GeneralValues {
 
 
     public static final String LIVE_SESSION = "/v1/user/live_session ";
+    public static final String GOLIVE_SESSION = "/v1/user/golive_session ";
+    public static final String LIVE_NOTIFY = "/v1/user/live_notify";
 
 //    public static final String MEMBERS_URL = "/v1/members ";
 

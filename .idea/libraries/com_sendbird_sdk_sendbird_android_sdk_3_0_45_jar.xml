@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="com.sendbird.sdk:sendbird-android-sdk:3.0.45@jar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../android-sdk-macosx/gradle-3.3/caches/modules-2/files-2.1/com.sendbird.sdk/sendbird-android-sdk/3.0.45/6cbccf39b3bd2743e0e57100477d3f9df5b7af11/sendbird-android-sdk-3.0.45.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
