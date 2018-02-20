@@ -36,9 +36,9 @@ public class GeneralValues {
     public static String Push_Token = "";
     public static final String DEVICE_TYPE = "ANDROID";
     //Stagging
-    public static final String BASE_URL = "https://fathomless-retreat-45620.herokuapp.com";
+//    public static final String BASE_URL = "https://fathomless-retreat-45620.herokuapp.com";
     //live
-//    public static final String BASE_URL = "http://18.218.6.149";
+    public static final String BASE_URL = "http://18.218.6.149";
 
     public static final String MEMBERS_URL = "/v1/members ";
     public static final String GET_MEMBERS_DATA = "/v1/members/_MEMBER_ID_";

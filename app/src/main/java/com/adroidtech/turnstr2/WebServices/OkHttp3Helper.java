@@ -56,8 +56,8 @@ public class OkHttp3Helper {
             throws Exception {
         okhttp3.Request.Builder requestBuilder = new okhttp3.Request.Builder().url(url);
         requestBuilder.header("auth_token", authToken);
-//        requestBuilder.header("auth-token", authToken);
-//        requestBuilder.header("Authorization", authToken);
+        requestBuilder.header("auth-token", authToken);
+        requestBuilder.header("Authorization", authToken);
         if (formField != null) {
             okhttp3.FormBody.Builder formBodyBuilder = new okhttp3.FormBody.Builder();
             for (Map.Entry<String, String> entry : formField.entrySet()) {
@@ -109,8 +109,8 @@ public class OkHttp3Helper {
             okhttp3.MultipartBody.Builder multipartBodyBuilder = new okhttp3.MultipartBody.Builder();
             multipartBodyBuilder.setType(okhttp3.MultipartBody.FORM);
             requestBuilder.header("auth_token", authToken);
-//            requestBuilder.header("auth-token", authToken);
-//            requestBuilder.header("Authorization", authToken);
+            requestBuilder.header("auth-token", authToken);
+            requestBuilder.header("Authorization", authToken);
             if (formField != null) {
                 for (Map.Entry<String, String> entry : formField.entrySet()) {
                     multipartBodyBuilder.addFormDataPart(entry.getKey(), entry.getValue());
@@ -147,8 +147,8 @@ public class OkHttp3Helper {
             okhttp3.MultipartBody.Builder multipartBodyBuilder = new okhttp3.MultipartBody.Builder();
             multipartBodyBuilder.setType(okhttp3.MultipartBody.FORM);
             requestBuilder.header("auth_token", authToken);
-//            requestBuilder.header("auth-token", authToken);
-//            requestBuilder.header("Authorization", authToken);
+            requestBuilder.header("auth-token", authToken);
+            requestBuilder.header("Authorization", authToken);
             if (formField != null) {
                 for (Map.Entry<String, String> entry : formField.entrySet()) {
                     multipartBodyBuilder.addFormDataPart(entry.getKey(), entry.getValue());

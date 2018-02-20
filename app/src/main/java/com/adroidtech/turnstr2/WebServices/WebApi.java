@@ -68,8 +68,8 @@ public class WebApi {
             conn.setDoInput(true);
             conn.setDoOutput(false);
             conn.setRequestProperty("auth_token", extraHeaders.get("auth_token"));
-//            conn.setRequestProperty("Authorization", extraHeaders.get("auth_token"));
-//            conn.setRequestProperty("auth-token", extraHeaders.get("auth_token"));
+            conn.setRequestProperty("Authorization", extraHeaders.get("auth_token"));
+            conn.setRequestProperty("auth-token", extraHeaders.get("auth_token"));
             conn.setRequestProperty("Content-Type", "application/json;charset=utf-8");
             conn.setRequestProperty("Accept", "application/json;charset=utf-8");
             conn.setConnectTimeout(60 * 1000);
