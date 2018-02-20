@@ -128,6 +128,8 @@ public class ImagePickerUtils {
     public static boolean checkAndRequestPermissions(Activity activity) {
         int permissionCamera = ContextCompat.checkSelfPermission(activity,
                 Manifest.permission.CAMERA);
+        int permissionAudio = ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.RECORD_AUDIO);
         int permissionWriteStorage = ContextCompat.checkSelfPermission(activity,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE);
         int permissionReadStorage = ContextCompat.checkSelfPermission(activity,
@@ -136,6 +138,9 @@ public class ImagePickerUtils {
 
         if (permissionCamera != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.CAMERA);
+        }
+        if (permissionAudio != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.RECORD_AUDIO);
         }
         if (permissionWriteStorage != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -177,6 +182,7 @@ public class ImagePickerUtils {
             toast.show();
         }
     }
+
     /**
      * FileUriOfImage is used to convert the base document or camera uri to file uri ,
      * so that we can use this to get image data.

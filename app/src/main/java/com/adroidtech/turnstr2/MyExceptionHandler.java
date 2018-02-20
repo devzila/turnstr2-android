@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Process;
 
+import com.adroidtech.turnstr2.Activity.HomePageActivity;
+import com.adroidtech.turnstr2.Activity.LoginActivity;
 import com.adroidtech.turnstr2.Utils.PreferenceKeys;
 import com.adroidtech.turnstr2.Utils.SharedPreference;
 
@@ -21,7 +23,7 @@ public class MyExceptionHandler implements Thread.UncaughtExceptionHandler {
 
     public MyExceptionHandler(Context context) {
         myContext = context;
-        myActivityClass = MainActivity.class;
+        myActivityClass = LoginActivity.class;
     }
 
     public void uncaughtException(Thread thread, Throwable exception) {
@@ -30,7 +32,7 @@ public class MyExceptionHandler implements Thread.UncaughtExceptionHandler {
         System.err.println(stackTrace);// You can use LogCat too
         Intent intent;
         try {
-            intent = new Intent(myContext, MainActivity.class);
+            intent = new Intent(myContext, LoginActivity.class);
 
         } catch (Exception e) {
             e.printStackTrace();

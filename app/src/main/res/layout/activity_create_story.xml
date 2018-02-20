@@ -60,6 +60,7 @@
                 app:cameraAudio="on"
                 app:cameraCropOutput="true"
                 app:cameraFacing="back"
+                app:cameraPictureSizeMinWidth="200"
                 app:cameraFlash="off"
                 app:cameraGestureLongTap="none"
                 app:cameraGesturePinch="zoom"
@@ -67,8 +68,6 @@
                 app:cameraGestureScrollVertical="none"
                 app:cameraGestureTap="focusWithMarker"
                 app:cameraJpegQuality="30"
-                app:cameraPictureSizeAspectRatio="1:1"
-                app:cameraPictureSizeMaxWidth="100"
                 app:cameraPictureSizeSmallest="true"
                 app:cameraVideoQuality="lowest" />
 

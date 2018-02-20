@@ -49,131 +49,144 @@
 
         </LinearLayout>
 
-        <FrameLayout
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nested_scroll"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="-20dp">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@color/yello_back"
-                android:orientation="horizontal"
-                android:weightSum="1">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="0dp"
+                <FrameLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="5dp"
-                    android:layout_weight="0.35"
-                    android:src="@mipmap/turnstr_logo_white" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="0.13" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight=".5"
-                    android:background="@color/yello_back"
-                    android:gravity="right"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
+                    android:layout_gravity="center">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:background="@color/yello_back"
-                        android:gravity="right"
-                        android:orientation="vertical"
-                        android:padding="2dp"
-                        android:weightSum="1">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="right"
-                            android:text="Posts:"
-                            android:textColor="@color/white"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="right"
-                            android:text="Followers:"
-                            android:textColor="@color/white"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="right"
-                            android:text="Family:"
-                            android:textColor="@color/white"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
                         android:layout_gravity="center"
+
                         android:background="@color/yello_back"
-                        android:gravity="left"
-                        android:orientation="vertical"
-                        android:padding="2dp"
+                        android:orientation="horizontal"
                         android:weightSum="1">
 
-                        <TextView
-                            android:id="@+id/txt_posts"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="left"
-                            android:text="0"
-                            android:textColor="@color/white"
-                            android:textSize="12sp" />
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="5dp"
+                            android:layout_weight="0.35"
+                            android:src="@mipmap/turnstr_logo_white" />
 
-                        <TextView
-                            android:id="@+id/txt_followers"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="left"
-                            android:text="0"
-                            android:textColor="@color/white"
-                            android:textSize="12sp" />
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_weight="0.13" />
 
-                        <TextView
-                            android:id="@+id/txt_family"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="left"
-                            android:text="0"
-                            android:textColor="@color/white"
-                            android:textSize="12sp" />
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight=".5"
+                            android:background="@color/yello_back"
+                            android:gravity="right"
+                            android:orientation="horizontal"
+                            android:weightSum="1">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:background="@color/yello_back"
+                                android:gravity="right"
+                                android:orientation="vertical"
+                                android:padding="2dp"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:gravity="right"
+                                    android:text="Posts:"
+                                    android:textColor="@color/white"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:gravity="right"
+                                    android:text="Followers:"
+                                    android:textColor="@color/white"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:gravity="right"
+                                    android:text="Family:"
+                                    android:textColor="@color/white"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@color/yello_back"
+                                android:gravity="left"
+                                android:orientation="vertical"
+                                android:padding="2dp"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:id="@+id/txt_posts"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:gravity="left"
+                                    android:text="0"
+                                    android:textColor="@color/white"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/txt_followers"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:gravity="left"
+                                    android:text="0"
+                                    android:textColor="@color/white"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/txt_family"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:gravity="left"
+                                    android:text="0"
+                                    android:textColor="@color/white"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                        </LinearLayout>
                     </LinearLayout>
 
-                </LinearLayout>
+                    <FrameLayout
+                        android:id="@+id/layout_frame"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:clickable="false"></FrameLayout>
+
+                </FrameLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_listview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
             </LinearLayout>
-
-            <FrameLayout
-                android:id="@+id/layout_frame"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center"></FrameLayout>
-
-        </FrameLayout>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_listview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+        </android.support.v4.widget.NestedScrollView>
     </LinearLayout>
 
 

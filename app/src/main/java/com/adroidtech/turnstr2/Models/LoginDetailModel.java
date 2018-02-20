@@ -12,7 +12,7 @@ public class LoginDetailModel implements Serializable {
     private String authToken;
     @SerializedName("user")
     @Expose
-    private UserDetailModel user;
+    private ViewUserDetailModel user;
     private final static long serialVersionUID = 3637084470700985229L;
 
     public String getAuthToken() {
@@ -23,11 +23,11 @@ public class LoginDetailModel implements Serializable {
         this.authToken = authToken;
     }
 
-    public UserDetailModel getUser() {
+    public ViewUserDetailModel getUser() {
         return user;
     }
 
-    public void setUser(UserDetailModel user) {
+    public void setUser(ViewUserDetailModel user) {
         this.user = user;
     }
 

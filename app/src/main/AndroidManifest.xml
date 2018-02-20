@@ -25,11 +25,14 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
     <!-- min 16 -->
     <application
         android:name=".chat.activitys.BaseApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/logo"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:supportsRtl="true"
@@ -39,6 +42,7 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -60,7 +64,16 @@
             android:name=".chat.activitys.AllFriendList"
             android:label="New Chat?"
             android:screenOrientation="portrait" />
+<<<<<<< HEAD
         <activity android:name=".GoLive.StartGoLive_Activity" android:screenOrientation="portrait"/>
+=======
+        <activity
+            android:name=".Activity.UserProfileViewActivity"
+            android:label="New Chat?"
+            android:screenOrientation="portrait" />
+
+
+>>>>>>> 333bcd1339db26ced6d63924ed8ead52146c3f63
         <!-- <meta-data -->
         <!-- android:name="com.facebook.sdk.ApplicationId" -->
         <!-- android:value="@string/facebook_app_id" /> -->
@@ -84,7 +97,7 @@
         <activity
             android:name=".Activity.EditProfileActivity"
             android:screenOrientation="portrait" />
-        <!--<activity android:name=".imageFillters.ImageFillterSettingActivity" />-->
+        <!-- <activity android:name=".imageFillters.ImageFillterSettingActivity" /> -->
 
         <service android:name=".chat.fcm.MyFirebaseMessagingService">
             <intent-filter>
@@ -105,20 +118,28 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.GalleryImageActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.HomePageActivity"
+<<<<<<< HEAD
             android:screenOrientation="portrait"></activity>
 
         <activity android:name=".GoLive.MainVideoActivity"/>
         <activity android:name=".videoChat.MainVideoActivity"/>
         <activity android:name=".chat.activitys.AllFriendListVideo"/>
 
+=======
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".videoChat.MainVideoActivity" />
+        <activity android:name=".chat.activitys.AllFriendListVideo" />
+>>>>>>> 333bcd1339db26ced6d63924ed8ead52146c3f63
         <activity
             android:name=".Activity.ViewStoryActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.ViewFullScrrenStoryActivity"
+<<<<<<< HEAD
             android:screenOrientation="portrait"></activity>
 
 
@@ -128,6 +149,16 @@
 
 
 
+=======
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.SearchStoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.ViewVideoActivity"
+            android:screenOrientation="portrait" />
+>>>>>>> 333bcd1339db26ced6d63924ed8ead52146c3f63
 
+    </application>
 
 </manifest>

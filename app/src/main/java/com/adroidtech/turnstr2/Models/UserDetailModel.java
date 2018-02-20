@@ -88,6 +88,11 @@ public class UserDetailModel implements Serializable {
     @SerializedName("live_session")
     @Expose
     private Object liveSession;
+
+
+    @SerializedName("following")
+    @Expose
+    private Boolean following;
     private final static long serialVersionUID = 8762282118809533586L;
 
     public Integer getId() {
@@ -304,6 +309,22 @@ public class UserDetailModel implements Serializable {
 
     public void setLiveSession(Object liveSession) {
         this.liveSession = liveSession;
+    }
+
+    public Boolean getVerified() {
+        return isVerified;
+    }
+
+    public void setVerified(Boolean verified) {
+        isVerified = verified;
+    }
+
+    public Boolean getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(Boolean following) {
+        this.following = following;
     }
 
 }

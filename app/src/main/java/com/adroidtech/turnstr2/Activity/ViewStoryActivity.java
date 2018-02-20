@@ -31,6 +31,7 @@ import com.adroidtech.turnstr2.CubeView.Cubesurfaceview;
 import com.adroidtech.turnstr2.CubeView.URLImageParser;
 import com.adroidtech.turnstr2.Models.CommentsModel;
 import com.adroidtech.turnstr2.Models.MyStoryModel;
+import com.adroidtech.turnstr2.Models.UserFav5Model;
 import com.adroidtech.turnstr2.R;
 import com.adroidtech.turnstr2.Utils.GeneralValues;
 import com.adroidtech.turnstr2.Utils.PreferenceKeys;
@@ -71,6 +72,7 @@ public class ViewStoryActivity extends Activity implements AsyncCallback, View.O
     private MyStoryModel myStoryModel;
     private ImageView share;
     private ImageView comments;
+    private TextView user_name, story_text;
 
 
     @Override
@@ -104,6 +106,8 @@ public class ViewStoryActivity extends Activity implements AsyncCallback, View.O
         });
         layout_frame_main = (FrameLayout) findViewById(R.id.layout_frame1);
         like = (ImageView) findViewById(R.id.like);
+        user_name = (TextView) findViewById(R.id.user_name);
+        story_text = (TextView) findViewById(R.id.story_text);
         like.setOnClickListener(this);
         comments = (ImageView) findViewById(R.id.comments);
         comments.setOnClickListener(this);
@@ -145,6 +149,31 @@ public class ViewStoryActivity extends Activity implements AsyncCallback, View.O
                 layout_frame_main.addView(view);
             }
         }).execute();
+        user_name.setText(userDetail.getFirstName());
+        user_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UserFav5Model user = new UserFav5Model();
+                try {
+                    user.setFirstName(userDetail.getFirstName());
+                    user.setLastName(userDetail.getLastName());
+                    user.setId(userDetail.getId());
+                    user.setUsername(userDetail.getUsername());
+                    user.setOnline(userDetail.getOnline());
+                    user.setAvatarFace1(userDetail.getAvatarFace1());
+                    user.setAvatarFace2(userDetail.getAvatarFace2());
+                    user.setAvatarFace3(userDetail.getAvatarFace3());
+                    user.setAvatarFace4(userDetail.getAvatarFace4());
+                    user.setAvatarFace5(userDetail.getAvatarFace5());
+                    user.setAvatarFace6(userDetail.getAvatarFace6());
+                } catch (Exception e) {
+                }
+                Intent intent = new Intent(ViewStoryActivity.this, UserProfileViewActivity.class);
+                intent.putExtra("USER_DATA", user);
+                startActivity(intent);
+
+            }
+        });
         strings1.push(userDetail.getAvatarFace1());
         strings1.push(userDetail.getAvatarFace2());
         strings1.push(userDetail.getAvatarFace3());
@@ -204,9 +233,9 @@ public class ViewStoryActivity extends Activity implements AsyncCallback, View.O
             case R.id.share:
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
-                String shareBody = "Here is the share content body";
-                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
-                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                String shareBody = myStoryModel.getCaption();
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, myStoryModel.getCaption());
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, cubeMedia.get(0).getMediaUrl());
                 startActivity(Intent.createChooser(sharingIntent, "Share via"));
                 break;
             case R.id.layout_frame:
@@ -214,9 +243,6 @@ public class ViewStoryActivity extends Activity implements AsyncCallback, View.O
                 break;
             case R.id.edit_profile:
                 startActivity(new Intent(ViewStoryActivity.this, EditProfileActivity.class));
-                break;
-            case R.id.btnChat:
-                startActivity(new Intent(ViewStoryActivity.this, GroupChannelActivity.class));
                 break;
         }
     }
@@ -339,8 +365,9 @@ public class ViewStoryActivity extends Activity implements AsyncCallback, View.O
                     Toast.makeText(this, jsonObject1.getString("message"), Toast.LENGTH_SHORT).show();
                     myStoryModel.setHasLiked(!myStoryModel.getHasLiked());
                     updateLike();
-                } else if (txt.contains(" / v1 / stories")) {
+                } else if (txt.contains("/v1/stories")) {
                     myStoryModel = new Gson().fromJson(jsonObject1.getJSONObject("data").getString("story"), MyStoryModel.class);
+                    story_text.setText(myStoryModel.getCaption());
                     updateLike();
                 }
             } else {

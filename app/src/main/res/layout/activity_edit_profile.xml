@@ -162,7 +162,6 @@
                     android:drawableLeft="@mipmap/id"
                     android:drawablePadding="10dp"
                     android:padding="10dp"
-                    android:text="Kim kardashian"
                     android:textColor="@color/yello_back"
                     android:textSize="14sp" />
 
@@ -179,7 +178,6 @@
                     android:drawableLeft="@mipmap/profile"
                     android:drawablePadding="10dp"
                     android:padding="10dp"
-                    android:text="Kimkardashian"
                     android:textColor="@color/yello_back"
                     android:textSize="14sp" />
 
@@ -196,7 +194,6 @@
                     android:drawableLeft="@mipmap/web"
                     android:drawablePadding="10dp"
                     android:padding="10dp"
-                    android:text="http://kimkardashian.com"
                     android:textColor="@color/text_blue"
                     android:textSize="14sp" />
 
@@ -213,7 +210,6 @@
                     android:drawableLeft="@mipmap/info"
                     android:drawablePadding="10dp"
                     android:padding="10dp"
-                    android:text="I am super amazingly talented and I know one day I ll be famous more than anyone else."
                     android:textColor="@color/yello_back"
                     android:textSize="14sp" />
 
@@ -284,7 +280,6 @@
                     android:drawableLeft="@mipmap/mail"
                     android:drawablePadding="10dp"
                     android:padding="10dp"
-                    android:text="Kimkardashian"
                     android:textColor="@color/yello_back"
                     android:textSize="14sp" />
 
@@ -301,7 +296,6 @@
                     android:drawableLeft="@mipmap/phone"
                     android:drawablePadding="10dp"
                     android:padding="10dp"
-                    android:text="9876543210"
                     android:textColor="@color/yello_back"
                     android:textSize="14sp" />
 

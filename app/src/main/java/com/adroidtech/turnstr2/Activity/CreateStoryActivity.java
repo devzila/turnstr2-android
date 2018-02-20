@@ -108,7 +108,7 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
     private ImageButton captureVideo;
     private ImageButton capturePhoto;
     private ImageButton toggleCamera;
-    private ImageView selectedView;
+    private ImageView selectedView, mNextView;
     HashMap<Integer, Uri> uriHashMap = new HashMap<>();
     HashMap<Integer, Uri> uriHashMapThumb = new HashMap<>();
     private SharedPreference sharedPreference;
@@ -171,6 +171,7 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
                 icDeleteSelected.setVisibility(View.VISIBLE);
                 isRecording = false;
                 captureVideo.setImageResource(R.mipmap.nav_video);
+                mNextView.performClick();
             }
         });
     }
@@ -234,6 +235,7 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
         });
         next = (TextView) findViewById(R.id.next);
         selectedView = avatarFace1;
+        mNextView = avatarFace2;
         icDeleteSelected = icDelete1;
         next.setOnClickListener(this);
         avatarFace1.setOnClickListener(this);
@@ -264,22 +266,27 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.avatar_face1:
                 selectedView = (ImageView) view;
+                mNextView = avatarFace2;
                 icDeleteSelected = icDelete1;
                 break;
             case R.id.avatar_face2:
                 selectedView = (ImageView) view;
+                mNextView = avatarFace3;
                 icDeleteSelected = icDelete2;
                 break;
             case R.id.avatar_face3:
                 icDeleteSelected = icDelete3;
+                mNextView = avatarFace4;
                 selectedView = (ImageView) view;
                 break;
             case R.id.avatar_face4:
                 icDeleteSelected = icDelete4;
+                mNextView = avatarFace5;
                 selectedView = (ImageView) view;
                 break;
             case R.id.avatar_face5:
                 icDeleteSelected = icDelete5;
+                mNextView = avatarFace6;
                 selectedView = (ImageView) view;
                 break;
             case R.id.avatar_face6:
@@ -363,15 +370,18 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
                 //TODO implement
                 break;
             case R.id.video:
-                camera.setSessionType(SessionType.VIDEO);
-                myGridView.setVisibility(View.GONE);
-                camera_views.setVisibility(View.VISIBLE);
-                bnt_video.setBackgroundResource(R.color.background_gradient);
-                bnt_library.setBackgroundResource(R.color.black);
-                bnt_photos.setBackgroundResource(R.color.black);
-                capturePhoto.setVisibility(View.GONE);
-
-                captureVideo.setVisibility(View.VISIBLE);
+                try {
+                    camera.setSessionType(SessionType.VIDEO);
+                    myGridView.setVisibility(View.GONE);
+                    camera_views.setVisibility(View.VISIBLE);
+                    bnt_video.setBackgroundResource(R.color.background_gradient);
+                    bnt_library.setBackgroundResource(R.color.black);
+                    bnt_photos.setBackgroundResource(R.color.black);
+                    capturePhoto.setVisibility(View.GONE);
+                    captureVideo.setVisibility(View.VISIBLE);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.captureVideo:
                 // Full version
@@ -390,6 +400,8 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
                 }
                 break;
             case R.id.capturePhoto:
+//                app:cameraPictureSizeAspectRatio="1:1"
+//                app:cameraPictureSizeMaxWidth="100"
                 camera.capturePicture();
                 break;
             case R.id.toggleCamera:
@@ -555,6 +567,7 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
             JSONObject jsonObject1 = new JSONObject(jsonObject);
             if (jsonObject1.has("success") && jsonObject1.getBoolean("success")) {
                 Toast.makeText(CreateStoryActivity.this, jsonObject1.getString("message"), Toast.LENGTH_LONG).show();
+                MyStoryActivity.isStoryCreated = true;
                 finish();
             } else {
                 Toast.makeText(CreateStoryActivity.this, jsonObject1.getString("error"), Toast.LENGTH_LONG).show();
@@ -589,44 +602,59 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
             Cursor thumbCursor = thumbCursorLoader.loadInBackground();
             Bitmap myBitmap = null;
             if (thumbCursor.moveToFirst()) {
-                int thCulumnIndex = thumbCursor.getColumnIndex(thumb_DATA);
-                String thumbPath = thumbCursor.getString(thCulumnIndex);
-                myBitmap = BitmapFactory.decodeFile(thumbPath);
-                thumbV.setImageBitmap(myBitmap);
+                try {
+                    int dataIndex = thumbCursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+//                    for (int i = 0; i < thumbCursor.getCount(); i++) {
+//                        thumbCursor.moveToPosition(i);
+//                        Log.d("MyTag", "Location : " + i + " : " + thumbCursor.getString(dataIndex));
+//                    }
+                    String thumbPath = thumbCursor.getString(dataIndex);
+//                    int thCulumnIndex = thumbCursor.getColumnIndex(thumb_DATA);
+//                    String thumbPath = thumbCursor.getString(thCulumnIndex);
+//                    myBitmap=uriToBitmap(Uri.parse(thumbPath));
+                    myBitmap = BitmapFactory.decodeFile(thumbPath);
+                    thumbV.setImageBitmap(myBitmap);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             return row;
         }
     }
 
     private void galleryViewImages() {
-        String[] from = {MediaStore.MediaColumns.TITLE};
-        int[] to = {android.R.id.text1};
-        CursorLoader cursorLoader = new CursorLoader(this, sourceUri, null, null, null, MediaStore.Audio.Media.TITLE);
-        Cursor cursor = cursorLoader.loadInBackground();
-        mySimpleCursorAdapter = new MyAdapter(this, android.R.layout.simple_list_item_1, cursor, from, to, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
-        myGridView.setAdapter(mySimpleCursorAdapter);
-        myGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Cursor cursor = mySimpleCursorAdapter.getCursor();
-                cursor.moveToPosition(position);
-                int int_ID = 0;
-                try {
-                    int_ID = cursor.getInt(cursor.getColumnIndex(MediaStore.Images.Media._ID));
-                    int dataIndex = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-                    String path = cursor.getString(dataIndex);
-                    selectedFileUri = Uri.fromFile(new File(path));
-                    selectedBitmap = uriToBitmap(selectedFileUri);
-                    uriHashMap.put(selectedView.getId(), selectedFileUri);
-                    uriHashMapThumb.put(selectedView.getId(), selectedFileUri);
-                    createFiltersDialog();
-                    Uri urpath = ContentUris.withAppendedId(sourceUri, cursor.getInt(cursor.getColumnIndex(MediaStore.Images.ImageColumns._ID)));
-                } catch (Exception e) {
-
+        try {
+            String[] from = {MediaStore.MediaColumns.TITLE};
+            int[] to = {android.R.id.text1};
+            CursorLoader cursorLoader = new CursorLoader(this, sourceUri,
+                    null, null, null, MediaStore.Audio.Media.TITLE);
+            Cursor cursor = cursorLoader.loadInBackground();
+            mySimpleCursorAdapter = new MyAdapter(this, android.R.layout.simple_list_item_1, cursor, from, to, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+            myGridView.setAdapter(mySimpleCursorAdapter);
+            myGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Cursor cursor = mySimpleCursorAdapter.getCursor();
+                    cursor.moveToPosition(position);
+                    int int_ID = 0;
+                    try {
+                        int dataIndex = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+                        String path = cursor.getString(dataIndex);
+                        selectedFileUri = Uri.fromFile(new File(path));
+                        selectedBitmap = uriToBitmap(selectedFileUri);
+                        uriHashMap.put(selectedView.getId(), selectedFileUri);
+                        uriHashMapThumb.put(selectedView.getId(), selectedFileUri);
+                        createFiltersDialog();
+                        Uri urpath = ContentUris.withAppendedId(sourceUri, cursor.getInt(cursor.getColumnIndex(MediaStore.Images.ImageColumns._ID)));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    //                getThumbnail(int_ID);
                 }
-//                getThumbnail(int_ID);
-            }
-        });
+            });
+        } catch (Exception e) {
+
+        }
     }
 
     private Bitmap uriToBitmap(Uri selectedFileUri) {
@@ -689,6 +717,7 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
                     selectedFileUri = RewriteBitmapToFile(selectedBitmap, selectedFileUri);
                     selectedView.setImageBitmap(selectedBitmap);
                     icDeleteSelected.setVisibility(View.VISIBLE);
+                    mNextView.performClick();
                     dialog.dismiss();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -797,12 +826,12 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
             @SuppressLint("NewApi")
             @Override
             public void onClick(View v) {
-                if (lastPerview == allPaths.length) {
-                    uploadImageToServer();
-                } else {
-                    Uri pathUri = allPaths[lastPerview++];
-                    avatarFace.setImageBitmap(uriToBitmap(pathUri));
-                }
+//                if (lastPerview == allPaths.length) {
+                uploadImageToServer();
+//                } else {
+//                    Uri pathUri = allPaths[lastPerview++];
+//                    avatarFace.setImageBitmap(uriToBitmap(pathUri));
+//                }
             }
         });
         Uri pathUri = allPaths[lastPerview++];

@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.adroidtech.turnstr2.CubeView.Cubesurfaceview;
 import com.adroidtech.turnstr2.CubeView.URLImageParser;
 import com.adroidtech.turnstr2.Models.LoginDetailModel;
+import com.adroidtech.turnstr2.Models.ViewUserDetailModel;
 import com.adroidtech.turnstr2.R;
 import com.adroidtech.turnstr2.Utils.BitmapUtils;
 import com.adroidtech.turnstr2.Utils.GeneralValues;
@@ -28,20 +29,10 @@ import com.adroidtech.turnstr2.Utils.ImagePickerUtils;
 import com.adroidtech.turnstr2.Utils.PreferenceKeys;
 import com.adroidtech.turnstr2.Utils.SharedPreference;
 import com.adroidtech.turnstr2.WebServices.AsyncCallback;
-import com.adroidtech.turnstr2.WebServices.MultipartAsyncCallback;
-import com.adroidtech.turnstr2.WebServices.MultipartRequestAsync;
-import com.adroidtech.turnstr2.WebServices.OkHttp3Helper;
-import com.adroidtech.turnstr2.WebServices.OkHttpRequest;
 import com.adroidtech.turnstr2.WebServices.OkHttpRequestSender;
-import com.adroidtech.turnstr2.WebServices.WebApi;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
-import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,11 +40,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
-
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.Request;
-import okhttp3.RequestBody;
 
 public class EditProfileActivity extends Activity implements View.OnClickListener, AsyncCallback {
     private static final int PIC_REQUEST = 1231;
@@ -63,17 +49,6 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
     private FrameLayout layout_frame_main;
     private SharedPreference sharedPreference;
     private LoginDetailModel userDetail;
-    private TextView editProfile;
-    private LinearLayout search;
-    private TextView txtPosts;
-    private TextView txtFollowers;
-    private TextView txtFamily;
-    private FrameLayout layoutFrame;
-    private TextView txtAbout;
-    private TextView txtAddress;
-    private TextView txtEmail;
-    private Cubesurfaceview view1;
-    private FrameLayout layoutFrame1;
     private TextView txtChangePic;
     private LinearLayout allImages;
     private EditText txtName;
@@ -100,7 +75,6 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
         updatedImage = new HashMap<String, Uri>();
-
         sharedPreference = new SharedPreference(this);
         userDetail = sharedPreference.getSerializableObject(PreferenceKeys.USER_DETAIL, LoginDetailModel.class);
         layout_frame_main = (FrameLayout) findViewById(R.id.layout_frame1);
@@ -145,23 +119,27 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         view = new Cubesurfaceview(com.adroidtech.turnstr2.Activity.EditProfileActivity.this, mBbitmap, false);
         layout_frame_main.addView(view);
 //        viewIntail();
-//        uiDataUpdate(userDetail);
+        uiDataUpdate(userDetail.getUser());
         loadAllImages();
         loadAllImagesToCube();
 //        addAllImagesFromServer();
     }
 
-    private void addAllImagesFromServer() {
-        updatedImage.put("avatar_face1", Uri.parse(userDetail.getUser().getAvatarFace1()));
-        updatedImage.put("avatar_face2", Uri.parse(userDetail.getUser().getAvatarFace1()));
-        updatedImage.put("avatar_face3", Uri.parse(userDetail.getUser().getAvatarFace3()));
-        updatedImage.put("avatar_face4", Uri.parse(userDetail.getUser().getAvatarFace4()));
-        updatedImage.put("avatar_face5", Uri.parse(userDetail.getUser().getAvatarFace5()));
-        updatedImage.put("avatar_face6", Uri.parse(userDetail.getUser().getAvatarFace6()));
+    private void uiDataUpdate(ViewUserDetailModel userDetail) {
+        txtName.setText(userDetail.getFirstName());
+        txtUsername.setText(userDetail.getUsername());
+        txtWebsite.setText(userDetail.getWebsite());
+        txtInfo.setText(userDetail.getBio());
+        txtUserEmail.setText(userDetail.getEmail());
+        txtUserPhone.setText(userDetail.getPhone());
+        txtUsername.setText(userDetail.getUsername());
+
     }
 
     private void loadAllImages() {
         try {
+//            ImageLoader imageLoader = new ImageLoader(this);
+//            imageLoader.DisplayImage(userDetail.getUser().getAvatarFace1(), avatarFace1);
             Picasso.with(this).load(userDetail.getUser().getAvatarFace1()).into(avatarFace1);
             Picasso.with(this).load(userDetail.getUser().getAvatarFace2()).into(avatarFace2);
             Picasso.with(this).load(userDetail.getUser().getAvatarFace3()).into(avatarFace3);
@@ -209,7 +187,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
     protected void onPause() {
         super.onPause();
         try {
-            if (view != null) view.onPause();
+//            if (view != null) view.onPause();
         } catch (Exception e) {
 
         }

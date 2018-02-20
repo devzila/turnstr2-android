@@ -47,61 +47,83 @@ public class Cubesurfaceview extends GLSurfaceView {
         this.layoutFrame = layoutFrame;
     }
 
-    @Override
-    public void setZOrderOnTop(boolean onTop) {
-        super.setZOrderOnTop(true);
-    }
+//    @Override
+//    public void setZOrderOnTop(boolean onTop) {
+//        super.setZOrderOnTop(true);
+//    }
 
-    private final float TOUCH_SCALE_FACTOR = 180.0f / 280;
+    private final float TOUCH_SCALE_FACTOR = 220.0f / 280;
     private float mPreviousX;
     private float mPreviousY;
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
-        if (mRotateEnable) {
-            // MotionEvent reports input details from the touch screen
-            // and other input controls. In this case, you are only
-            // interested in events where the touch position changed.
-            Log.e("Action", e.getAction() + "");
-            float x = e.getX();
-            float y = e.getY();
-            switch (e.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    mPreviousX = x;
-                    mPreviousY = y;
-                    handler.postDelayed(mLongPressed, 500);
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    if ((mPreviousX - 2 >= x || mPreviousX + 2 <= x) && (mPreviousY - 2 >= y || mPreviousY + 2 <= y)) {
-                        handler.removeCallbacks(mLongPressed);
-                    }
-                    float dx = x - mPreviousX;
-                    float dy = y - mPreviousY;
-                    // reverse direction of rotation above the mid-line
-                    if (y > getHeight() / 2) {
-                        dx = dx * -1;
-                    }
-                    // reverse direction of rotation to left of the mid-line
-                    if (x < getWidth() / 2) {
-                        dy = dy * -1;
-                    }
-                    renderer.xAngle = renderer.xAngle + (dx) * TOUCH_SCALE_FACTOR / 5f;
-                    renderer.yAngle = renderer.yAngle + (dy) * TOUCH_SCALE_FACTOR / 5f;
-                    requestRender();
-            }
-
-            mPreviousX = x;
-            mPreviousY = y;
-            return true;
-        } else {
-            return false;
+//        if (mRotateEnable) {
+        // MotionEvent reports input details from the touch screen
+        // and other input controls. In this case, you are only
+        // interested in events where the touch position changed.
+        float x = e.getX();
+        float y = e.getY();
+        switch (e.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                mPreviousX = x;
+                mPreviousY = y;
+                handler.postDelayed(mLongPressed, 500);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if ((mPreviousX - 2 >= x || mPreviousX + 2 <= x) && (mPreviousY - 2 >= y || mPreviousY + 2 <= y)) {
+                    handler.removeCallbacks(mLongPressed);
+                }
+                float dx = x - mPreviousX;
+                float dy = y - mPreviousY;
+                // reverse direction of rotation above the mid-line
+//                if (y > getHeight() / 2) {
+//                    Log.e("Y is big ", "true");
+//                    dx = dx * -1;
+//                }
+                // reverse direction of rotation to left of the mid-line
+//                if (x < getWidth() / 2) {
+//                    Log.e("X is big ", "true");
+//                    dy = dy * -1;
+//                }
+                renderer.xAngle = (renderer.xAngle + (-(dx) * TOUCH_SCALE_FACTOR / 5f)) % 360;
+                float xAngle = 0;
+                if (renderer.xAngle < 0) {
+                    xAngle = 360 + renderer.xAngle;
+                } else {
+                    xAngle = renderer.xAngle;
+                }
+                if ((xAngle < 90 || xAngle > 260)) {
+                    renderer.yAngle = renderer.yAngle + (((dy) * TOUCH_SCALE_FACTOR / 5f)) % 360;
+                } else {
+                    renderer.yAngle = renderer.yAngle + (-((dy) * TOUCH_SCALE_FACTOR / 5f)) % 360;
+                }
+//                renderer.yAngle = renderer.yAngle + (-((dy) * TOUCH_SCALE_FACTOR / 5f)) % 360;
+                requestRender();
+                break;
+            default:
+                if ((mPreviousX - 1 >= x || mPreviousX + 1 <= x) && (mPreviousY - 1 >= y || mPreviousY + 1 <= y)) {
+                    handler.removeCallbacks(mLongPressed);
+                }
+                break;
         }
+        mPreviousX = x;
+        mPreviousY = y;
+        return true;
+
+//        } else {
+//            return false;
+//        }
 
     }
 
     Runnable mLongPressed = new Runnable() {
         public void run() {
-            layoutFrame.performClick();
+            try {
+                if (layoutFrame != null) layoutFrame.performClick();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     };
 }

@@ -1,5 +1,6 @@
 package com.adroidtech.turnstr2.CubeView;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -9,6 +10,9 @@ import android.os.AsyncTask;
 import android.widget.TextView;
 
 import com.adroidtech.turnstr2.R;
+import com.adroidtech.turnstr2.Utils.BitmapUtils;
+import com.adroidtech.turnstr2.Utils.CachingFiles.ImageLoader;
+import com.adroidtech.turnstr2.Utils.GeneralValues;
 
 import java.net.URL;
 import java.net.URLConnection;
@@ -18,11 +22,13 @@ import java.util.Stack;
 public class URLImageParser extends AsyncTask<Object, Void, ArrayList<Bitmap>> {
 
     private static final String TAG = "Image Down";
+    private Context mContext;
     public AsyncCallback asyncCallback;
     private LevelListDrawable mDrawable;
     TextView textView;
     Stack<String> allURL = new Stack<>();
     ArrayList<Bitmap> allBitMaps = new ArrayList<>();
+    ImageLoader imageLoader = new ImageLoader(mContext);
 
     public URLImageParser(Stack<String> strings, AsyncCallback asyncCallback) {
         try {
@@ -38,16 +44,24 @@ public class URLImageParser extends AsyncTask<Object, Void, ArrayList<Bitmap>> {
         this.asyncCallback = asyncCallback;
     }
 
+    public URLImageParser(Context context, Stack<String> strings, AsyncCallback asyncCallback) {
+        this(strings, asyncCallback);
+        mContext = context;
+    }
+
     @Override
     protected ArrayList<Bitmap> doInBackground(Object... params) {
         try {
             while (allURL.size() > 0) {
                 String currentUrl = allURL.pop();
                 try {
-                    URL url = new URL(currentUrl);
-                    URLConnection Con = url.openConnection();
-                    Con.setUseCaches(true);
-                    Bitmap bitmap = BitmapFactory.decodeStream(Con.getInputStream());
+                    Bitmap bitmap = imageLoader.getCachedBitmap(currentUrl);
+                    bitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, false);
+//                    URL url = new URL(currentUrl);
+//                    URLConnection Con = url.openConnection();
+//                    Con.setUseCaches(true);
+
+//                    Bitmap bitmap = BitmapFactory.decodeStream(Con.getInputStream());
                     bitmap = addBorderColor(bitmap, 1, Color.BLACK);
                     allBitMaps.add(bitmap);
                 } catch (Exception e) {
@@ -63,18 +77,26 @@ public class URLImageParser extends AsyncTask<Object, Void, ArrayList<Bitmap>> {
 
     @Override
     protected void onPostExecute(ArrayList<Bitmap> allBitmap) {
-        if (allBitmap != null) {
-            asyncCallback.getAsyncResult(allBitmap, "Image");
-//            BitmapDrawable d = new BitmapDrawable(bitmap);
+        try {
+            if (allBitmap != null) {
+                asyncCallback.getAsyncResult(allBitmap, "Image");
+                //            BitmapDrawable d = new BitmapDrawable(bitmap);
+            }
+        } catch (Exception e) {
         }
     }
 
     private Bitmap addBorderColor(Bitmap bmp, int borderSize, int white) {
-        Bitmap bmpWithBorder = Bitmap.createBitmap(bmp.getWidth() + borderSize * 2, bmp.getHeight() + borderSize * 2, bmp.getConfig());
-        Canvas canvas = new Canvas(bmpWithBorder);
-        canvas.drawColor(white);
-        canvas.drawBitmap(bmp, borderSize, borderSize, null);
-        return bmpWithBorder;
+        try {
+            Bitmap bmpWithBorder = Bitmap.createBitmap(bmp.getWidth() + borderSize * 2, bmp.getHeight() + borderSize * 2, bmp.getConfig());
+            Canvas canvas = new Canvas(bmpWithBorder);
+            canvas.drawColor(white);
+            canvas.drawBitmap(bmp, borderSize, borderSize, null);
+            return bmpWithBorder;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return bmp;
+        }
     }
 
     public static interface AsyncCallback {
