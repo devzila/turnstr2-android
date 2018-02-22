@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
@@ -12,12 +11,8 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.adroidtech.turnstr2.CubeView.Cuberenderer;
-import com.adroidtech.turnstr2.CubeView.GLTextureView;
-import com.adroidtech.turnstr2.CubeView.TestRender;
 import com.adroidtech.turnstr2.Models.LoginDetailModel;
 import com.adroidtech.turnstr2.R;
-import com.adroidtech.turnstr2.Utils.ImagePickerUtils;
 import com.adroidtech.turnstr2.Utils.PreferenceKeys;
 import com.adroidtech.turnstr2.Utils.SharedPreference;
 import com.adroidtech.turnstr2.Utils.chatUtils.PreferenceUtils;
@@ -31,7 +26,6 @@ import java.util.List;
 
 public class SplashActivtiy extends Activity {
     private static int SPLASH_TIME_OUT = 2000;
-    private TestRender renderer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

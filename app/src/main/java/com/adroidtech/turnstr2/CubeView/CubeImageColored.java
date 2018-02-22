@@ -1,5 +1,6 @@
 package com.adroidtech.turnstr2.CubeView;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,24 +18,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.PixelFormat;
-import android.opengl.GLES20;
-import android.opengl.GLSurfaceView;
-import android.opengl.GLUtils;
-import android.opengl.Matrix;
-import android.os.SystemClock;
-import android.util.DisplayMetrics;
-
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
-import java.nio.ShortBuffer;
-import java.util.ArrayList;
-
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
+import android.widget.ImageView;
 
 import com.adroidtech.turnstr2.Activity.CreateStoryActivity;
 import com.adroidtech.turnstr2.R;
@@ -49,62 +33,31 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import static com.adroidtech.turnstr2.Activity.CreateStoryActivity.createFileForCamera;
-//import es2.learning.ViewPortRenderer;
 
-public class CubeSurfaceColored extends GLSurfaceView {
+public class CubeImageColored extends GLSurfaceView {
+    FrameLayout layoutFrame;
     DisplayMetrics displaydata;
     boolean rendererHasBeenSet;
     ArrayList<Integer> allViews = new ArrayList<>();
-    final Handler handler = new Handler();
-    FrameLayout layoutFrame;
-    OnClickListener onClickListener;
-    Context context;
-    float touchedX = 0;
-    float touchedY = 0;
+    Activity context;
     Cuberenderer renderer;
-    private boolean mRotateEnable = true;
-    private boolean LastActionActionDown = false;
     public ArrayList<Bitmap> allBitmaps;
-    private int isSet;
     private long endTime;
     private long startTime;
+    private ImageView imageView;
 
-    @Override
-    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
-        super.onVisibilityChanged(changedView, visibility);
-        if (rendererHasBeenSet) {
-
-        }
-    }
-
-    @Override
-    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
-        Log.e("Scroll", "Checnges");
-    }
-
-    @Override
-    public long getDrawingTime() {
-        return getDrawingTime();
-    }
-
-    public CubeSurfaceColored(Context context, ArrayList<Bitmap> allBitmaps, boolean mRotateEnable, String colorCode) {
+    public CubeImageColored(Activity context, ArrayList<Bitmap> allBitmaps, ImageView imageView, FrameLayout layoutFrame) {
         super(context);
         try {
             this.context = context;
-            this.mRotateEnable = mRotateEnable;
+            this.layoutFrame = layoutFrame;
+            this.imageView = imageView;
             setEGLContextClientVersion(2);
             if (allBitmaps == null || allBitmaps.size() == 0) {
                 allBitmaps = new ArrayList<>();
                 for (int i = 0; i < 6; i++) {
                     allBitmaps.add(BitmapFactory.decodeResource(getResources(), R.drawable.ic_image_cube));
                 }
-            }
-            try {
-                String[] colors = colorCode.split(":");
-                red = Float.parseFloat(colors[0]);
-                green = Float.parseFloat(colors[1]);
-                blue = Float.parseFloat(colors[2]);
-            } catch (Exception e) {
             }
             setRenderer(renderer = new Cuberenderer(this, allBitmaps));
             rendererHasBeenSet = true;
@@ -113,95 +66,18 @@ public class CubeSurfaceColored extends GLSurfaceView {
         }
     }
 
-    public CubeSurfaceColored(Context context, ArrayList<Bitmap> allBitmaps, boolean mRotateEnable, FrameLayout layoutFrame, String colorCode) {
-        this(context, allBitmaps, mRotateEnable, colorCode);
-        this.layoutFrame = layoutFrame;
-        try {
-            String[] colors = colorCode.split(":");
-            red = Float.parseFloat(colors[0]);
-            green = Float.parseFloat(colors[1]);
-            blue = Float.parseFloat(colors[2]);
-        } catch (Exception e) {
-        }
+
+    @Override
+    public void setZOrderOnTop(boolean onTop) {
+        super.setZOrderOnTop(true);
     }
 
-    //    @Override
-//    public void setZOrderOnTop(boolean onTop) {
-//        super.setZOrderOnTop(true);
-//    }
     private float red = 0, green = 0, blue = 0;
     private final float TOUCH_SCALE_FACTOR = 180.0f / 280;
     private float mPreviousX;
     private float mPreviousY;
 
-    @Override
-    public boolean onTouchEvent(MotionEvent e) {
-//        if (mRotateEnable) {
-        // MotionEvent reports input details from the touch screen
-        // and other input controls. In this case, you are only
-        // interested in events where the touch position changed.
-        float x = e.getX();
-        float y = e.getY();
-        switch (e.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                mPreviousX = x;
-                mPreviousY = y;
-                handler.postDelayed(mLongPressed, 500);
-                break;
-            case MotionEvent.ACTION_MOVE:
-                try {
-                    if ((mPreviousX - 1 >= x || mPreviousX + 1 <= x) && (mPreviousY - 1 >= y || mPreviousY + 1 <= y)) {
-                        handler.removeCallbacks(mLongPressed);
-                    }
-                    float dx = x - mPreviousX;
-                    float dy = y - mPreviousY;
-                    // reverse direction of rotation above the mid-line
-                    renderer.xAngle = (renderer.xAngle + (-(dx) * TOUCH_SCALE_FACTOR / 5f)) % 360;
-                    float xAngle = 0;
-                    if (renderer.xAngle < 0) {
-                        xAngle = 360 + renderer.xAngle;
-                    } else {
-                        xAngle = renderer.xAngle;
-                    }
-                    if ((xAngle < 90 || xAngle > 260)) {
-                        renderer.yAngle = renderer.yAngle + (((dy) * TOUCH_SCALE_FACTOR / 5f)) % 360;
-                    } else {
-                        renderer.yAngle = renderer.yAngle + (-((dy) * TOUCH_SCALE_FACTOR / 5f)) % 360;
-                    }
-                    renderer.yAngle = renderer.yAngle + (-((dy) * TOUCH_SCALE_FACTOR / 5f)) % 360;
-//                    requestRender();
-                } catch (Exception e1) {
-                }
-                break;
-            default:
-                if ((mPreviousX - 1 >= x || mPreviousX + 1 <= x) && (mPreviousY - 1 >= y || mPreviousY + 1 <= y)) {
-                    handler.removeCallbacks(mLongPressed);
-                }
-                break;
-        }
-
-        mPreviousX = x;
-        mPreviousY = y;
-        return true;
-//        } else {
-//            return false;
-//        }
-
-    }
-
-    Runnable mLongPressed = new Runnable() {
-        public void run() {
-            try {
-                if (layoutFrame != null) layoutFrame.performClick();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    };
-
-//import com.example.my3dtrianleone.R;
-
-    public class Cuberenderer implements GLSurfaceView.Renderer {
+    public class Cuberenderer implements Renderer {
 
         /**
          * Store the model matrix. This matrix is used to move models from object space (where each model can be thought
@@ -304,16 +180,17 @@ public class CubeSurfaceColored extends GLSurfaceView {
 
         GLSurfaceView glSurfaceView;
         private long StartTime = 0;
+        private int width = 250, height = 250;
 
 
         /**
          * Initialize the model data.
          */
-        public Cuberenderer(CubeSurfaceColored cubesurfaceview, ArrayList<Bitmap> allBitmap) {
+        public Cuberenderer(CubeImageColored cubesurfaceview, ArrayList<Bitmap> allBitmap) {
             glSurfaceView = cubesurfaceview;
             glSurfaceView.setZOrderOnTop(true);
             glSurfaceView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
-//            glSurfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
+            glSurfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
             allBitmaps = allBitmap;
             try {
                 if (allBitmaps.size() < 6) {
@@ -404,8 +281,8 @@ public class CubeSurfaceColored extends GLSurfaceView {
 
             glUnused.glDisable(GL10.GL_DITHER);
             glUnused.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
-//        GLES20.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-            glUnused.glClearColor(red, green, blue, 1);
+            GLES20.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+//            glUnused.glClearColor(red, green, blue, 1);
             GLES20.glEnable(GLES20.GL_DEPTH_TEST);
 //		// Position the eye behind the origin.
             final float eyeX = 0.0f;
@@ -533,6 +410,9 @@ public class CubeSurfaceColored extends GLSurfaceView {
 
         @Override
         public void onSurfaceChanged(GL10 glUnused, int width, int height) {
+            this.width = width;
+            this.height = height;
+
             // Set the OpenGL viewport to the same size as the surface.
             GLES20.glViewport(0, 0, width, height);
             // Create a new perspective projection matrix. The height will stay the same
@@ -548,6 +428,42 @@ public class CubeSurfaceColored extends GLSurfaceView {
 //please note i am making projection matrix as identity matrix intentionally here to avoid the
 //effects of projection matrix. if you want you can uncomment this line
             Matrix.setIdentityM(mProjectionMatrix, 0);
+        }
+
+        private void captureScrren(GL10 gl, int width, int height) {
+            int screenshotSize = width * height;
+            ByteBuffer bb = ByteBuffer.allocateDirect(screenshotSize * 4);
+            bb.order(ByteOrder.nativeOrder());
+            gl.glReadPixels(0, 0, width, height, GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE, bb);
+            int pixelsBuffer[] = new int[screenshotSize];
+            bb.asIntBuffer().get(pixelsBuffer);
+            bb = null;
+            final Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+            bitmap.setPixels(pixelsBuffer, screenshotSize - width, -width, 0, 0, width, height);
+            pixelsBuffer = null;
+
+            short sBuffer[] = new short[screenshotSize];
+            ShortBuffer sb = ShortBuffer.wrap(sBuffer);
+            bitmap.copyPixelsToBuffer(sb);
+
+            //Making created bitmap (from OpenGL points) compatible with Android bitmap
+            for (int i = 0; i < screenshotSize; ++i) {
+                short v = sBuffer[i];
+                sBuffer[i] = (short) (((v & 0x1f) << 11) | (v & 0x7e0) | ((v & 0xf800) >> 11));
+            }
+            sb.rewind();
+            bitmap.copyPixelsFromBuffer(sb);
+            context.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    layoutFrame.setVisibility(GONE);
+                    layoutFrame.removeAllViews();
+                    imageView.setVisibility(VISIBLE);
+                    imageView.setImageBitmap(bitmap);
+                    glSurfaceView.onPause();
+                }
+            });
+
         }
 
         @Override
@@ -615,36 +531,7 @@ public class CubeSurfaceColored extends GLSurfaceView {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-//            if (screenshot) {
-            int width = displaydata.widthPixels;
-            int height = displaydata.heightPixels;
-            int screenshotSize = width * height;
-            ByteBuffer bb = ByteBuffer.allocateDirect(screenshotSize * 4);
-            bb.order(ByteOrder.nativeOrder());
-            glUnused.glReadPixels(0, 0, width, height, GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE, bb);
-            int pixelsBuffer[] = new int[screenshotSize];
-            bb.asIntBuffer().get(pixelsBuffer);
-            bb = null;
-            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
-            bitmap.setPixels(pixelsBuffer, screenshotSize - width, -width, 0, 0, width, height);
-            pixelsBuffer = null;
-
-            short sBuffer[] = new short[screenshotSize];
-            ShortBuffer sb = ShortBuffer.wrap(sBuffer);
-            bitmap.copyPixelsToBuffer(sb);
-
-            //Making created bitmap (from OpenGL points) compatible with Android bitmap
-            for (int i = 0; i < screenshotSize; ++i) {
-                short v = sBuffer[i];
-                sBuffer[i] = (short) (((v & 0x1f) << 11) | (v & 0x7e0) | ((v & 0xf800) >> 11));
-            }
-            sb.rewind();
-            bitmap.copyPixelsFromBuffer(sb);
-            Bitmap lastScreenshot = bitmap;
-            Uri selectedFileUri = CreateStoryActivity.RewriteBitmapToFile(bitmap, createFileForCamera());
-//                screenshot = false;
-//        }
-
+            captureScrren(glUnused, width, height);
         }
 
 

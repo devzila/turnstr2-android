@@ -30,6 +30,7 @@ import com.adroidtech.turnstr2.Models.VideoStoryModel;
 import com.adroidtech.turnstr2.Models.ViewUserDetailModel;
 import com.adroidtech.turnstr2.Models.UserFav5Model;
 import com.adroidtech.turnstr2.R;
+import com.adroidtech.turnstr2.Utils.BitmapUtils;
 import com.adroidtech.turnstr2.Utils.GeneralValues;
 import com.adroidtech.turnstr2.Utils.PreferenceKeys;
 import com.adroidtech.turnstr2.Utils.SharedPreference;
@@ -83,6 +84,7 @@ public class UserProfileViewActivity extends Activity implements AsyncCallback, 
     private TextView follow;
     private ViewUserDetailModel userDetailModel;
     private TextView txtUsername;
+    private TextView name_stories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +115,12 @@ public class UserProfileViewActivity extends Activity implements AsyncCallback, 
                 View view = inflater.inflate(R.layout.video_thumb_view, turnt_stories, false);
                 final ImageView thumb_image = (ImageView) view.findViewById(R.id.thumb_image);
                 thumb_image.setTag(allVideoStoryModel.get(i));
-                Picasso.with(this).load(allVideoStoryModel.get(i).getThumbUrl()).into(thumb_image);
+                Picasso.with(this).load(allVideoStoryModel.get(i).getUrl()).into(thumb_image);
+//                try {
+//                    thumb_image.setImageBitmap(BitmapUtils.retriveVideoFrameFromVideo(allVideoStoryModel.get(i).getUrl()));
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
                 thumb_image.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -158,6 +165,7 @@ public class UserProfileViewActivity extends Activity implements AsyncCallback, 
         Intent recivedDataIntent = getIntent();
         if (recivedDataIntent.hasExtra("USER_DATA")) {
             userDetail = (UserFav5Model) recivedDataIntent.getSerializableExtra("USER_DATA");
+
         }
     }
 
@@ -315,7 +323,8 @@ public class UserProfileViewActivity extends Activity implements AsyncCallback, 
             }
             txtFollowers.setText(userDetail.getFollowerCount() + "");
             txtPosts.setText(userDetail.getPostCount() + "");
-            txtUsername.setText(userDetail.getFirstName() + " FAVE 5");
+            txtUsername.setText(userDetail.getFirstName().toUpperCase() + " FAVE 5");
+            name_stories.setText(userDetail.getFirstName().toUpperCase() + " STORIES");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -335,6 +344,7 @@ public class UserProfileViewActivity extends Activity implements AsyncCallback, 
         txtUsername = (TextView) findViewById(R.id.username_fav);
         txtPosts = (TextView) findViewById(R.id.txt_posts);
         favFive = (TextView) findViewById(R.id.fav_five);
+        name_stories = (TextView) findViewById(R.id.name_stories);
         follow = (TextView) findViewById(R.id.follow);
         favFive.setOnClickListener(new View.OnClickListener() {
             @Override
