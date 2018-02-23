@@ -1,6 +1,7 @@
 package com.adroidtech.turnstr2.Adapter;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import com.adroidtech.turnstr2.Activity.MyStoryActivity;
 import com.adroidtech.turnstr2.Activity.ProfileActivity;
 import com.adroidtech.turnstr2.Activity.ViewStoryActivity;
+import com.adroidtech.turnstr2.CubeView.CubeImageColored;
 import com.adroidtech.turnstr2.CubeView.CubeSurfaceColored;
 import com.adroidtech.turnstr2.CubeView.Cubesurfaceview;
 import com.adroidtech.turnstr2.CubeView.URLImageParser;
@@ -32,11 +34,11 @@ import java.util.Stack;
 public class MyStoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final List<MyStoryModel> allDataList;
-    Context context;
+    Activity context;
     private OnItemClickListener listener;
     private ArrayList<Bitmap> mBbitmap1;
 
-    public MyStoryAdapter(Context context, List<MyStoryModel> allDataList, OnItemClickListener listener) {
+    public MyStoryAdapter(Activity context, List<MyStoryModel> allDataList, OnItemClickListener listener) {
         this.context = context;
         this.listener = listener;
         this.allDataList = allDataList;
@@ -54,10 +56,6 @@ public class MyStoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             final MyStoryListingView view = (MyStoryListingView) holder;
             view.bind(listener, position);
             try {
-//                CubeSurfaceColored view1 = new CubeSurfaceColored(context, mBbitmap1, false, "1:1:1");
-//                view1.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
-//                view1.setZOrderOnTop(false);
-//                view.ll_main.addView(view1);
                 Stack<String> strings1 = new Stack<>();
                 for (int i = 0; i < allDataList.get(position).getMedia().size(); i++) {
                     strings1.push(allDataList.get(position).getMedia().get(i).getThumbUrl());
@@ -67,18 +65,12 @@ public class MyStoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     public void getAsyncResult(ArrayList<Bitmap> bitmap, String txt) {
                         mBbitmap1 = bitmap;
                         view.ll_main.removeAllViews();
-                        CubeSurfaceColored view1 = new CubeSurfaceColored(context, mBbitmap1, false, view.ll_main, "1:1:1");
+                        CubeImageColored view1 = new CubeImageColored(context, mBbitmap1, view.imageView, view.ll_main);
                         view1.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
-                        view1.setZOrderOnTop(false);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            view1.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                                @Override
-                                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                                    Log.i("Scroll", scrollX + " " + scrollY);
-                                }
-                            });
-                        }
-                        view.ll_main.setOnClickListener(new View.OnClickListener() {
+//                        CubeSurfaceColored view1 = new CubeSurfaceColored(context, mBbitmap1, false, view.ll_main, "1:1:1");
+//                        view1.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+//                        view1.setZOrderOnTop(false);
+                        view.imageView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 Intent intent = new Intent(context, ViewStoryActivity.class);

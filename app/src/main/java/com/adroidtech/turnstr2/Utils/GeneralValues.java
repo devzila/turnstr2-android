@@ -22,6 +22,10 @@ public class GeneralValues {
     public static final String GET_STORIES_DETAIL = "/v1/stories/_STORY_ID_";
     public static final String GET_STORIE_COMMENTS = "/v1/stories/_STORY_ID_/comments";
     public static final String POST_STORIE_COMMENTS = "/v1/stories/_STORY_ID_/comments";
+    public static final String GET_VIDEO_STORIE_COMMENTS = "/v1/videos/_STORY_ID_/comments";
+    public static final String POST_VIDEO_TORIE_COMMENTS = "/v1/videos/_STORY_ID_/comments";
+    public static final String VIDEOS_STORIES_LIKES = "/v1/videos/_STORY_ID_/likes";
+
     public static final String GET_ALL_STORIES = "/v1/stories";
     public static final String GET_POPULARS_STORIES = "/v1/populars";
     public static final String GET_ALL_MEMBERS_STORIES = "/v1/members/_MEMBER_ID_/stories";

@@ -36,6 +36,7 @@ import com.adroidtech.turnstr2.Models.MyStoryModel;
 import com.adroidtech.turnstr2.Models.UserFav5Model;
 import com.adroidtech.turnstr2.Models.VideoStoryModel;
 import com.adroidtech.turnstr2.R;
+import com.adroidtech.turnstr2.Utils.BitmapUtils;
 import com.adroidtech.turnstr2.Utils.GeneralValues;
 import com.adroidtech.turnstr2.Utils.PreferenceKeys;
 import com.adroidtech.turnstr2.Utils.SharedPreference;
@@ -334,7 +335,12 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
                 View view = inflater.inflate(R.layout.video_thumb_view, turnt_stories, false);
                 final ImageView thumb_image = (ImageView) view.findViewById(R.id.thumb_image);
                 thumb_image.setTag(allVideoStoryModel.get(i));
-                Picasso.with(this).load(allVideoStoryModel.get(i).getThumbUrl()).into(thumb_image);
+                Picasso.with(this).load(allVideoStoryModel.get(i).getUrl()).into(thumb_image);
+//                try {
+//                    thumb_image.setImageBitmap(BitmapUtils.retriveVideoFrameFromVideo(allVideoStoryModel.get(i).getUrl()));
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
                 thumb_image.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

@@ -206,7 +206,7 @@ public class ViewVideoActivity extends Activity implements AsyncCallback, View.O
                                         e.printStackTrace();
                                     }
                                 }
-                            }, GeneralValues.BASE_URL + GeneralValues.POST_STORIE_COMMENTS
+                            }, GeneralValues.BASE_URL + GeneralValues.POST_VIDEO_TORIE_COMMENTS
                                     .replace("_STORY_ID_", videoStoryModel.getId() + ""), formField,
                                     sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN), "POST").execute();
                         } catch (Exception e) {
@@ -249,7 +249,7 @@ public class ViewVideoActivity extends Activity implements AsyncCallback, View.O
 
                     }
                 }
-            }, GeneralValues.GET_STORIE_COMMENTS
+            }, GeneralValues.GET_VIDEO_STORIE_COMMENTS
                     .replace("_STORY_ID_", videoStoryModel.getId() + ""), mJson, headers).execute();
         } catch (Exception e) {
             e.printStackTrace();
@@ -260,7 +260,7 @@ public class ViewVideoActivity extends Activity implements AsyncCallback, View.O
         HashMap<String, String> headers = new HashMap<>();
         headers.put("auth_token", sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN));
         JSONObject mJson = new JSONObject();
-        new CommonAsync(this, mJson, this, GeneralValues.STORIES_LIKES
+        new CommonAsync(this, mJson, this, GeneralValues.VIDEOS_STORIES_LIKES
                 .replace("_STORY_ID_", videoStoryModel.getId() + ""), headers).execute();
     }
 
