@@ -9,15 +9,13 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.adroidtech.turnstr2.Adapter.MyStoryAdapter;
+import com.adroidtech.turnstr2.Adapter.VideoStoryAdapter;
 import com.adroidtech.turnstr2.CubeView.Cubesurfaceview;
 import com.adroidtech.turnstr2.CubeView.URLImageParser;
 import com.adroidtech.turnstr2.CustomeViews.OnLoadMoreListener;
@@ -30,7 +28,6 @@ import com.adroidtech.turnstr2.Utils.PreferenceKeys;
 import com.adroidtech.turnstr2.Utils.SharedPreference;
 import com.adroidtech.turnstr2.WebServices.AsyncCallback;
 import com.adroidtech.turnstr2.WebServices.CommonAsync;
-import com.adroidtech.turnstr2.chat.groupchannel.GroupChannelActivity;
 import com.google.gson.Gson;
 import com.sendbird.android.shadow.com.google.gson.reflect.TypeToken;
 
@@ -43,7 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
-public class MyStoryActivity extends Activity implements AsyncCallback, View.OnClickListener, OnLoadMoreListener, MyStoryAdapter.OnItemClickListener {
+public class MyVideoStoryActivity extends Activity implements AsyncCallback, View.OnClickListener, OnLoadMoreListener, MyStoryAdapter.OnItemClickListener {
     Cubesurfaceview view;
     private ArrayList<Bitmap> mBbitmap = new ArrayList<>();
     private SharedPreference sharedPreference;
@@ -51,9 +48,6 @@ public class MyStoryActivity extends Activity implements AsyncCallback, View.OnC
     private RecyclerView recycleView;
     private LoginDetailModel userDetail;
     final Stack<String> strings = new Stack<>();
-    private TextView txtPosts;
-    private TextView txtFollowers;
-    private TextView txtFamily;
     public static Boolean isStoryCreated = false;
     private ArrayList<Integer> mAllLoadedPages = new ArrayList<>();
     private ArrayList<VideoStoryModel> allVideoStoryModel = new ArrayList<>();
@@ -61,16 +55,15 @@ public class MyStoryActivity extends Activity implements AsyncCallback, View.OnC
     private int total_pages = 0;
     private int current_page = 0;
     private int mNextPage = 1;
-    private List<MyStoryModel> mAllStorylisting = new ArrayList<>();
     private int mPagLoaded = 1;
-    private MyStoryAdapter myStoryAdapter;
+    private VideoStoryAdapter myStoryAdapter;
     private int lastItemIndexForScroll = 0;
     private NestedScrollView nested_scroll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_story);
+        setContentView(R.layout.activity_video_story);
         sharedPreference = new SharedPreference(this);
         userDetail = sharedPreference.getSerializableObject(PreferenceKeys.USER_DETAIL, LoginDetailModel.class);
         viewIntail();
@@ -87,7 +80,9 @@ public class MyStoryActivity extends Activity implements AsyncCallback, View.OnC
                 mJson.put("page", mNextPage + "");
                 HashMap<String, String> headers = new HashMap<>();
                 headers.put("auth_token", sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN));
-                new CommonAsync(this, "GET", this, GeneralValues.USER_STORIES, mJson, headers).execute();
+                new CommonAsync(this, "GET", this, GeneralValues.GET_VIDEOS_MEMBERS
+                        .replace("_MEMBER_ID_", userDetail.getUser().getId() + ""), mJson, headers).execute();
+
             }
         } catch (JSONException e) {
 
@@ -108,7 +103,7 @@ public class MyStoryActivity extends Activity implements AsyncCallback, View.OnC
                     int totalItemCount = linearLayoutManager.getItemCount();
                     int lastVisibleItem = linearLayoutManager.findLastCompletelyVisibleItemPosition();
                     if (totalItemCount == (lastVisibleItem + 1)) {
-                        MyStoryActivity.this.onLoadMore();
+                        MyVideoStoryActivity.this.onLoadMore();
                         lastItemIndexForScroll = linearLayoutManager.findLastCompletelyVisibleItemPosition();
                     }
                 }
@@ -126,7 +121,7 @@ public class MyStoryActivity extends Activity implements AsyncCallback, View.OnC
         findViewById(R.id.new_story).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MyStoryActivity.this, CreateStoryActivity.class));
+                startActivity(new Intent(MyVideoStoryActivity.this, CreateStoryActivity.class));
             }
         });
         strings.push(userDetail.getUser().getAvatarFace1());
@@ -140,16 +135,11 @@ public class MyStoryActivity extends Activity implements AsyncCallback, View.OnC
             public void getAsyncResult(ArrayList<Bitmap> bitmap, String txt) {
                 mBbitmap = bitmap;
                 layoutFrame.removeAllViews();
-                view = new Cubesurfaceview(MyStoryActivity.this, mBbitmap, true);
+                view = new Cubesurfaceview(MyVideoStoryActivity.this, mBbitmap, true);
                 layoutFrame.addView(view);
             }
         }).execute();
-        txtPosts = (TextView) findViewById(R.id.txt_posts);
-        txtFollowers = (TextView) findViewById(R.id.txt_followers);
-        txtFamily = (TextView) findViewById(R.id.txt_family);
-        txtFamily.setText(userDetail.getUser().getFamilyCount() + "");
-        txtFollowers.setText(userDetail.getUser().getFollowerCount() + "");
-        txtPosts.setText(userDetail.getUser().getPostCount() + "");
+
     }
 
     @Override
@@ -157,12 +147,7 @@ public class MyStoryActivity extends Activity implements AsyncCallback, View.OnC
         super.onResume();
         try {
             if (isStoryCreated) {
-//                recreate();
                 isStoryCreated = false;
-                mAllStorylisting.clear();
-                myStoryAdapter = null;
-                mNextPage = 1;
-                mAllLoadedPages.clear();
                 getAllStorieFromServer();
             }
 //            if (view != null) view.onResume();
@@ -195,28 +180,26 @@ public class MyStoryActivity extends Activity implements AsyncCallback, View.OnC
         try {
             JSONObject jsonObject1 = new JSONObject(jsonObject);
             if (jsonObject1.has("success") && jsonObject1.getBoolean("success")) {
-                if (txt.equalsIgnoreCase(GeneralValues.USER_STORIES)) {
-                    Type listType = new TypeToken<ArrayList<MyStoryModel>>() {
-                    }.getType();
+                Type listType = new TypeToken<ArrayList<VideoStoryModel>>() {
+                }.getType();
 
-                    List<MyStoryModel> allStorylisting = new Gson().fromJson(jsonObject1.getJSONObject("data").getString("stories"), listType);
-                    int size = mAllStorylisting.size();
-                    this.mAllStorylisting.addAll(allStorylisting);
-                    if (myStoryAdapter != null) {
-                        for (int i = 0; i < allStorylisting.size(); i++) {
-                            this.mAllStorylisting.add(allStorylisting.get(i));
-                            myStoryAdapter.notifyItemChanged(mAllStorylisting.size());
-                        }
-                    } else {
-                        myStoryAdapter = new MyStoryAdapter(MyStoryActivity.this, mAllStorylisting, this);
-                        recycleView.setAdapter(myStoryAdapter);
+                ArrayList<VideoStoryModel> allStorylisting = new Gson().fromJson(jsonObject1.getJSONObject("data").getString("stories"), listType);
+                int size = allVideoStoryModel.size();
+                this.allVideoStoryModel.addAll(allStorylisting);
+                if (myStoryAdapter != null) {
+                    for (int i = 0; i < allStorylisting.size(); i++) {
+                        this.allVideoStoryModel.add(allStorylisting.get(i));
+                        myStoryAdapter.notifyItemChanged(allVideoStoryModel.size());
                     }
-                    mNextPage = 1 + mPagLoaded;
-                    total_pages = jsonObject1.getJSONObject("data").getInt("total_pages");
-                    current_page = jsonObject1.getJSONObject("data").getInt("current_page");
+                } else {
+                    myStoryAdapter = new VideoStoryAdapter(MyVideoStoryActivity.this, allVideoStoryModel);
+                    recycleView.setAdapter(myStoryAdapter);
                 }
+                mNextPage = 1 + mPagLoaded;
+                total_pages = jsonObject1.getJSONObject("data").getInt("total_pages");
+                current_page = jsonObject1.getJSONObject("data").getInt("current_page");
             } else {
-                Toast.makeText(MyStoryActivity.this, jsonObject1.getString("error"), Toast.LENGTH_LONG).show();
+                Toast.makeText(MyVideoStoryActivity.this, jsonObject1.getString("error"), Toast.LENGTH_LONG).show();
             }
         } catch (JSONException e) {
             e.printStackTrace();

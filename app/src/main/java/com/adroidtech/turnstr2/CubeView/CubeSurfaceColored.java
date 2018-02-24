@@ -554,14 +554,6 @@ public class CubeSurfaceColored extends GLSurfaceView {
         public void onDrawFrame(GL10 glUnused) {
             endTime = System.currentTimeMillis();
             long dt = endTime - startTime;
-            if (dt < 50)
-                try {
-                    long da = (50 - dt);
-                    Thread.sleep(da);
-                } catch (Exception e) {
-                }
-            startTime = System.currentTimeMillis();
-
             GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
             GLES20.glUseProgram(mProgramHandle);
             try {
@@ -615,36 +607,6 @@ public class CubeSurfaceColored extends GLSurfaceView {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-//            if (screenshot) {
-            int width = displaydata.widthPixels;
-            int height = displaydata.heightPixels;
-            int screenshotSize = width * height;
-            ByteBuffer bb = ByteBuffer.allocateDirect(screenshotSize * 4);
-            bb.order(ByteOrder.nativeOrder());
-            glUnused.glReadPixels(0, 0, width, height, GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE, bb);
-            int pixelsBuffer[] = new int[screenshotSize];
-            bb.asIntBuffer().get(pixelsBuffer);
-            bb = null;
-            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
-            bitmap.setPixels(pixelsBuffer, screenshotSize - width, -width, 0, 0, width, height);
-            pixelsBuffer = null;
-
-            short sBuffer[] = new short[screenshotSize];
-            ShortBuffer sb = ShortBuffer.wrap(sBuffer);
-            bitmap.copyPixelsToBuffer(sb);
-
-            //Making created bitmap (from OpenGL points) compatible with Android bitmap
-            for (int i = 0; i < screenshotSize; ++i) {
-                short v = sBuffer[i];
-                sBuffer[i] = (short) (((v & 0x1f) << 11) | (v & 0x7e0) | ((v & 0xf800) >> 11));
-            }
-            sb.rewind();
-            bitmap.copyPixelsFromBuffer(sb);
-            Bitmap lastScreenshot = bitmap;
-            Uri selectedFileUri = CreateStoryActivity.RewriteBitmapToFile(bitmap, createFileForCamera());
-//                screenshot = false;
-//        }
-
         }
 
 

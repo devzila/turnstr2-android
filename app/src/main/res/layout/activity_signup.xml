@@ -5,15 +5,40 @@
     android:background="@drawable/background_gradient"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:paddingLeft="25dp"
-    android:paddingRight="25dp"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".Activity.SignUpActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:src="@mipmap/turnstr_logo_white" />
+
+        <Button
+            android:id="@+id/sign_up"
+            style="?android:textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:background="@android:color/transparent"
+            android:text="Next"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </FrameLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:scrollbars="none">
 
         <LinearLayout
@@ -22,10 +47,6 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:src="@mipmap/turnstr_logo_white" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -135,16 +156,16 @@
                     android:textColor="@color/white"
                     android:textColorHint="@color/white" />
 
-                <Button
-                    android:id="@+id/sign_up"
-                    style="?android:textAppearanceSmall"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/button_drawable"
-                    android:text="SIGNUP"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold" />
+                <!--<Button-->
+                <!--android:id="@+id/sign_up"-->
+                <!--style="?android:textAppearanceSmall"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="16dp"-->
+                <!--android:background="@drawable/button_drawable"-->
+                <!--android:text="SIGNUP"-->
+                <!--android:textColor="@android:color/white"-->
+                <!--android:textStyle="bold" />-->
 
             </LinearLayout>
         </LinearLayout>

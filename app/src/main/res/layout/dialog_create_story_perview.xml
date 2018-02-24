@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/open_chat_file_background"
     android:orientation="vertical"
+    android:padding="5dp"
     tools:context="com.adroidtech.turnstr2.Activity.CreateStoryActivity">
 
     <LinearLayout
@@ -77,7 +78,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
+            android:gravity="left"
             android:hint="Caption ..."
+            android:lines="3"
             android:padding="5dp" />
     </LinearLayout>
 

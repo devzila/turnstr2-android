@@ -50,6 +50,8 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
     private CubeSurfaceColored view1;
     private TextView btnChat;
     private ImageView my_story;
+    private TextView myVideos;
+    private TextView my_photos;
 
 
     @Override
@@ -58,7 +60,6 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
         setContentView(R.layout.activity_profile);
         sharedPreference = new SharedPreference(this);
         userDetail = sharedPreference.getSerializableObject(PreferenceKeys.USER_DETAIL, LoginDetailModel.class);
-
         viewIntail();
 //        getProfileDataFromServer();
 //        uiDataUpdate(userDetail);
@@ -97,6 +98,9 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
             }
         });
         editProfile = (TextView) findViewById(R.id.edit_profile);
+        myVideos = (TextView) findViewById(R.id.my_videos);
+        my_photos = (TextView) findViewById(R.id.my_photos);
+        myVideos.setOnClickListener(this);
         txt_logout = (TextView) findViewById(R.id.txt_logout);
         txtPosts = (TextView) findViewById(R.id.txt_posts);
         txtFollowers = (TextView) findViewById(R.id.txt_followers);
@@ -203,6 +207,9 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.my_videos:
+                startActivity(new Intent(this, MyVideoStoryActivity.class));
+                break;
             case (R.id.nav_contact):
 //                startActivity(new Intent(ProfileActivity.this, ProfileActivity.class));
                 break;

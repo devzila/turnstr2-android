@@ -811,7 +811,7 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
         if (allPaths.length <= 0) return;
         final Dialog dialog = new Dialog(this, R.style.MaterialDialogSheet);
         dialog.setContentView(R.layout.dialog_create_story_perview);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         dialog.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

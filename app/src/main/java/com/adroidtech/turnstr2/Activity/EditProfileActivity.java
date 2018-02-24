@@ -252,7 +252,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
                     BitmapUtils.RewriteBitmapToFile(selectedBitmap, fileUri);
 //                    includeView((ImageView) currentViewSelected, fileUri, selectedBitmap);
                 }
-                Bitmap bitmap = new BitmapUtils().getDownsampledBitmap(this, fileUri, GeneralValues.getScreenWidth(this), GeneralValues.getScreenWidth(this));
+                Bitmap bitmap = new BitmapUtils().getDownsampledBitmap(this, fileUri, GeneralValues.getScreenWidth(this), 0);
                 includeView((ImageView) currentViewSelected, fileUri, bitmap);
             } catch (Exception e) {
                 e.printStackTrace();

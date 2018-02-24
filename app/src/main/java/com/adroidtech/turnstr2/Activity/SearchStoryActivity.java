@@ -18,12 +18,14 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.adroidtech.turnstr2.Adapter.MembersAdapter;
 import com.adroidtech.turnstr2.Adapter.MyStoryAdapter;
 import com.adroidtech.turnstr2.CubeView.Cubesurfaceview;
 import com.adroidtech.turnstr2.CubeView.URLImageParser;
 import com.adroidtech.turnstr2.CustomeViews.OnLoadMoreListener;
 import com.adroidtech.turnstr2.Models.LoginDetailModel;
 import com.adroidtech.turnstr2.Models.MyStoryModel;
+import com.adroidtech.turnstr2.Models.UserFav5Model;
 import com.adroidtech.turnstr2.R;
 import com.adroidtech.turnstr2.Utils.GeneralValues;
 import com.adroidtech.turnstr2.Utils.PreferenceKeys;
@@ -42,7 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
-public class SearchStoryActivity extends Activity implements AsyncCallback, OnLoadMoreListener, View.OnClickListener, MyStoryAdapter.OnItemClickListener {
+public class SearchStoryActivity extends Activity implements AsyncCallback, View.OnClickListener, MyStoryAdapter.OnItemClickListener, MembersAdapter.OnItemClickListener {
     Cubesurfaceview view;
     private ArrayList<Bitmap> mBbitmap = new ArrayList<>();
     private SharedPreference sharedPreference;
@@ -65,6 +67,9 @@ public class SearchStoryActivity extends Activity implements AsyncCallback, OnLo
     private ArrayList<Integer> mAllLoadedPages = new ArrayList<>();
     private List<MyStoryModel> mAllStorylisting = new ArrayList<>();
     private int lastItemIndexForScroll = 0;
+    private RecyclerView recyclerMembers;
+    private NestedScrollView nestedScroll;
+    private MembersAdapter membersAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,24 +131,17 @@ public class SearchStoryActivity extends Activity implements AsyncCallback, OnLo
                 return false;
             }
         });
+        recyclerMembers = (RecyclerView) findViewById(R.id.recycler_members_list);
         recycleView = (RecyclerView) findViewById(R.id.recycler_listview);
+        nestedScroll = (NestedScrollView) findViewById(R.id.nested_scroll);
+
         GridLayoutManager mGridManager = new GridLayoutManager(this, 3);
         recycleView.setLayoutManager(mGridManager);
         recycleView.setItemAnimator(new DefaultItemAnimator());
-        recycleView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0) {
-                    GridLayoutManager linearLayoutManager = (GridLayoutManager) recycleView.getLayoutManager();
-                    int totalItemCount = linearLayoutManager.getItemCount();
-                    int lastVisibleItem = linearLayoutManager.findLastCompletelyVisibleItemPosition();
-                    if (totalItemCount == (lastVisibleItem + 1)) {
-                        SearchStoryActivity.this.onLoadMore();
-                        lastItemIndexForScroll = linearLayoutManager.findLastCompletelyVisibleItemPosition();
-                    }
-                }
-            }
-        });
+
+        GridLayoutManager mGridManag = new GridLayoutManager(this, 3);
+        recyclerMembers.setLayoutManager(mGridManag);
+        recyclerMembers.setItemAnimator(new DefaultItemAnimator());
         layoutFrame = (FrameLayout) findViewById(R.id.layout_frame);
         view = new Cubesurfaceview(SearchStoryActivity.this, mBbitmap, false);
         layoutFrame.addView(view);
@@ -187,19 +185,16 @@ public class SearchStoryActivity extends Activity implements AsyncCallback, OnLo
                 Type listType = new TypeToken<ArrayList<MyStoryModel>>() {
                 }.getType();
                 List<MyStoryModel> allStorylisting = new Gson().fromJson(jsonObject1.getJSONObject("data").getString("stories"), listType);
-                if (myStoryAdapter != null) {
-                    for (int i = 0; i < allStorylisting.size(); i++) {
-                        this.mAllStorylisting.add(allStorylisting.get(i));
-                        myStoryAdapter.notifyItemChanged(mAllStorylisting.size());
-                    }
-                } else {
-                    this.mAllStorylisting.addAll(allStorylisting);
-                    myStoryAdapter = new MyStoryAdapter(SearchStoryActivity.this, mAllStorylisting, this);
-                    recycleView.setAdapter(myStoryAdapter);
-                }
-                mNextPage = 1 + mPagLoaded;
-                total_pages = jsonObject1.getJSONObject("data").getInt("total_pages");
-                current_page = jsonObject1.getJSONObject("data").getInt("current_page");
+
+                Type listTypeM = new TypeToken<ArrayList<UserFav5Model>>() {
+                }.getType();
+                List<UserFav5Model> allUserListing = new Gson().fromJson(jsonObject1.getJSONObject("data").getString("members"), listTypeM);
+
+                membersAdapter = new MembersAdapter(SearchStoryActivity.this, allUserListing, this);
+                recyclerMembers.setAdapter(membersAdapter);
+
+                myStoryAdapter = new MyStoryAdapter(SearchStoryActivity.this, allStorylisting, this);
+                recycleView.setAdapter(myStoryAdapter);
             } else {
                 Toast.makeText(SearchStoryActivity.this, jsonObject1.getString("error"), Toast.LENGTH_LONG).show();
             }
@@ -214,9 +209,4 @@ public class SearchStoryActivity extends Activity implements AsyncCallback, OnLo
 
     }
 
-    @Override
-    public void onLoadMore() {
-        if (mPagLoaded < total_pages)
-            searchApi(searchText);
-    }
 }

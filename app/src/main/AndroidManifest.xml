@@ -48,30 +48,38 @@
         </activity>
         <activity
             android:name=".Activity.ProfileActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
         <activity
             android:name=".Activity.MyStoryActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
         <activity
             android:name=".Activity.LoginActivity"
             android:label="@string/title_activity_login"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateVisible" />
         <activity
             android:name=".Activity.SignUpActivity"
             android:label="@string/title_activity_login"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
         <activity
             android:name=".chat.activitys.AllFriendList"
             android:label="New Chat?"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
 
-        <activity android:name=".GoLive.StartGoLive_Activity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".GoLive.StartGoLive_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
 
         <activity
             android:name=".Activity.UserProfileViewActivity"
             android:label="New Chat?"
-            android:screenOrientation="portrait" />
-
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
 
 
         <!-- <meta-data -->
@@ -84,19 +92,34 @@
         <!-- android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" -->
         <!-- android:label="@string/app_name" /> -->
 
-        <activity android:name=".chat.groupchannel.CreateGroupChannelActivity" />
-        <activity android:name=".chat.groupchannel.GroupChannelActivity" />
-        <activity android:name=".chat.groupchannel.InviteMemberActivity" />
-        <activity android:name=".chat.groupchannel.MemberListActivity" />
+        <activity
+            android:name=".chat.groupchannel.CreateGroupChannelActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
+        <activity
+            android:name=".chat.groupchannel.GroupChannelActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
+        <activity
+            android:name=".chat.groupchannel.InviteMemberActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
+        <activity
+            android:name=".chat.groupchannel.MemberListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
         <activity
             android:name=".Utils.chatUtils.PhotoViewerActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
         <activity
             android:name=".Utils.chatUtils.MediaPlayerActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
         <activity
             android:name=".Activity.EditProfileActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
         <!-- <activity android:name=".imageFillters.ImageFillterSettingActivity" /> -->
 
         <service android:name=".chat.fcm.MyFirebaseMessagingService">
@@ -112,38 +135,54 @@
 
         <activity
             android:name=".Activity.CreateStoryActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
         <activity
             android:name=".Activity.VideoPreviewActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
         <activity
             android:name=".Activity.GalleryImageActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
         <activity
             android:name=".Activity.HomePageActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize"></activity>
 
-            android:screenOrientation="portrait"></activity>
-
-        <activity android:name=".GoLive.MainVideoActivity"/>
-        <activity android:name=".videoChat.MainVideoActivity"/>
-        <activity android:name=".chat.activitys.AllFriendListVideo"/>
+        <activity
+            android:name=".GoLive.MainVideoActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
+        <activity
+            android:name=".videoChat.MainVideoActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
+        <activity
+            android:name=".chat.activitys.AllFriendListVideo"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
 
 
         <activity
             android:name=".Activity.ViewStoryActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
         <activity
             android:name=".Activity.ViewFullScrrenStoryActivity"
-
-            android:screenOrientation="portrait"></activity>
-
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize"></activity>
 
 
         <activity
             android:name=".Activity.SearchStoryActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
         <activity
             android:name=".Activity.ViewVideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.MyVideoStoryActivity"
             android:screenOrientation="portrait" />
 
 

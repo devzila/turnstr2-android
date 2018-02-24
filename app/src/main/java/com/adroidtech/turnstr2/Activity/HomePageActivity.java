@@ -40,6 +40,7 @@ import com.adroidtech.turnstr2.Utils.BitmapUtils;
 import com.adroidtech.turnstr2.Utils.GeneralValues;
 import com.adroidtech.turnstr2.Utils.PreferenceKeys;
 import com.adroidtech.turnstr2.Utils.SharedPreference;
+import com.adroidtech.turnstr2.Utils.Utils;
 import com.adroidtech.turnstr2.WebServices.AsyncCallback;
 import com.adroidtech.turnstr2.WebServices.CommonAsync;
 import com.adroidtech.turnstr2.chat.groupchannel.GroupChannelActivity;
@@ -195,12 +196,15 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
             @Override
             public void onScrollChange(NestedScrollView v, int dx, int dy, int oldScrollX, int oldScrollY) {
                 if (dy > 0 && oldScrollY < dy) {
-                    GridLayoutManager linearLayoutManager = (GridLayoutManager) recycleView.getLayoutManager();
-                    int totalItemCount = linearLayoutManager.getItemCount();
-                    int lastVisibleItem = linearLayoutManager.findLastCompletelyVisibleItemPosition();
-                    if (totalItemCount == (lastVisibleItem + 1)) {
-                        HomePageActivity.this.onLoadMore();
-                        lastItemIndexForScroll = linearLayoutManager.findLastCompletelyVisibleItemPosition();
+                    try {
+                        GridLayoutManager linearLayoutManager = (GridLayoutManager) recycleView.getLayoutManager();
+                        int totalItemCount = linearLayoutManager.getItemCount();
+                        int lastVisibleItem = linearLayoutManager.findLastCompletelyVisibleItemPosition();
+                        if (totalItemCount == (lastVisibleItem + 1)) {
+                            HomePageActivity.this.onLoadMore();
+                            lastItemIndexForScroll = linearLayoutManager.findLastCompletelyVisibleItemPosition();
+                        }
+                    } catch (Exception e) {
                     }
                 }
             }
@@ -228,6 +232,7 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
     protected void onResume() {
         super.onResume();
         try {
+            Utils.hideKeyboard(this);
 //            loadAllImagesToCube();
 //            getFav5FromServer();
 //            getAllStorieFromServer();+
@@ -344,11 +349,15 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
                 thumb_image.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        VideoStoryModel userData = (VideoStoryModel) thumb_image.getTag();
-                        Intent intent = new Intent(HomePageActivity.this, ViewVideoActivity.class);
-                        intent.putExtra("VIDEO_DATA", userData);
-                        startActivity(intent);
-                        Toast.makeText(HomePageActivity.this, "Page OPen", Toast.LENGTH_SHORT).show();
+                        try {
+                            VideoStoryModel userData = (VideoStoryModel) thumb_image.getTag();
+                            Intent intent = new Intent(HomePageActivity.this, ViewVideoActivity.class);
+                            intent.putExtra("VIDEO_DATA", userData);
+                            startActivity(intent);
+                            Toast.makeText(HomePageActivity.this, "Page OPen", Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+
+                        }
                     }
                 });
                 turnt_stories.addView(view);
@@ -435,21 +444,25 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
                 new URLImageParser(allUrls, new URLImageParser.AsyncCallback() {
                     @Override
                     public void getAsyncResult(ArrayList<Bitmap> bitmap, String txt) {
-                        fram_fav.removeAllViews();
-                        CubeSurfaceColored view = new CubeSurfaceColored(HomePageActivity.this, bitmap, false, fram_fav, "1:1:1");
-                        view.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
-                        view.setZOrderOnTop(false);
-                        view.setZOrderMediaOverlay(true);
-                        fram_fav.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                UserFav5Model userData = (UserFav5Model) fram_fav.getTag();
-                                Intent intent = new Intent(HomePageActivity.this, UserProfileViewActivity.class);
-                                intent.putExtra("USER_DATA", userData);
-                                startActivity(intent);
-                            }
-                        });
-                        fram_fav.addView(view);
+                        try {
+                            fram_fav.removeAllViews();
+                            CubeSurfaceColored view = new CubeSurfaceColored(HomePageActivity.this, bitmap, false, fram_fav, "1:1:1");
+                            view.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+                            view.setZOrderOnTop(false);
+                            view.setZOrderMediaOverlay(true);
+                            fram_fav.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    UserFav5Model userData = (UserFav5Model) fram_fav.getTag();
+                                    Intent intent = new Intent(HomePageActivity.this, UserProfileViewActivity.class);
+                                    intent.putExtra("USER_DATA", userData);
+                                    startActivity(intent);
+                                }
+                            });
+                            fram_fav.addView(view);
+                        } catch (Exception e) {
+
+                        }
 //                addTextView();
 
                     }
