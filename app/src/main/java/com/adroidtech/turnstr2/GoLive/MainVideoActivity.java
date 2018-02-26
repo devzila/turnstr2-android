@@ -377,13 +377,16 @@ public class MainVideoActivity extends AppCompatActivity
                 mSession.setSignalListener(this);
                 live_notify_Request();
 
+                imgSwitchCamera.performClick();
+                imgSwitchCamera.performClick();
+
             }
             else {
                 //mPublisherViewContainer.setVisibility(View.GONE);
                 imgMic.setVisibility(View.GONE);
                 imgSwitchCamera.setVisibility(View.GONE);
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
