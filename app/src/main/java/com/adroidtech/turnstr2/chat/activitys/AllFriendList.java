@@ -67,7 +67,7 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
         sharedPreference = new SharedPreference(getApplicationContext());
         init();
         try {
-            getMembersRequest(GeneralValues.MEMBERS_URL);
+            getMembersRequest(GeneralValues.FOLLOWERS_URL, true);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -121,9 +121,9 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
 
                         isLoading = true;
                         Log.e("TAG", "........................page=..."+member.getNext_page());
-                        //getMembersRequest(GeneralValues.MEMBERS_URL+"?page="+member.getNext_page());
+                        //getMembersRequest(GeneralValues.FOLLOWERS_URL+"?page="+member.getNext_page());
                         try {
-                            getMembersRequest(GeneralValues.MEMBERS_URL);
+                            getMembersRequest(GeneralValues.FOLLOWERS_URL, false);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -166,7 +166,7 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
                                 Iterator<String> dataKey = dataJson.keys();
                                 while (dataKey.hasNext()) {
                                     dataName = dataKey.next();
-                                    if (dataName.equals("members")) {
+                                    if (dataName.equals("followers")) {
 
                                         JSONArray jsonTags = dataJson.getJSONArray(dataName);
                                         Log.e(TAG, "Contacts...." + jsonTags);
@@ -237,7 +237,7 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
 
     }
 
-    private void getMembersRequest(String memberUrl) throws JSONException {
+    private void getMembersRequest(String memberUrl,boolean isLoader) throws JSONException {
 
         JSONObject mJson = new JSONObject();
         if(null!=member  && null!=member.getNext_page())
@@ -248,7 +248,7 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
         //Log.e("Tag", "test................");
         HashMap<String, String> extraHeaders = new HashMap<>();
         extraHeaders.put("auth_token", sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN));
-        new CommonAsync(this, "GET", this, memberUrl, mJson, extraHeaders).execute();
+        new CommonAsync(this, isLoader, "GET", this, memberUrl, mJson, extraHeaders).execute();
         //Log.e("Tag", "test................11");
 
     }

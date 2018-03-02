@@ -69,8 +69,7 @@ public class MainVideoActivity extends AppCompatActivity
     private Session mSession;
     private Publisher mPublisher;
     private Subscriber mSubscriber;
-    private Subscriber mSubscriber1;
-    private Subscriber mSubscriber2;
+
 
     private RelativeLayout mPublisherViewContainer;
   //  private RelativeLayout mSubscriberViewContainer;
@@ -375,6 +374,7 @@ public class MainVideoActivity extends AppCompatActivity
 
                 mSession.publish(mPublisher);
                 mSession.setSignalListener(this);
+
                 live_notify_Request();
 
                 imgSwitchCamera.performClick();

@@ -225,7 +225,7 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
                 break;
             case (R.id.nav_chat):
                 startActivity(new Intent(ProfileActivity.this, GroupChannelActivity.class));
-                finish();
+               // finish();
                 break;
             case R.id.layout_frame:
                 startActivity(new Intent(ProfileActivity.this, MyStoryActivity.class));

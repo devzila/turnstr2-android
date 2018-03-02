@@ -74,14 +74,12 @@ public class AllFriendList_Adapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         if (holder instanceof MyViewHolder) {
             MyViewHolder userViewHolder = (MyViewHolder) holder;
-            userViewHolder.name.setText(member.get(position).getFirst_name());
+            userViewHolder.name.setText(member.get(position).getUsername());
+            userViewHolder.email.setText(member.get(position).getFirst_name()+" "+member.get(position).getLast_name());
         } else if (holder instanceof LoadingViewHolder) {
             LoadingViewHolder loadingViewHolder = (LoadingViewHolder) holder;
             loadingViewHolder.progressBar.setIndeterminate(true);
         }
-
-
-
 
 
     }

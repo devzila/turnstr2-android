@@ -14,7 +14,6 @@ import com.adroidtech.turnstr2.R;
 import com.adroidtech.turnstr2.Utils.GeneralValues;
 import com.adroidtech.turnstr2.Utils.PreferenceKeys;
 import com.adroidtech.turnstr2.Utils.SharedPreference;
-import com.adroidtech.turnstr2.Utils.chatUtils.PreferenceUtils;
 import com.adroidtech.turnstr2.WebServices.AsyncCallback;
 import com.adroidtech.turnstr2.WebServices.CommonAsync;
 import com.adroidtech.turnstr2.chat.adapters.AllFriendList_Adapter;
@@ -35,8 +34,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
-import static com.adroidtech.turnstr2.chat.groupchannel.GroupChatFragment.MEMBER;
 
 /**
  * Created by narinder on 18/12/17.
@@ -71,7 +68,7 @@ public class AllFriendListVideo extends AppCompatActivity implements AsyncCallba
         sharedPreference = new SharedPreference(getApplicationContext());
         init();
         try {
-            getMembersRequest(GeneralValues.MEMBERS_URL);
+            getMembersRequest(GeneralValues.FOLLOWERS_URL, true);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -130,9 +127,9 @@ public class AllFriendListVideo extends AppCompatActivity implements AsyncCallba
 
                         isLoading = true;
                         Log.e("TAG", "........................page=..."+member.getNext_page());
-                        //getMembersRequest(GeneralValues.MEMBERS_URL+"?page="+member.getNext_page());
+                        //getMembersRequest(GeneralValues.FOLLOWERS_URL+"?page="+member.getNext_page());
                         try {
-                            getMembersRequest(GeneralValues.MEMBERS_URL);
+                            getMembersRequest(GeneralValues.FOLLOWERS_URL, false);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -175,7 +172,7 @@ public class AllFriendListVideo extends AppCompatActivity implements AsyncCallba
                                 Iterator<String> dataKey = dataJson.keys();
                                 while (dataKey.hasNext()) {
                                     dataName = dataKey.next();
-                                    if (dataName.equals("members")) {
+                                    if (dataName.equals("followers")) {
 
                                         JSONArray jsonTags = dataJson.getJSONArray(dataName);
                                         Log.e(TAG, "Contacts...." + jsonTags);
@@ -246,7 +243,7 @@ public class AllFriendListVideo extends AppCompatActivity implements AsyncCallba
 
     }
 
-    private void getMembersRequest(String memberUrl) throws JSONException {
+    private void getMembersRequest(String memberUrl, boolean isShowLoading) throws JSONException {
 
         JSONObject mJson = new JSONObject();
         if(null!=member  && null!=member.getNext_page())
@@ -257,7 +254,7 @@ public class AllFriendListVideo extends AppCompatActivity implements AsyncCallba
         //Log.e("Tag", "test................");
         HashMap<String, String> extraHeaders = new HashMap<>();
         extraHeaders.put("auth_token", sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN));
-        new CommonAsync(this, "GET", this, memberUrl, mJson, extraHeaders).execute();
+        new CommonAsync(this, isShowLoading,"GET", this, memberUrl, mJson, extraHeaders).execute();
         //Log.e("Tag", "test................11");
 
     }

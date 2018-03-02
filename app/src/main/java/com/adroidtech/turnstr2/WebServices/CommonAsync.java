@@ -77,6 +77,17 @@ public class CommonAsync extends AsyncTask<String, Void, String> {
         this.jsonObject = jsonObject;
     }
 
+    public CommonAsync(Context context, boolean isShowLoader, String request_type, AsyncCallback asyncCallback, String masterCall, JSONObject jsonObject, HashMap<String, String> extraHeaders) {
+        this.context = context;
+        this.masterCall = masterCall;
+        this.asyncCallback = asyncCallback;
+        this.request_type = request_type;
+        this.extraHeaders = extraHeaders;
+        this.jsonObject = jsonObject;
+        this.showLoader=isShowLoader;
+    }
+
+
     public CommonAsync(Context context, JSONObject jsonObject, String masterCall, AsyncCallback asyncCallback, HashMap<String, String> extraHeaders, String request_type, String app_token) {
         this.context = context;
         this.jsonObject = jsonObject;

@@ -477,7 +477,7 @@ public class UserProfileViewActivity extends Activity implements AsyncCallback, 
                 break;
             case (R.id.nav_chat):
                 startActivity(new Intent(UserProfileViewActivity.this, GroupChannelActivity.class));
-                finish();
+                //finish();
                 break;
 
             case R.id.layout_frame:

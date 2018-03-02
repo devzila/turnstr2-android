@@ -44,7 +44,7 @@ public class GeneralValues {
     //live
     public static final String BASE_URL = "http://18.218.6.149";
 
-    public static final String MEMBERS_URL = "/v1/members ";
+    public static final String FOLLOWERS_URL = "/v1/user/followers";//"/v1/members";
     public static final String GET_MEMBERS_DATA = "/v1/members/_MEMBER_ID_";
     public static final String USER_STORIES = "/v1/user/stories";
     public static final String GET_USER_FAVE5 = "/v1/members/_MEMBER_ID_/favourites";
@@ -59,7 +59,7 @@ public class GeneralValues {
     public static final String MEMBERS_FAVOURITES = "/v1/members/_MEMBER_ID_/favourites";
 
 
-//    public static final String MEMBERS_URL = "/v1/members ";
+//    public static final String FOLLOWERS_URL = "/v1/members ";
 
 
     public static int getScreenWidth(Context context) {

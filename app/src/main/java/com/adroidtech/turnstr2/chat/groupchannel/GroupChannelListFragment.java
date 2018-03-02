@@ -60,6 +60,7 @@ public class GroupChannelListFragment extends Fragment implements View.OnClickLi
     private SharedPreference sharedPreference;
     private LoginDetailModel userDetail;
     private FrameLayout layout_frame_main;
+    private TextView ic_back;
 
     public static GroupChannelListFragment newInstance() {
         GroupChannelListFragment fragment = new GroupChannelListFragment();
@@ -89,6 +90,8 @@ public class GroupChannelListFragment extends Fragment implements View.OnClickLi
 
         setRetainInstance(true);
 
+        ic_back=(TextView)rootView.findViewById(R.id.ic_back);
+        ic_back.setOnClickListener(this);
         // Change action bar title
         //((GroupChannelActivity) getActivity()).setActionBarTitle(getResources().getString(R.string.all_group_channels));
         sharedPreference = new SharedPreference(getActivity());
@@ -402,5 +405,10 @@ public class GroupChannelListFragment extends Fragment implements View.OnClickLi
             Intent intent = new Intent(getContext(), AllFriendList.class);
             startActivity(intent);
         }
+        if(v==ic_back)
+        {
+            getActivity().finish();
+        }
+
     }
 }
