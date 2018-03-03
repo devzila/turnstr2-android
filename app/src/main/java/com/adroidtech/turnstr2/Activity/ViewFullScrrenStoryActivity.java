@@ -19,6 +19,7 @@ import com.adroidtech.turnstr2.Utils.SharedPreference;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class ViewFullScrrenStoryActivity extends Activity {
     Cubesurfaceview view;
@@ -63,9 +64,20 @@ public class ViewFullScrrenStoryActivity extends Activity {
             }
         });
         ViewPager pager = (ViewPager) super.findViewById(R.id.viewPager);
-        this.mPagerAdapter = new CustomPagerAdapter(this, allMedia);
-        pager.setAdapter(mPagerAdapter);
-        pager.setPageTransformer(true, new CubeOutTransformer());
+        try {
+            ArrayList<MyStoryModel.Medium> allURL = new ArrayList<>();
+            for (int i = 0; i < allMedia.size(); i++)
+                if (allMedia.get(i).getMediaUrl() != null && allMedia.get(i).getMediaUrl().length() > 1)
+                    allURL.add(allMedia.get(i));
+            int loc = 0;
+            while (allURL.size() > 0 && allURL.size() < 6)
+                allURL.add(allURL.get(loc++));
+
+            this.mPagerAdapter = new CustomPagerAdapter(this, allURL);
+            pager.setAdapter(mPagerAdapter);
+            pager.setPageTransformer(true, new CubeOutTransformer());
+        } catch (Exception e) {
+        }
     }
 
 

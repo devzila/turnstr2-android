@@ -46,6 +46,7 @@ import android.widget.Toast;
 import com.adroidtech.turnstr2.Models.LoginDetailModel;
 import com.adroidtech.turnstr2.R;
 import com.adroidtech.turnstr2.Utils.GeneralValues;
+import com.adroidtech.turnstr2.Utils.MediaUtils;
 import com.adroidtech.turnstr2.Utils.PreferenceKeys;
 import com.adroidtech.turnstr2.Utils.SharedPreference;
 import com.adroidtech.turnstr2.WebServices.AsyncCallback;
@@ -151,7 +152,7 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
                     public void onBitmapReady(Bitmap bitmap) {
                         bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() / 2, bitmap.getHeight() / 2, false);
                         selectedBitmap = bitmap;
-                        selectedFileUri = RewriteBitmapToFile(bitmap, createFileForCamera());
+                        selectedFileUri = RewriteBitmapToFile(bitmap, MediaUtils.createFileForCamera());
                         uriHashMap.put(selectedView.getId(), selectedFileUri);
                         uriHashMapThumb.put(selectedView.getId(), selectedFileUri);
                         createFiltersDialog();

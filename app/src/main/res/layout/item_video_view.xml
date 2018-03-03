@@ -12,9 +12,10 @@
     <ImageView
         android:id="@+id/thumb_image"
         android:layout_width="80dp"
+        android:scaleType="centerCrop"
         android:layout_height="100dp"
-        android:padding="1dp"
-        android:src="@mipmap/img_ic" />
+        android:background="@drawable/ic_image_edit"
+        android:padding="1dp" />
 
     <TextView
         android:id="@+id/date"
@@ -24,6 +25,7 @@
         android:background="@color/gray_light_semi"
         android:gravity="center"
         android:text="21312"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:visibility="gone" />
 </RelativeLayout>
 

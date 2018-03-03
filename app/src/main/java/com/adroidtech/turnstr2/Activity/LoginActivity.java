@@ -22,6 +22,7 @@ import com.adroidtech.turnstr2.R;
 import com.adroidtech.turnstr2.Utils.GeneralValues;
 import com.adroidtech.turnstr2.Utils.PreferenceKeys;
 import com.adroidtech.turnstr2.Utils.SharedPreference;
+import com.adroidtech.turnstr2.Utils.Utils;
 import com.adroidtech.turnstr2.Utils.chatUtils.PreferenceUtils;
 import com.adroidtech.turnstr2.Utils.chatUtils.PushUtils;
 import com.adroidtech.turnstr2.WebServices.AsyncCallback;
@@ -67,6 +68,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+                finish();
             }
         });
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -76,10 +78,12 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
             @Override
             public void onClick(View view) {
                 attemptLogin();
+                Utils.hideKeyboard(LoginActivity.this, mPasswordView);
             }
         });
     }
-
+//   vistara 13 April
+//    port-delhi
 
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -286,8 +290,8 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
                 updateCurrentUserInfo(userNickname);
                 updateCurrentUserPushToken();
 
-                startActivity(new Intent(LoginActivity.this, HomePageActivity.class));
-                // finish();
+                startActivity(new Intent(LoginActivity.this, HomePageActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                finish();
             }
         });
     }

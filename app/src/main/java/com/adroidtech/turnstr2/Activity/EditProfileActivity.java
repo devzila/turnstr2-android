@@ -28,6 +28,7 @@ import com.adroidtech.turnstr2.Utils.GeneralValues;
 import com.adroidtech.turnstr2.Utils.ImagePickerUtils;
 import com.adroidtech.turnstr2.Utils.PreferenceKeys;
 import com.adroidtech.turnstr2.Utils.SharedPreference;
+import com.adroidtech.turnstr2.Utils.Utils;
 import com.adroidtech.turnstr2.WebServices.AsyncCallback;
 import com.adroidtech.turnstr2.WebServices.OkHttpRequestSender;
 import com.google.gson.Gson;
@@ -69,6 +70,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
     private View currentViewSelected;
     private HashMap<String, Uri> updatedImage;
     private Uri fileUri;
+    private String[] allImagesName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +116,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
             @Override
             public void onClick(View v) {
                 uploadImageToServer();
+                Utils.hideKeyboard(EditProfileActivity.this, txtUserPhone);
             }
         });
         view = new Cubesurfaceview(com.adroidtech.turnstr2.Activity.EditProfileActivity.this, mBbitmap, false);
@@ -307,7 +310,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
             formField.put("user[info]", (txtInfo.getText().toString()));
             formField.put("user[phone]", (txtUserPhone.getText().toString()));
             formField.put("user[username]", (txtUsername.getText().toString()));
-            String[] allImagesName = updatedImage.keySet().toArray(new String[updatedImage.size()]);
+            allImagesName = updatedImage.keySet().toArray(new String[updatedImage.size()]);
             for (int i = 0; i < allImagesName.length; i++) {
                 File selectedimageFile = new File(updatedImage.get(allImagesName[i]).getPath());
                 filePart.put("user[" + allImagesName[i] + "]", selectedimageFile);

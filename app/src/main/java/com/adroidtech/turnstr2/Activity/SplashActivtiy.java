@@ -90,6 +90,7 @@ public class SplashActivtiy extends Activity {
         } else {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
+            finish();
         }
 
         //finish();
@@ -167,8 +168,8 @@ public class SplashActivtiy extends Activity {
                 updateCurrentUserInfo(userNickname);
                 updateCurrentUserPushToken();
 
-                startActivity(new Intent(SplashActivtiy.this, HomePageActivity.class));//ProfileActivity.class));
-                // finish();
+                startActivity(new Intent(SplashActivtiy.this, HomePageActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));//ProfileActivity.class));
+                finish();
             }
         });
     }

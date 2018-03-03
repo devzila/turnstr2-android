@@ -466,7 +466,7 @@ public class UserProfileViewActivity extends Activity implements AsyncCallback, 
                 finish();
                 break;
             case (R.id.nav_box):
-                startActivity(new Intent(UserProfileViewActivity.this, HomePageActivity.class));
+                startActivity(new Intent(UserProfileViewActivity.this, HomePageActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 finish();
                 break;
             case (R.id.nav_image):

@@ -1,10 +1,12 @@
 package com.adroidtech.turnstr2.Activity;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.os.Process;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -232,10 +234,8 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
     protected void onResume() {
         super.onResume();
         try {
-            Utils.hideKeyboard(this);
-//            loadAllImagesToCube();
-//            getFav5FromServer();
-//            getAllStorieFromServer();+
+            Utils.hideKeyboard(this, search);
+            search.clearFocus();
         } catch (Exception e) {
 
         }
@@ -257,7 +257,7 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
         switch (v.getId()) {
             case (R.id.nav_contact):
                 startActivity(new Intent(HomePageActivity.this, ProfileActivity.class));
-                finish();
+//                finish();
                 break;
             case (R.id.nav_box):
 //                startActivity(new Intent(HomePageActivity.this,.class));
@@ -270,7 +270,7 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
                 break;
             case (R.id.nav_chat):
                 startActivity(new Intent(HomePageActivity.this, GroupChannelActivity.class));
-                //finish();
+//                finish();
                 break;
 
             case R.id.layout_frame:
@@ -279,6 +279,27 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
             case R.id.edit_profile:
                 startActivity(new Intent(HomePageActivity.this, EditProfileActivity.class));
                 break;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        boolean test = Utils.isLastActivityInStack(this);
+        if (test) {
+            Utils.showAlertDialog2(this, "Exit Turnstr ?", "Are you sure you want to exit Turnstr?", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    try {
+                        HomePageActivity.super.onBackPressed();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Process.killProcess(Process.myPid());
+                        System.exit(0);
+                    }
+                }
+            });
+        } else {
+            super.onBackPressed();
         }
     }
 

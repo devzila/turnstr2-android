@@ -1979,7 +1979,7 @@ public class Utils {
      *
      * @param context
      */
-    public static void hideKeyboard(Context context, EditText ed) {
+    public static void hideKeyboard(Context context, View ed) {
         try {
             InputMethodManager inputManager = (InputMethodManager) context.getSystemService(Service.INPUT_METHOD_SERVICE);
             inputManager.hideSoftInputFromWindow(ed.getWindowToken(), 0);

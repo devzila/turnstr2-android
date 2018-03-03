@@ -15,6 +15,7 @@ import com.afollestad.easyvideoplayer.EasyVideoCallback;
 import com.afollestad.easyvideoplayer.EasyVideoPlayer;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CustomPagerAdapter extends PagerAdapter {
@@ -25,7 +26,7 @@ public class CustomPagerAdapter extends PagerAdapter {
     private ImageView imageView;
     private EasyVideoPlayer player;
 
-    public CustomPagerAdapter(Context context, List<MyStoryModel.Medium> allMedia) {
+    public CustomPagerAdapter(Context context, ArrayList<MyStoryModel.Medium> allMedia) {
         mContext = context;
         this.allMedia = allMedia;
     }

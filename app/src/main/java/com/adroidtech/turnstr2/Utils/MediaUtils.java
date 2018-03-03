@@ -81,7 +81,13 @@ public class MediaUtils {
      * @return
      */
     public static Uri createFileForCamera() {
-        File file = new File(Environment.getExternalStorageDirectory(), (Calendar.getInstance().getTimeInMillis() + ".png"));
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/Turnstr2/");
+        deleteRecursive(myDir);
+        if (!myDir.exists()) {
+            myDir.mkdirs();
+        }
+        File file = new File(myDir, ("Turn_" + Calendar.getInstance().getTimeInMillis() + ".png"));
         if (!file.exists()) {
             try {
                 file.createNewFile();
@@ -109,6 +115,17 @@ public class MediaUtils {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
+    }
+
+    public static void deleteRecursive(File fileOrDirectory) {
+        try {
+            if (fileOrDirectory.isDirectory())
+                for (File child : fileOrDirectory.listFiles())
+                    deleteRecursive(child);
+
+            fileOrDirectory.delete();
+        } catch (Exception e) {
+        }
     }
 
     /**

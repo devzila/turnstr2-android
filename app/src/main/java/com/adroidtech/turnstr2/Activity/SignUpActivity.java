@@ -21,6 +21,7 @@ import com.adroidtech.turnstr2.R;
 import com.adroidtech.turnstr2.Utils.GeneralValues;
 import com.adroidtech.turnstr2.Utils.PreferenceKeys;
 import com.adroidtech.turnstr2.Utils.SharedPreference;
+import com.adroidtech.turnstr2.Utils.Utils;
 import com.adroidtech.turnstr2.Utils.chatUtils.PreferenceUtils;
 import com.adroidtech.turnstr2.Utils.chatUtils.PushUtils;
 import com.adroidtech.turnstr2.WebServices.AsyncCallback;
@@ -71,6 +72,7 @@ public class SignUpActivity extends AppCompatActivity implements AsyncCallback {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+                finish();
             }
         });
         confiPassword = (EditText) findViewById(R.id.confi_password);
@@ -101,6 +103,7 @@ public class SignUpActivity extends AppCompatActivity implements AsyncCallback {
      * errors are presented and no actual login attempt is made.
      */
     private void attemptSignUp() {
+        Utils.hideKeyboard(SignUpActivity.this, confiPassword);
         mEmailView.setError(null);
         mPasswordView.setError(null);
         String email = mEmailView.getText().toString();

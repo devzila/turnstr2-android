@@ -1,9 +1,11 @@
 package com.adroidtech.turnstr2.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.content.IntentCompat;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -204,6 +206,7 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
         }
     }
 
+    @SuppressLint("WrongConstant")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -214,10 +217,11 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
 //                startActivity(new Intent(ProfileActivity.this, ProfileActivity.class));
                 break;
             case (R.id.nav_box):
-                startActivity(new Intent(ProfileActivity.this, HomePageActivity.class));
+                startActivity(new Intent(ProfileActivity.this, HomePageActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 finish();
                 break;
             case (R.id.nav_image):
+                startActivity(new Intent(ProfileActivity.this, HomePageActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 //                startActivity(new Intent(HomePageActivity.this,. class));
                 break;
             case (R.id.nav_video):
@@ -235,8 +239,9 @@ public class ProfileActivity extends Activity implements AsyncCallback, View.OnC
                 break;
             case R.id.txt_logout:
                 new SharedPreference(ProfileActivity.this).clearSharedPreference();
-                startActivity(new Intent(ProfileActivity.this, LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                finish();
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
                 break;
         }
     }

@@ -94,6 +94,7 @@ dependencies {
     // easy    video player
 //    compile 'cn.jzvd:jiaozivideoplayer:6.2.7'
     compile 'com.afollestad:easyvideoplayer:0.3.0'
+    compile 'com.github.wseemann:FFmpegMediaMetadataRetriever:1.0.14'
 
 
 }

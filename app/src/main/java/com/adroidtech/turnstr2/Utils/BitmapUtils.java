@@ -1,5 +1,6 @@
 package com.adroidtech.turnstr2.Utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,9 +9,14 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.view.View;
+import android.widget.ImageView;
+
+import com.adroidtech.turnstr2.Utils.CachingFiles.ImageLoader;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -18,6 +24,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -151,29 +158,18 @@ public class BitmapUtils {
     }
 
 
-    public static Bitmap retriveVideoFrameFromVideo(String videoPath) {
-        Bitmap bitmap = null;
+    public void retriveVideoFrameFromVideo(Activity activity, String videoPath, final ImageView thumb_image) {
         try {
-            bitmap = null;
-            MediaMetadataRetriever mediaMetadataRetriever = null;
-            try {
-                mediaMetadataRetriever = new MediaMetadataRetriever();
-                if (Build.VERSION.SDK_INT >= 14)
-                    mediaMetadataRetriever.setDataSource(videoPath, new HashMap<String, String>());
-                else
-                    mediaMetadataRetriever.setDataSource(videoPath);
-                //   mediaMetadataRetriever.setDataSource(videoPath);
-                bitmap = mediaMetadataRetriever.getFrameAtTime();
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (mediaMetadataRetriever != null) {
-                    mediaMetadataRetriever.release();
+            final Bitmap bitmapCach = new ImageLoader(activity).getCachedVideoThumbnail(videoPath);
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    thumb_image.setImageBitmap(bitmapCach);
                 }
-            }
+            });
+
         } catch (Exception e) {
         }
-        return bitmap;
     }
 
     /**
