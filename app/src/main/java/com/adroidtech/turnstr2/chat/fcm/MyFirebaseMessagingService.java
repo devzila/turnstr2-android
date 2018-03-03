@@ -102,11 +102,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                Log.e("TAG", ":::::  "+remoteMessage.getData().get("call_type"));
                 //JSONObject tokbox=new JSONObject(remoteMessage.getData().get("caller_tokbox_session_id"));
 
-                if(remoteMessage.getData().get("call_type").toString().trim().equals("go_live_subscription"))
+                if(null!=remoteMessage.getData().get("call_type"))
                 {
-                    sendTokboxNotification_go_live(this, remoteMessage.getData().get("message"), remoteMessage.getData().get("caller_tokbox_session_id"), remoteMessage.getData().get("token"));
+                    if(remoteMessage.getData().get("call_type").toString().trim().equals("go_live_subscription"))
+                    {
+                        sendTokboxNotification_go_live(this, remoteMessage.getData().get("message"), remoteMessage.getData().get("caller_tokbox_session_id"), remoteMessage.getData().get("token"));
+                    }
                 }
-                else {
+                else
+                {
                     sendTokboxNotification(this, remoteMessage.getData().get("message"), remoteMessage.getData().get("caller_tokbox_session_id"), remoteMessage.getData().get("token"));
                 }
 
