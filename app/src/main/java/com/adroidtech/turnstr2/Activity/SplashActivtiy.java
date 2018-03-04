@@ -96,6 +96,13 @@ public class SplashActivtiy extends Activity {
         //finish();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Log.e("TAG ",  "Splash Activity.........");
+    }
+
     /**
      * Check camera permission when we lounch camera.
      *
