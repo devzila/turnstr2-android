@@ -670,7 +670,7 @@ public class MainVideoActivity extends AppCompatActivity
             Log.e("TAG", "............"+s +" ... "+s1 +"......."+session);
         }
 
-        message.add(s1);
+        message.add(0, s1);
 
         commentsAdapter.notifyItemRangeInserted(message.size()-1, message.size());
 

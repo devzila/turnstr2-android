@@ -104,7 +104,8 @@
                 android:layout_height="match_parent">
 
                 <TextView
-
+                    android:id="@+id/txtBack"
+                    android:padding="5dp"
                     android:text="Back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />

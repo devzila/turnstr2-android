@@ -59,6 +59,7 @@ import com.sendbird.android.User;
 import com.sendbird.android.UserMessage;
 
 import org.json.JSONException;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -108,6 +109,7 @@ public class GroupChatFragment extends Fragment implements View.OnClickListener 
     private BaseMessage mEditingMessage = null;
     private TextView chatUserName;
     private ImageView btnVideoChat;
+    private TextView txtBack;
 
 
     /**
@@ -153,6 +155,9 @@ public class GroupChatFragment extends Fragment implements View.OnClickListener 
         View rootView = inflater.inflate(R.layout.fragment_group_chat, container, false);
 
         setRetainInstance(true);
+
+        txtBack=(TextView)rootView.findViewById(R.id.txtBack);
+        txtBack.setOnClickListener(this);
 
         btnVideoChat=(ImageView)rootView.findViewById(R.id.btnVideoChat);
         btnVideoChat.setOnClickListener(this);
@@ -984,6 +989,11 @@ public class GroupChatFragment extends Fragment implements View.OnClickListener 
                 intent.putExtra(MEMBER, memberId);
             }
             getActivity().startActivity(intent);
+        }
+        if(v==txtBack)
+        {
+            getActivity().onBackPressed();
+
         }
     }
 }
