@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.opengl.GLSurfaceView;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Process;
 import android.support.v4.widget.NestedScrollView;
@@ -39,6 +41,7 @@ import com.adroidtech.turnstr2.Models.UserFav5Model;
 import com.adroidtech.turnstr2.Models.VideoStoryModel;
 import com.adroidtech.turnstr2.R;
 import com.adroidtech.turnstr2.Utils.BitmapUtils;
+import com.adroidtech.turnstr2.Utils.CachingFiles.TaskLoader;
 import com.adroidtech.turnstr2.Utils.GeneralValues;
 import com.adroidtech.turnstr2.Utils.PreferenceKeys;
 import com.adroidtech.turnstr2.Utils.SharedPreference;
@@ -361,7 +364,12 @@ public class HomePageActivity extends Activity implements AsyncCallback, OnLoadM
                 View view = inflater.inflate(R.layout.video_thumb_view, turnt_stories, false);
                 final ImageView thumb_image = (ImageView) view.findViewById(R.id.thumb_image);
                 thumb_image.setTag(allVideoStoryModel.get(i));
-                Picasso.with(this).load(allVideoStoryModel.get(i).getUrl()).into(thumb_image);
+                TaskLoader task = new TaskLoader(this, allVideoStoryModel.get(i).getUrl(), thumb_image);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                    task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                } else {
+                    task.execute();
+                }
 //                try {
 //                    thumb_image.setImageBitmap(BitmapUtils.retriveVideoFrameFromVideo(allVideoStoryModel.get(i).getUrl()));
 //                } catch (Exception e) {

@@ -75,7 +75,6 @@ public class MyStoryActivity extends Activity implements AsyncCallback, View.OnC
         userDetail = sharedPreference.getSerializableObject(PreferenceKeys.USER_DETAIL, LoginDetailModel.class);
         viewIntail();
         getAllStorieFromServer();
-//        getProfileDataFromServer();
     }
 
     private void getAllStorieFromServer() {
@@ -122,7 +121,6 @@ public class MyStoryActivity extends Activity implements AsyncCallback, View.OnC
                 finish();
             }
         });
-
         findViewById(R.id.new_story).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

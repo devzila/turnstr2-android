@@ -49,6 +49,7 @@ import com.adroidtech.turnstr2.Utils.GeneralValues;
 import com.adroidtech.turnstr2.Utils.MediaUtils;
 import com.adroidtech.turnstr2.Utils.PreferenceKeys;
 import com.adroidtech.turnstr2.Utils.SharedPreference;
+import com.adroidtech.turnstr2.Utils.Utils;
 import com.adroidtech.turnstr2.WebServices.AsyncCallback;
 import com.adroidtech.turnstr2.WebServices.OkHttpRequestSender;
 import com.adroidtech.turnstr2.imageFillters.ThumbnailCallback;
@@ -820,7 +821,7 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
             }
         });
         TextView nextq = (TextView) dialog.findViewById(R.id.next);
-        EditText et_captions = (EditText) dialog.findViewById(R.id.et_captions);
+        final EditText et_captions = (EditText) dialog.findViewById(R.id.et_captions);
         StoryCaption = et_captions.getText().toString();
         final ImageView avatarFace = (ImageView) dialog.findViewById(R.id.avatar_face);
         nextq.setOnClickListener(new View.OnClickListener() {
@@ -828,6 +829,7 @@ public class CreateStoryActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onClick(View v) {
 //                if (lastPerview == allPaths.length) {
+                Utils.hideKeyboard(CreateStoryActivity.this, et_captions);
                 uploadImageToServer();
 //                } else {
 //                    Uri pathUri = allPaths[lastPerview++];

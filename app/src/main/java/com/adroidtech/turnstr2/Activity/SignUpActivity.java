@@ -241,7 +241,7 @@ public class SignUpActivity extends AppCompatActivity implements AsyncCallback {
                 // Proceed to ImageFillterSettingActivity
                 // Intent intent = new Intent(LoginActivity.this, AllFriendList.class);
 
-                startActivity(new Intent(SignUpActivity.this, ProfileActivity.class));
+                startActivity(new Intent(SignUpActivity.this, HomePageActivity.class));
 //                Intent intent = new Intent(SignUpActivity.this, GroupChannelActivity.class);
 //                startActivity(intent);
                 finish();

@@ -74,7 +74,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
 
-
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             Log.e(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
@@ -87,33 +86,26 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             channelUrl = (String) channel.get("channel_url");
 
             sendNotification(this, remoteMessage.getData().get("message"), channelUrl);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
 
             try {
-               Log.e("TAG", ":::::  "+remoteMessage.getData().get("caller_tokbox_session_id"));
-               Log.e("TAG", ":::::  "+remoteMessage.getData().get("caller_first_name"));
-               Log.e("TAG", ":::::  "+remoteMessage.getData().get("caller_last_name"));
-               Log.e("TAG", ":::::  "+remoteMessage.getData().get("caller_id"));
-               Log.e("TAG", ":::::  "+remoteMessage.getData().get("sender_id"));
-               Log.e("TAG", ":::::  "+remoteMessage.getData().get("token"));
-               Log.e("TAG", ":::::  "+remoteMessage.getData().get("call_type"));
+                Log.e("TAG", ":::::  " + remoteMessage.getData().get("caller_tokbox_session_id"));
+                Log.e("TAG", ":::::  " + remoteMessage.getData().get("caller_first_name"));
+                Log.e("TAG", ":::::  " + remoteMessage.getData().get("caller_last_name"));
+                Log.e("TAG", ":::::  " + remoteMessage.getData().get("caller_id"));
+                Log.e("TAG", ":::::  " + remoteMessage.getData().get("sender_id"));
+                Log.e("TAG", ":::::  " + remoteMessage.getData().get("token"));
+                Log.e("TAG", ":::::  " + remoteMessage.getData().get("call_type"));
                 //JSONObject tokbox=new JSONObject(remoteMessage.getData().get("caller_tokbox_session_id"));
 
-                if(null!=remoteMessage.getData().get("call_type"))
-                {
-                    if(remoteMessage.getData().get("call_type").toString().trim().equals("go_live_subscription"))
-                    {
+                if (null != remoteMessage.getData().get("call_type")) {
+                    if (remoteMessage.getData().get("call_type").toString().trim().equals("go_live_subscription")) {
                         sendTokboxNotification_go_live(this, remoteMessage.getData().get("message"), remoteMessage.getData().get("caller_tokbox_session_id"), remoteMessage.getData().get("token"));
                     }
-                }
-                else
-                {
+                } else {
                     sendTokboxNotification(this, remoteMessage.getData().get("message"), remoteMessage.getData().get("caller_tokbox_session_id"), remoteMessage.getData().get("token"));
                 }
-
 
 
             } catch (Exception e1) {

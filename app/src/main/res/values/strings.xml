@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Turnstr2</string>
+    <string name="app_name">Turnstr</string>
     <string name="ga_trackingId" translatable="false">${YOUR_TRACKING_ID}</string>
     <string name="title_activity_login">Sign in</string>
 

@@ -39,7 +39,7 @@ import java.util.List;
  * Created by narinder on 18/12/17.
  */
 
-public class AllFriendList extends AppCompatActivity implements AsyncCallback , SelectUserFragment.UsersSelectedListener, SelectDistinctFragment.DistinctSelectedListener{
+public class AllFriendList extends AppCompatActivity implements AsyncCallback, SelectUserFragment.UsersSelectedListener, SelectDistinctFragment.DistinctSelectedListener {
 
     public static final String EXTRA_NEW_CHANNEL_URL = "EXTRA_NEW_CHANNEL_URL";
     public static final String GROUP_CHANNEL_URL = "groupChannelUrl";
@@ -61,9 +61,6 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all);
-
-
-
         sharedPreference = new SharedPreference(getApplicationContext());
         init();
         try {
@@ -71,7 +68,6 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
     private void init() {
@@ -89,10 +85,9 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
                     @Override
                     public void onItemClick(View view, int position) {
 
-                        if(null!=member)
-                        {
+                        if (null != member) {
 
-                            mSelectedIds=new ArrayList<>();
+                            mSelectedIds = new ArrayList<>();
                             mSelectedIds.add(member.getMemberList().get(position).getId());
                             mIsDistinct = PreferenceUtils.getGroupChannelDistinct(AllFriendList.this);////CreateGroupChannelActivity
                             createGroupChannel(mSelectedIds, mIsDistinct);
@@ -111,16 +106,15 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if(null!=member.getNext_page() && !member.getNext_page().equals("null"))
-                {
-                totalItemCount = mLayoutManager.getItemCount();
-                lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
-                if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
-                    Log.e("TAG", "................... loading ...........");
+                if (null != member.getNext_page() && !member.getNext_page().equals("null")) {
+                    totalItemCount = mLayoutManager.getItemCount();
+                    lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
+                    if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                        Log.e("TAG", "................... loading ...........");
 
 
                         isLoading = true;
-                        Log.e("TAG", "........................page=..."+member.getNext_page());
+                        Log.e("TAG", "........................page=..." + member.getNext_page());
                         //getMembersRequest(GeneralValues.FOLLOWERS_URL+"?page="+member.getNext_page());
                         try {
                             getMembersRequest(GeneralValues.FOLLOWERS_URL, false);
@@ -206,7 +200,7 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
 
 
                                         member.setNext_page(dataJson.getString(dataName));
-                                        Log.e("TAG", ".member.getNext_page...."+member.getNext_page());
+                                        Log.e("TAG", ".member.getNext_page...." + member.getNext_page());
                                     }
                                     if (dataName.equals("prev_page")) {
                                         member.setPrev_page(dataJson.getString(dataName));
@@ -237,11 +231,10 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
 
     }
 
-    private void getMembersRequest(String memberUrl,boolean isLoader) throws JSONException {
+    private void getMembersRequest(String memberUrl, boolean isLoader) throws JSONException {
 
         JSONObject mJson = new JSONObject();
-        if(null!=member  && null!=member.getNext_page())
-        {
+        if (null != member && null != member.getNext_page()) {
             mJson.put("page", member.getNext_page());
         }
 
@@ -255,18 +248,18 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
 
     private void createGroupChannel(final List<String> userIds, boolean distinct) {
         try {
-            Log.e("TAG", "userID............"+userIds);
+            Log.e("TAG", "userID............" + userIds);
             GroupChannel.createChannelWithUserIds(userIds, distinct, new GroupChannel.GroupChannelCreateHandler() {
                 @Override
                 public void onResult(GroupChannel groupChannel, SendBirdException e) {
                     if (e != null) {
                         // Error!
-                        Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_LONG).show();
-                        System.out.println("Error "+e.getMessage());
+                        Toast.makeText(getApplicationContext(), "" + e.getMessage(), Toast.LENGTH_LONG).show();
+                        System.out.println("Error " + e.getMessage());
                         return;
                     }
 
-                    Log.e("TAG", "EXTRA_NEW_CHANNEL_URL............"+groupChannel.getUrl());
+                    Log.e("TAG", "EXTRA_NEW_CHANNEL_URL............" + groupChannel.getUrl());
 
 //                    Intent intent = new Intent(getApplication(), GroupChannelActivity.class);
 //                    intent.putExtra(GROUP_CHANNEL_URL, groupChannel.getUrl());
@@ -274,7 +267,7 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
 //                    finish();
 
 
-                    Intent intent=new Intent(getApplication(), GroupChannelActivity.class);
+                    Intent intent = new Intent(getApplication(), GroupChannelActivity.class);
                     intent.putExtra(GROUP_CHANNEL_URL, groupChannel.getUrl());
                     startActivity(intent);
 
@@ -283,13 +276,11 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
                 }
             });
 
-        }catch (Exception ex)
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
     }
-
 
 
     @Override
@@ -310,7 +301,7 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback , 
 //            mCreateButton.setEnabled(true);
 
         } else {
-   //         mCreateButton.setEnabled(false);
+            //         mCreateButton.setEnabled(false);
 
         }
     }
