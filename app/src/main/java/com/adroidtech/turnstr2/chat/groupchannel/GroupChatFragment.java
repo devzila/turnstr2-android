@@ -812,8 +812,9 @@ public class GroupChatFragment extends Fragment implements View.OnClickListener 
             userDetail = sharedPreference.getSerializableObject(PreferenceKeys.USER_DETAIL, LoginDetailModel.class);
             for(Member mm:mChannel.getMembers())
             {
-                if(!mm.getUserId().toString().trim().equals(userDetail.getUser().getId()))
+                if(!mm.getUserId().toString().trim().equals(userDetail.getUser().getId().toString().trim()))
                 {
+                    Log.e("TAG", ".....ID..................."+userDetail.getUser().getId()+"  .........."+mm.getUserId());
                     getUserDetail(mm.getUserId());
                 }
             }
