@@ -66,7 +66,7 @@
 
         <LinearLayout
             android:elevation="5dp"
-            android:background="@color/groupChatAdminBackground"
+            android:background="@color/white"
 
             android:layout_width="match_parent"
             android:layout_height="80dp">
@@ -75,10 +75,17 @@
                 android:layout_weight=".60"
                 android:layout_width="0dp"
                 android:layout_height="match_parent">
-                <ImageView
-                    android:src="@mipmap/cube"
+
+                <FrameLayout
+                    android:id="@+id/layout_frame"
                     android:layout_width="80dp"
-                    android:layout_height="80dp" />
+                    android:layout_height="80dp"
+                    ></FrameLayout>
+
+                <!--<ImageView-->
+                    <!--android:src="@mipmap/cube"-->
+                    <!--android:layout_width="80dp"-->
+                    <!--android:layout_height="80dp" />-->
 
             </LinearLayout>
             <LinearLayout

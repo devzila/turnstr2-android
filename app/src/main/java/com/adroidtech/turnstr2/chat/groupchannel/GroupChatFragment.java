@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,13 +31,21 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.adroidtech.turnstr2.Activity.UserProfileViewActivity;
+import com.adroidtech.turnstr2.CubeView.CubeSurfaceColored;
+import com.adroidtech.turnstr2.CubeView.URLImageParser;
+import com.adroidtech.turnstr2.Models.LoginDetailModel;
+import com.adroidtech.turnstr2.Models.ViewUserDetailModel;
 import com.adroidtech.turnstr2.R;
+import com.adroidtech.turnstr2.Utils.GeneralValues;
+import com.adroidtech.turnstr2.Utils.PreferenceKeys;
 import com.adroidtech.turnstr2.Utils.SharedPreference;
 import com.adroidtech.turnstr2.Utils.chatUtils.FileUtils;
 import com.adroidtech.turnstr2.Utils.chatUtils.MediaPlayerActivity;
@@ -45,7 +54,11 @@ import com.adroidtech.turnstr2.Utils.chatUtils.PreferenceUtils;
 import com.adroidtech.turnstr2.Utils.chatUtils.TextUtils;
 import com.adroidtech.turnstr2.Utils.chatUtils.UrlPreviewInfo;
 import com.adroidtech.turnstr2.Utils.chatUtils.WebUtils;
+import com.adroidtech.turnstr2.WebServices.AsyncCallback;
+import com.adroidtech.turnstr2.WebServices.CommonAsync;
+import com.adroidtech.turnstr2.chat.activitys.AllFriendList;
 import com.adroidtech.turnstr2.videoChat.MainVideoActivity;
+import com.google.gson.Gson;
 import com.sendbird.android.AdminMessage;
 import com.sendbird.android.BaseChannel;
 import com.sendbird.android.BaseMessage;
@@ -59,6 +72,7 @@ import com.sendbird.android.User;
 import com.sendbird.android.UserMessage;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.File;
@@ -66,6 +80,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Stack;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -111,6 +126,12 @@ public class GroupChatFragment extends Fragment implements View.OnClickListener 
     private ImageView btnVideoChat;
     private TextView txtBack;
 
+    private FrameLayout layoutFrame;
+    private CubeSurfaceColored view1;
+    private ArrayList<Bitmap> mBbitmap1 = new ArrayList<>();
+    private SharedPreference sharedPreference;
+    private ViewUserDetailModel userDetailModel;
+    private LoginDetailModel userDetail;
 
     /**
      * To create an instance of this fragment, a Channel URL should be required.
@@ -135,9 +156,12 @@ public class GroupChatFragment extends Fragment implements View.OnClickListener 
         if (savedInstanceState != null) {
             // Get channel URL from saved state.
             mChannelUrl = savedInstanceState.getString(STATE_CHANNEL_URL);
+            Log.e("TAG", ".....channel URl..."+mChannelUrl);
         } else {
             // Get channel URL from GroupChannelListFragment.
             mChannelUrl = getArguments().getString(GroupChannelListFragment.EXTRA_GROUP_CHANNEL_URL);
+
+            Log.e("TAG", ".....channel URl..."+mChannelUrl);
         }
 
         Log.d(LOG_TAG, mChannelUrl);
@@ -148,13 +172,38 @@ public class GroupChatFragment extends Fragment implements View.OnClickListener 
         // Load messages from cache.
         mChatAdapter.load(mChannelUrl);
     }
+    private void loadAllImagesToCube(ViewUserDetailModel userDetailModel) {
+        final Stack<String> strings1 = new Stack<>();
+
+        strings1.push(userDetailModel.getAvatarFace1());
+        strings1.push(userDetailModel.getAvatarFace2());
+        strings1.push(userDetailModel.getAvatarFace3());
+        strings1.push(userDetailModel.getAvatarFace4());
+        strings1.push(userDetailModel.getAvatarFace5());
+        strings1.push(userDetailModel.getAvatarFace6());
+        new URLImageParser(strings1, new URLImageParser.AsyncCallback() {
+            @Override
+            public void getAsyncResult(ArrayList<Bitmap> bitmap, String txt) {
+                mBbitmap1 = bitmap;
+                layoutFrame.removeAllViews();
+                view1 = new CubeSurfaceColored(getActivity(), mBbitmap1, true, layoutFrame, "1:1:1");
+                view1.setZOrderOnTop(false);
+                layoutFrame.addView(view1);
+
+            }
+        }).execute();
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_group_chat, container, false);
 
+        sharedPreference = new SharedPreference(getActivity());
+
         setRetainInstance(true);
+
+        layoutFrame = (FrameLayout)rootView.findViewById(R.id.layout_frame);
 
         txtBack=(TextView)rootView.findViewById(R.id.txtBack);
         txtBack.setOnClickListener(this);
@@ -760,6 +809,15 @@ public class GroupChatFragment extends Fragment implements View.OnClickListener 
 
             chatUserName.setText(TextUtils.getGroupChannelTitle(mChannel));
 
+            userDetail = sharedPreference.getSerializableObject(PreferenceKeys.USER_DETAIL, LoginDetailModel.class);
+            for(Member mm:mChannel.getMembers())
+            {
+                if(!mm.getUserId().toString().trim().equals(userDetail.getUser().getId()))
+                {
+                    getUserDetail(mm.getUserId());
+                }
+            }
+
 
         }
 
@@ -995,5 +1053,48 @@ public class GroupChatFragment extends Fragment implements View.OnClickListener 
             getActivity().onBackPressed();
 
         }
+    }
+
+
+
+    private void getUserDetail(String userId) {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("auth_token", sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN));
+        JSONObject mJson = new JSONObject();
+        new CommonAsync(getActivity(), "GET", new AsyncCallback() {
+            @Override
+            public void getAsyncResult(String jsonObject, String txt) {
+                try {
+                    JSONObject jsonObject1 = new JSONObject(jsonObject);
+                    if (jsonObject1.has("success") && jsonObject1.getBoolean("success")) {
+                        userDetailModel = new Gson().fromJson(jsonObject1.getJSONObject("data").getString("member"), ViewUserDetailModel.class);
+                        //uiDataUpdate(userDetailModel);
+
+                        try {
+                            //    userDetail = sharedPreference.getSerializableObject(PreferenceKeys.USER_DETAIL, LoginDetailModel.class);
+                            loadAllImagesToCube(userDetailModel);
+
+                            view1 = new CubeSurfaceColored(getActivity(), mBbitmap1, true, layoutFrame, "1:1:1");
+                            view1.setZOrderOnTop(false);
+
+                            layoutFrame.addView(view1);
+
+
+                        }catch (Exception ex)
+                        {
+                            ex.printStackTrace();
+                        }
+
+
+                        Log.e("TAG", "........."+userDetailModel.getAvatarFace1());
+
+                    } else {
+                        Toast.makeText(getActivity(), jsonObject1.getString("error"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, GeneralValues.GET_MEMBERS_DATA.replace("_MEMBER_ID_", userId + ""), mJson, headers).execute();
     }
 }

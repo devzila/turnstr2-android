@@ -1,6 +1,7 @@
 package com.adroidtech.turnstr2.chat.activitys;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -8,8 +9,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.adroidtech.turnstr2.Activity.ProfileActivity;
+import com.adroidtech.turnstr2.CubeView.CubeSurfaceColored;
+import com.adroidtech.turnstr2.CubeView.Cubesurfaceview;
+import com.adroidtech.turnstr2.CubeView.URLImageParser;
+import com.adroidtech.turnstr2.Models.LoginDetailModel;
 import com.adroidtech.turnstr2.R;
 import com.adroidtech.turnstr2.Utils.GeneralValues;
 import com.adroidtech.turnstr2.Utils.PreferenceKeys;
@@ -34,12 +42,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Created by narinder on 18/12/17.
  */
 
-public class AllFriendList extends AppCompatActivity implements AsyncCallback, SelectUserFragment.UsersSelectedListener, SelectDistinctFragment.DistinctSelectedListener {
+public class AllFriendList extends AppCompatActivity implements AsyncCallback, SelectUserFragment.UsersSelectedListener, SelectDistinctFragment.DistinctSelectedListener, View.OnClickListener {
 
     public static final String EXTRA_NEW_CHANNEL_URL = "EXTRA_NEW_CHANNEL_URL";
     public static final String GROUP_CHANNEL_URL = "groupChannelUrl";
@@ -55,8 +64,11 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback, S
     private int visibleThreshold = 5;
     private int lastVisibleItem, totalItemCount;
     private boolean isLoading;
-
-
+    private TextView ic_back;
+    private LoginDetailModel userDetail;
+    private FrameLayout layoutFrame;
+    private CubeSurfaceColored view1;
+    private ArrayList<Bitmap> mBbitmap1 = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +83,31 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback, S
     }
 
     private void init() {
+        userDetail = sharedPreference.getSerializableObject(PreferenceKeys.USER_DETAIL, LoginDetailModel.class);
+        loadAllImagesToCube();
+        layoutFrame = (FrameLayout) findViewById(R.id.layout_frame);
+        view1 = new CubeSurfaceColored(this, mBbitmap1, true, layoutFrame, "1:0.6f:0");
+        view1.setZOrderOnTop(false);
+
+        layoutFrame.addView(view1);
+
+        TextView txtPosts = (TextView) findViewById(R.id.txt_posts);
+        TextView txtFollowers = (TextView) findViewById(R.id.txt_followers);
+        TextView txtFamily = (TextView) findViewById(R.id.txt_family);
+
+        try {
+            txtFamily.setText("posts "+userDetail.getUser().getFamilyCount() + "");
+            txtFollowers.setText("followers "+userDetail.getUser().getFollowerCount() + "");
+            txtPosts.setText("family "+userDetail.getUser().getPostCount() + "");
+        }catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+
+        ic_back=(TextView)findViewById(R.id.ic_back);
+        ic_back.setOnClickListener(this);
+
+
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -127,6 +164,28 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback, S
             }
         });
 
+    }
+
+
+    private void loadAllImagesToCube() {
+        final Stack<String> strings1 = new Stack<>();
+        strings1.push(userDetail.getUser().getAvatarFace1());
+        strings1.push(userDetail.getUser().getAvatarFace2());
+        strings1.push(userDetail.getUser().getAvatarFace3());
+        strings1.push(userDetail.getUser().getAvatarFace4());
+        strings1.push(userDetail.getUser().getAvatarFace5());
+        strings1.push(userDetail.getUser().getAvatarFace6());
+        new URLImageParser(strings1, new URLImageParser.AsyncCallback() {
+            @Override
+            public void getAsyncResult(ArrayList<Bitmap> bitmap, String txt) {
+                mBbitmap1 = bitmap;
+                layoutFrame.removeAllViews();
+                view1 = new CubeSurfaceColored(AllFriendList.this, mBbitmap1, true, layoutFrame, "1:1:1");
+                view1.setZOrderOnTop(false);
+                layoutFrame.addView(view1);
+
+            }
+        }).execute();
     }
 
     @Override
@@ -304,6 +363,16 @@ public class AllFriendList extends AppCompatActivity implements AsyncCallback, S
             //         mCreateButton.setEnabled(false);
 
         }
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        if(view==ic_back)
+        {
+            finish();
+        }
+
     }
 }
 
