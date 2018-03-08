@@ -15,7 +15,7 @@
         android:layout_height="100dp"
         android:background="@color/text_blue"
         android:padding="1dp"
-        android:src="@mipmap/img_ic" />
+        android:src="@drawable/ic_image_edit" />
 
 </LinearLayout>
 
