@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.adroidtech.turnstr2.GoLive.adapters.CommentsAdapter;
+import com.adroidtech.turnstr2.Models.LoginDetailModel;
 import com.adroidtech.turnstr2.R;
 import com.adroidtech.turnstr2.Utils.GeneralValues;
 import com.adroidtech.turnstr2.Utils.PreferenceKeys;
@@ -145,9 +146,8 @@ public class MainVideoActivity extends AppCompatActivity
          commentsAdapter=new CommentsAdapter(getApplicationContext(), message);
          recyclerView = (RecyclerView) findViewById(R.id.activity_comments_recycler_view);
         LinearLayoutManager manager = new LinearLayoutManager(this);
-        manager.setStackFromEnd(true);
-        manager.setReverseLayout(true);
-
+//        manager.setStackFromEnd(true);
+//        manager.setReverseLayout(true);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(commentsAdapter);
 
@@ -652,7 +652,8 @@ public class MainVideoActivity extends AppCompatActivity
                 return;
             }
 
-            mSession.sendSignal("chat", edtSend.getText().toString().trim());
+            LoginDetailModel userDetail = sharedPreference.getSerializableObject(PreferenceKeys.USER_DETAIL, LoginDetailModel.class);
+            mSession.sendSignal(userDetail.getUser().getFirstName(), edtSend.getText().toString().trim());
 
             edtSend.setText("");
         }
@@ -670,10 +671,13 @@ public class MainVideoActivity extends AppCompatActivity
             Log.e("TAG", "............"+s +" ... "+s1 +"......."+session);
         }
 
-        message.add(0, s1);
+        //message.add(0, s1);
+
+        String msg=s+": "+s1;
+        message.add(msg);
 
         commentsAdapter.notifyItemRangeInserted(message.size()-1, message.size());
 
-
+        recyclerView.scrollToPosition(message.size() - 1);
     }
 }
