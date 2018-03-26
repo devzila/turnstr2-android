@@ -41,6 +41,7 @@ public class SplashActivtiy extends Activity {
                 }
             }, SPLASH_TIME_OUT);
         }
+
 //        new Handler().postDelayed(new Runnable() {
 //            @Override
 //            public void run() {

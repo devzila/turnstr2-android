@@ -42,7 +42,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         // Get updated InstanceID token.
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
         Log.e(TAG, "Refreshed token: " + refreshedToken);
-        new SharedPreference(this).putString(PreferenceKeys.FIREBASE_TOKEN,refreshedToken);
+        new SharedPreference(this, PreferenceKeys.FIREBASE_TOKEN).putString(PreferenceKeys.FIREBASE_TOKEN, refreshedToken);
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.
@@ -52,7 +52,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
 
     /**
      * Persist token to third-party servers.
-     *
+     * <p>
      * Modify this method to associate the user's FCM InstanceID token with any server-side account
      * maintained by your application.
      *

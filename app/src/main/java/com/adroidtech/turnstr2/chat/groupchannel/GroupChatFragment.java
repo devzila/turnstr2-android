@@ -174,7 +174,6 @@ public class GroupChatFragment extends Fragment implements View.OnClickListener 
     }
     private void loadAllImagesToCube(ViewUserDetailModel userDetailModel) {
         final Stack<String> strings1 = new Stack<>();
-
         strings1.push(userDetailModel.getAvatarFace1());
         strings1.push(userDetailModel.getAvatarFace2());
         strings1.push(userDetailModel.getAvatarFace3());
@@ -1070,7 +1069,6 @@ public class GroupChatFragment extends Fragment implements View.OnClickListener 
                     if (jsonObject1.has("success") && jsonObject1.getBoolean("success")) {
                         userDetailModel = new Gson().fromJson(jsonObject1.getJSONObject("data").getString("member"), ViewUserDetailModel.class);
                         //uiDataUpdate(userDetailModel);
-
                         try {
                             //    userDetail = sharedPreference.getSerializableObject(PreferenceKeys.USER_DETAIL, LoginDetailModel.class);
                             loadAllImagesToCube(userDetailModel);

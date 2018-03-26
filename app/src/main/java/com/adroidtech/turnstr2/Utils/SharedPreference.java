@@ -26,6 +26,15 @@ public class SharedPreference {
     }
 
     /**
+     * @param context
+     */
+    public SharedPreference(Context context, String pref_name) {
+        this.mContext = context;
+        settings = mContext.getSharedPreferences(pref_name, Context.MODE_PRIVATE);
+        editor = settings.edit();
+    }
+
+    /**
      * @param text
      * @param prefs_key
      */
@@ -157,7 +166,6 @@ public class SharedPreference {
     }
 
     /**
-     * @param context
      */
     public void clearSharedPreference() {
         editor.clear();

@@ -112,7 +112,8 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
             mJson.put("login", username);
             mJson.put("password", password);
             mJson.put("device_name", "Android");
-            mJson.put("device_push_token", sharedPreference.getString(PreferenceKeys.FIREBASE_TOKEN));
+            mJson.put("device_push_token",
+                    new SharedPreference(this, PreferenceKeys.FIREBASE_TOKEN).getString(PreferenceKeys.FIREBASE_TOKEN));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -161,7 +162,8 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
         try {
             mJson.put("device_ios", "Android : " + Build.VERSION.RELEASE);
             mJson.put("device_name", "Android");
-            mJson.put("device_push_token", sharedPreference.getString(PreferenceKeys.FIREBASE_TOKEN));
+            mJson.put("device_push_token",
+                    new SharedPreference(this, PreferenceKeys.FIREBASE_TOKEN).getString(PreferenceKeys.FIREBASE_TOKEN));
             mJson.put("device_udid", "");
             mJson.put("voip_token", "");
         } catch (Exception e) {

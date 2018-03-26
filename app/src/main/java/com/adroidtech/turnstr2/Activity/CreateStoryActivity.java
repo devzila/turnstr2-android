@@ -64,7 +64,6 @@ import com.otaliastudios.cameraview.CameraView;
 import com.otaliastudios.cameraview.SessionType;
 import com.zomato.photofilters.imageprocessors.Filter;
 
-import net.alhazmy13.imagefilter.ImageFilter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
