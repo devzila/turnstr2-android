@@ -52,6 +52,7 @@ public class GeneralValues {
     public static final String LIVE_SESSION = "/v1/user/live_session ";
 
     public static final String GOLIVE_SESSION = "/v1/user/golive_session ";
+    public static final String GOLIVE_TOKEN = "/v1/user/golive_token ";
     public static final String LIVE_NOTIFY = "/v1/user/live_notify";
 
     public static final String MEMBERS_FOLLOW = "/v1/members/_MEMBER_ID_/follow";

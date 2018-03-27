@@ -99,7 +99,7 @@ public class MainVideoActivity extends AppCompatActivity
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_chat_golive);
-
+        sharedPreference = new SharedPreference(getApplicationContext());
 
         Bundle bundle = getIntent().getExtras();
         if(null!=bundle)
@@ -117,12 +117,19 @@ public class MainVideoActivity extends AppCompatActivity
 
             }
 
-            if(null!=sessionId && !sessionId.isEmpty() && null!=token && !token.isEmpty() )
+            if(null!=sessionId && !sessionId.isEmpty())//&& null!=token && !token.isEmpty() )
             {
                 OpenTokConfig.SESSION_ID=sessionId;
-                OpenTokConfig.TOKEN=token;
 
-                requestPermissions();
+                try {
+                    golive_token_apiRequest(sessionId);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                //OpenTokConfig.TOKEN=token;
+
+                //requestPermissions();
 
             }
 
@@ -138,7 +145,7 @@ public class MainVideoActivity extends AppCompatActivity
       //  Log.e(TAG, "....memberid..."+memberID);
 
 
-        sharedPreference = new SharedPreference(getApplicationContext());
+
         // initialize view objects from your layout
         mPublisherViewContainer = (RelativeLayout)findViewById(R.id.publisher_container);
 
@@ -216,6 +223,25 @@ public class MainVideoActivity extends AppCompatActivity
 
 
     }
+
+    private void golive_token_apiRequest(String session_id) throws JSONException {
+
+        Log.e(TAG, ".session_id......."+session_id);
+        JSONObject mJson = new JSONObject();
+
+        mJson.put("session_id", session_id);//"video_call");
+
+
+        Log.e("Tag", "test................");
+        HashMap<String, String> extraHeaders = new HashMap<>();
+        extraHeaders.put("auth_token", sharedPreference.getString(PreferenceKeys.APP_AUTH_TOKEN));
+
+        new CommonAsync(this, "POST", this, GeneralValues.GOLIVE_TOKEN, mJson, extraHeaders).execute();
+        Log.e("Tag", "test................11");
+
+
+    }
+
 
     private void live_notify_Request() throws JSONException {
 
@@ -521,6 +547,59 @@ public class MainVideoActivity extends AppCompatActivity
 
         Log.e("TAG", "jsonObject........"+json);
         Log.e("TAG", "txt........"+txt);
+
+        if(txt.toString().trim().equals(GeneralValues.GOLIVE_TOKEN.trim())) {
+            if (null != json) {
+
+                JSONObject jsonobject = null;
+                try {
+                    jsonobject = new JSONObject(json);
+
+                    if (null != jsonobject) {
+                        String name;
+                        Iterator<String> keys = jsonobject.keys();
+
+                        while (keys.hasNext()) {
+
+                            name = keys.next();
+                            System.out.println("key namn:::::::" + name);
+                            if (name.equals("status")) {
+                            }
+                            if (name.equals("data")) {
+
+                                JSONObject dataJson = jsonobject.getJSONObject(name);
+                                if (null != dataJson) {
+                                    String dataName;
+                                    Iterator<String> dataKey = dataJson.keys();
+                                    while (dataKey.hasNext()) {
+                                        dataName = dataKey.next();
+                                        if (dataName.equals("token")) {
+                                            if(null!=dataJson.getString(dataName))
+                                            {
+                                                Log.e("TAG", GeneralValues.GOLIVE_TOKEN+"....TOken......"+dataJson.getString(dataName));
+
+                                                OpenTokConfig.TOKEN=dataJson.getString(dataName);
+
+                                                requestPermissions();
+                                            }
+                                            else {
+                                                Toast.makeText(getApplicationContext(), "Token is null", Toast.LENGTH_LONG).show();
+                                            }
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+
+        }
+
 
         if(txt.toString().trim().equals("/v1/user/golive_session".trim()))
         {

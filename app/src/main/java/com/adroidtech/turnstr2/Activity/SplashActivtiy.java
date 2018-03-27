@@ -101,7 +101,7 @@ public class SplashActivtiy extends Activity {
     protected void onResume() {
         super.onResume();
 
-        Log.e("TAG ",  "Splash Activity.........");
+        Log.e("TAG ",  "onResume  onResume Splash Activity.........");
     }
 
     /**
