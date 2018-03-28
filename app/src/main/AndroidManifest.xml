@@ -92,7 +92,8 @@
         <!-- android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" -->
         <!-- android:label="@string/app_name" /> -->
 
-        <activity android:name=".chat.fcm.NotificationActivity"/>
+        <activity android:name=".chat.fcm.NotificationActivity" android:taskAffinity=""
+            android:excludeFromRecents="true"/>
         <activity
             android:name=".chat.groupchannel.CreateGroupChannelActivity"
             android:screenOrientation="portrait"

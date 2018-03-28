@@ -42,6 +42,8 @@ import com.google.firebase.messaging.RemoteMessage;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Random;
+
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
@@ -164,7 +166,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 /* Request code */, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
-       int notificationId=101;
+        int notificationId = new Random().nextInt();
         PendingIntent dismissIntent = NotificationActivity.getDismissIntent(notificationId, context);
 
 
@@ -173,12 +175,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setSmallIcon(R.drawable.ic_video_call_black_24dp)
                 .setContentTitle("Calling")//context.getResources().getString(R.string.app_name))
                 .setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_ALL)
                 .setVisibility(Notification.VISIBILITY_PUBLIC)
                 .setSound(defaultSoundUri)
                 .addAction(R.drawable.ic_call_black_24dp, "Accept",pendingIntent)
                 .addAction(R.drawable.ic_call_end_black_24dp, "Dismiss", dismissIntent)
-                .setPriority(Notification.PRIORITY_MAX)
-                .setDefaults(Notification.DEFAULT_ALL);
+                .setPriority(Notification.PRIORITY_MAX);
+
               // .setContentIntent(pendingIntent);
 
         if (PreferenceUtils.getNotificationsShowPreviews(context)) {
