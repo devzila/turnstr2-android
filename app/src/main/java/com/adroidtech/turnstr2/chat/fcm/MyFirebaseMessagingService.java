@@ -164,16 +164,22 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 /* Request code */, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
+       int notificationId=101;
+        PendingIntent dismissIntent = NotificationActivity.getDismissIntent(notificationId, context);
+
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
-                .setSmallIcon(R.drawable.ic_call_black_24dp)
+                .setSmallIcon(R.drawable.ic_video_call_black_24dp)
                 .setContentTitle("Calling")//context.getResources().getString(R.string.app_name))
                 .setAutoCancel(true)
+                .setVisibility(Notification.VISIBILITY_PUBLIC)
                 .setSound(defaultSoundUri)
+                .addAction(R.drawable.ic_call_black_24dp, "Accept",pendingIntent)
+                .addAction(R.drawable.ic_call_end_black_24dp, "Dismiss", dismissIntent)
                 .setPriority(Notification.PRIORITY_MAX)
-                .setDefaults(Notification.DEFAULT_ALL)
-                .setContentIntent(pendingIntent);
+                .setDefaults(Notification.DEFAULT_ALL);
+              // .setContentIntent(pendingIntent);
 
         if (PreferenceUtils.getNotificationsShowPreviews(context)) {
             notificationBuilder.setContentText(messageBody);
