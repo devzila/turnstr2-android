@@ -1,60 +1,52 @@
 {
   "project_info": {
-    "project_number": "1035371032311",
-    "firebase_url": "https://turnstr-853c0.firebaseio.com",
-    "project_id": "turnstr-853c0",
-    "storage_bucket": "turnstr-853c0.appspot.com"
+    "project_number": "271027646803",
+    "firebase_url": "https://turnstr-c06f1.firebaseio.com",
+    "project_id": "turnstr-c06f1",
+    "storage_bucket": "turnstr-c06f1.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1035371032311:android:340330a5f599ab7d",
+        "mobilesdk_app_id": "1:271027646803:android:6dd2910e07a9962e5231a6",
         "android_client_info": {
-          "package_name": "com.adroidtech.turnstr2"
+          "package_name": "com.wdp.turnstr"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1035371032311-a2b1jf9r28kji61ulqg22o135s1t3nr1.apps.googleusercontent.com",
+          "client_id": "271027646803-hhtq6crpk7fpilsrjetf7alalkcrehuh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.adroidtech.turnstr2",
-            "certificate_hash": "fb94d2463a3e9f423750fd66e1eb640f22194a9b"
+            "package_name": "com.wdp.turnstr",
+            "certificate_hash": "6feab15acf0f4930e0509d79c81133efd2c84edb"
           }
         },
         {
-          "client_id": "1035371032311-08a1hprapofsui8amq3pim9fmjstoca1.apps.googleusercontent.com",
+          "client_id": "271027646803-g71lofjmlbndin0aer9knv3436fjddj9.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCd9bYIsMxFmVxgUTtPUwkvlGmZCa7zR7Y"
+          "current_key": "AIzaSyB9cuvOVVL-ElnTo8SKg21rV7IxISou7N8"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "1035371032311-08a1hprapofsui8amq3pim9fmjstoca1.apps.googleusercontent.com",
+              "client_id": "271027646803-g71lofjmlbndin0aer9knv3436fjddj9.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "1035371032311-itrs6q8jvv4uq7ci9u7702n1lb1ppqhu.apps.googleusercontent.com",
+              "client_id": "271027646803-bksri244004fqtulfgv6tg8mdpa8f1bh.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.sleekgeek.turnstr",
-                "app_store_id": "1125690098"
+                "bundle_id": "com.rockywright.turnstr"
               }
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.wdp.Fragment.HomeFragment"
+    android:background="@color/white">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_back"/>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_20"
+        android:padding="@dimen/dp_20"
+        android:layout_below="@+id/toolbar">
+        <TextView
+            android:id="@+id/txt_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_14"
+            android:text="@string/write_to_us_about_your_objections"/>
+
+        <RadioGroup
+            android:id="@+id/radioTabgroup"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:background="@drawable/storke_blue_rectangle"
+            android:layout_below="@+id/txt_title"
+            android:layout_marginTop="@dimen/dp_30"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            tools:ignore="UselessParent">
+
+            <RadioButton
+                android:id="@+id/radioHeader1"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_40"
+                android:layout_weight="1"
+                android:background="@drawable/tab_backgrount"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/Inappropriate"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:checked="true"
+                android:textStyle="bold" />
+
+            <RadioButton
+                android:id="@+id/radioHeader2"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_40"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/dp_1"
+                android:background="@drawable/tab_backgrount"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/Spam"
+                android:textAllCaps="false"
+                android:textColor="@color/blue"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+
+        </RadioGroup>
+
+        <EditText
+            android:id="@+id/edt_message"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_250"
+            android:padding="@dimen/dp_15"
+            android:scrollbars="vertical"
+            android:inputType="textMultiLine"
+            android:hint="@string/write_here"
+            android:textColorHint="@color/ColorGray808080"
+            android:textColor="@color/black"
+            android:layout_marginTop="@dimen/dp_30"
+            android:gravity="start"
+            android:layout_below="@+id/radioTabgroup"
+            android:background="@drawable/backgroud_gray_with_storke"/>
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/backgroud_button"
+            android:layout_marginTop="@dimen/dp_30"
+            android:paddingHorizontal="@dimen/dp_20"
+            android:layout_centerHorizontal="true"
+            android:text="@string/sumit_request"
+            android:textAllCaps="false"
+            android:textSize="@dimen/sp_16sp"
+            android:layout_below="@+id/edt_message">
+
+        </Button>
+
+    </RelativeLayout>
+
+
+
+
+</RelativeLayout>
+
+

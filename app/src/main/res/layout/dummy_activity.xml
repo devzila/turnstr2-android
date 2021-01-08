@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.wdp.Fragment.HomeFragment"
+    android:background="@color/white">
+
+    <com.wdp.Utility.WrapContentHeightViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        class="com.wdp.obafa.Utility.WrapContentHeightViewPager"/>
+
+    <ImageView
+        android:id="@+id/img_back"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_40"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:background="@drawable/circle_gray"
+        android:contentDescription="@string/app_name"
+        android:padding="@dimen/dp_8"
+        android:src="@drawable/close" />
+</RelativeLayout>
+
+

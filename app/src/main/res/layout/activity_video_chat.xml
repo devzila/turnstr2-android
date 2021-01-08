@@ -1,168 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:background="@color/white">
 
     <RelativeLayout
+        android:id="@+id/rlHeader"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_50"
+        android:background="@android:color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        android:gravity="bottom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <!--<FrameLayout-->
-        <!--android:id="@+id/subscriber_container"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="fill_parent" />-->
-
-        <!--<FrameLayout-->
-        <!--android:id="@+id/publisher_container"-->
-        <!--android:layout_width="@dimen/publisher_width"-->
-        <!--android:layout_height="@dimen/publisher_height"-->
-        <!--android:layout_gravity="bottom|end"-->
-        <!--android:layout_marginBottom="@dimen/publisher_bottom_margin"-->
-        <!--android:layout_marginEnd="@dimen/publisher_right_margin"-->
-        <!--android:layout_marginRight="@dimen/publisher_end_margin"-->
-        <!--android:background="@color/white"-->
-        <!--android:padding="@dimen/publisher_padding" />-->
-
-
-        <LinearLayout
-            android:id="@+id/video"
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/imgBack"
+            android:layout_width="@dimen/dp_50"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:src="@drawable/arrow_back"
+            android:padding="@dimen/dp_12"
+            android:layout_marginLeft="@dimen/dp_10"
+            app:tint="@color/white" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/black"
-                android:gravity="right|center">
-
-                <ImageView
-                    android:id="@+id/addMoreUser"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:src="@drawable/ic_add_white_24dp" />
-
-
-            </LinearLayout>
-
-
-
-            <LinearLayout
-
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:id="@+id/topview"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <RelativeLayout
-                        android:id="@+id/subscriber_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:visibility="gone" />
-
-                    <RelativeLayout
-                        android:id="@+id/subscriber_container1"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:visibility="gone" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <RelativeLayout
-                        android:id="@+id/subscriber_container2"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:visibility="gone" />
-
-                    <RelativeLayout
-
-                        android:id="@+id/publisher_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:background="@color/white"
-                    android:gravity="center|bottom"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:id="@+id/imgMic"
-                        android:elevation="10dp"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/oval_green"
-                        android:padding="5dp"
-                        android:src="@drawable/ic_mic_on"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp" />
-                    <ImageView
-                        android:id="@+id/imgEndCall"
-                        android:layout_margin="10dp"
-                        android:elevation="10dp"
-                        android:background="@drawable/oval_red"
-                        android:padding="5dp"
-                        android:src="@drawable/ic_call_end"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp" />
-                    <ImageView
-                        android:id="@+id/imgSwitchCamera"
-                        android:layout_margin="10dp"
-                        android:elevation="10dp"
-                        android:background="@drawable/oval_green"
-                        android:padding="5dp"
-                        android:src="@drawable/ic_switch_camera"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp" />
-
-                    <ImageView
-                        android:visibility="gone"
-                        android:id="@+id/imgSpeaker"
-                        android:layout_margin="10dp"
-                        android:elevation="10dp"
-                        android:background="@drawable/oval_red"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_speaker"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-
-
-        </LinearLayout>
-
-
-
+        <ImageView
+            android:id="@+id/imgFollowingList"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="match_parent"
+            android:src="@drawable/add"
+            android:padding="@dimen/dp_5"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="@dimen/dp_10"
+            app:tint="@color/white"/>
 
     </RelativeLayout>
 
+    <com.wdp.Agora.VideoGridContainer
+        android:id="@+id/live_video_grid_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rlHeader"
+        app:layout_constraintBottom_toTopOf="@+id/rlFooter"/>
 
-</RelativeLayout>
+    <!--<RelativeLayout
+        android:id="@+id/llCameraView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rlHeader"
+        app:layout_constraintBottom_toTopOf="@+id/rlFooter"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:id="@+id/local_video_view_container2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/localBackground"/>
+
+        <FrameLayout
+            android:id="@+id/local_video_view_container1"
+            android:layout_width="@dimen/local_preview_width"
+            android:layout_height="@dimen/local_preview_height"
+            android:layout_alignParentEnd="true"
+            android:visibility="gone"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="@dimen/local_preview_margin_right"
+            android:layout_marginRight="@dimen/local_preview_margin_right"
+            android:layout_marginTop="@dimen/local_preview_margin_top"
+            android:background="@color/localBackground"/>
+
+    </RelativeLayout>-->
+
+    <RelativeLayout
+        android:id="@+id/rlFooter"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_50"
+        android:background="@android:color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:id="@+id/imgSwitchCamera"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="match_parent"
+            android:src="@drawable/camerawhite"
+            android:padding="@dimen/dp_5"
+            android:onClick="onSwitchCameraClicked"
+            android:layout_marginLeft="@dimen/dp_10"
+            app:tint="@color/white" />
+
+        <Button
+            android:id="@+id/btnVideoCall"
+            android:layout_width="@dimen/dp_120"
+            android:layout_height="@dimen/dp_40"
+            android:background="@drawable/rounded_button_bg"
+            android:gravity="center"
+            android:text="@string/endcall"
+            android:textSize="@dimen/sp_15"
+            android:onClick="onCallClicked"
+            android:textAllCaps="false"
+            android:layout_centerInParent="true"/>
+
+        <ImageView
+            android:id="@+id/imgMic"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="@dimen/dp_10"
+            android:onClick="onLocalAudioMuteClicked"
+            android:padding="@dimen/dp_5"
+            android:src="@drawable/btn_mute_audio"
+            app:tint="@color/white" />
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,193 +1,252 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.adroidtech.turnstr2">
-
-    <uses-sdk tools:overrideLibrary="com.stfalcon.multiimageview" />
-
+    package="com.wdp.turnstr">
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <!-- <action android:name="android.net.conn.CONNECTIVITY_CHANGE" /> -->
-
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
-
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-
-    <uses-feature
-        android:glEsVersion="0x00020000"
-        android:required="true" />
-    <!-- min 16 -->
+    <uses-feature android:name="android.hardware.camera.flash" />
+    <uses-feature android:name="android.hardware.sensor.gyroscope" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <permission android:name="android.permission.MEDIA_CONTENT_CONTROL" />
+    <uses-permission android:name="android.permission.VIBRATE" android:maxSdkVersion="18"/>
+     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-feature android:glEsVersion="0x00020000" android:required="true" />
+    <supports-gl-texture android:name="GL_OES_compressed_ETC1_RGB8_texture" />
+    <supports-gl-texture android:name="GL_OES_compressed_paletted_texture" />
     <application
-        android:name=".chat.activitys.BaseApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/logo"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:largeHeap="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:usesCleartextTraffic="true"
+        android:theme="@style/AppTheme.NoActionBar"
+        android:hardwareAccelerated="true"
+        android:name="com.wdp.Agora.live.AgoraApplication"
+        android:requestLegacyExternalStorage="true">
         <activity
-            android:name=".Activity.SplashActivtiy"
-            android:screenOrientation="portrait">
+            android:name="com.wdp.ActivityScreen.MainActivity"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Activity.ProfileActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
-        <activity
-            android:name=".Activity.MyStoryActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
-        <activity
-            android:name=".Activity.LoginActivity"
-            android:label="@string/title_activity_login"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateVisible" />
-        <activity
-            android:name=".Activity.SignUpActivity"
-            android:label="@string/title_activity_login"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
-        <activity
-            android:name=".chat.activitys.AllFriendList"
-            android:label="New Chat?"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
 
         <activity
-            android:name=".GoLive.StartGoLive_Activity"
+            android:name="com.wdp.ActivityScreen.SpalashActivity"
+            android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
-
-        <activity
-            android:name=".Activity.UserProfileViewActivity"
-            android:label="New Chat?"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
-
-
-        <!-- <meta-data -->
-        <!-- android:name="com.facebook.sdk.ApplicationId" -->
-        <!-- android:value="@string/facebook_app_id" /> -->
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
 
 
-        <!-- <activity -->
-        <!-- android:name="com.facebook.FacebookActivity" -->
-        <!-- android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" -->
-        <!-- android:label="@string/app_name" /> -->
 
-        <activity android:name=".chat.fcm.NotificationActivity" android:taskAffinity=""
-            android:excludeFromRecents="true"/>
-        <activity
-            android:name=".chat.groupchannel.CreateGroupChannelActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
-        <activity
-            android:name=".chat.groupchannel.GroupChannelActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
-        <activity
-            android:name=".chat.groupchannel.InviteMemberActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
-        <activity
-            android:name=".chat.groupchannel.MemberListActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
-        <activity
-            android:name=".Utils.chatUtils.PhotoViewerActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
-        <activity
-            android:name=".Utils.chatUtils.MediaPlayerActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
-        <activity
-            android:name=".Activity.EditProfileActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
-        <!-- <activity android:name=".imageFillters.ImageFillterSettingActivity" /> -->
+        </activity>
 
-        <service android:name=".chat.fcm.MyFirebaseMessagingService">
+        <activity
+            android:name="com.wdp.ActivityScreen.LoginActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
+
+        <activity
+            android:name="com.wdp.ActivityScreen.ForgotPasswordActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
+
+
+        <activity
+            android:name="com.wdp.ActivityScreen.SignUpActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
+
+        <activity
+            android:name="com.wdp.ActivityScreen.FollowFollowingActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
+
+        <activity
+            android:name="com.wdp.ActivityScreen.StoryCubeViewActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
+        MyStoriesActivity
+
+        <activity
+            android:name="com.wdp.ActivityScreen.MyStoriesActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
+
+        <activity
+            android:name="com.wdp.ActivityScreen.MeStoryCubeViewActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
+
+        <activity
+            android:name="com.wdp.ActivityScreen.FollowingListActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
+
+        <activity
+            android:name="com.wdp.ActivityScreen.CommentListActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|stateVisible"/>
+
+        <activity
+            android:name="com.wdp.ActivityScreen.PostReportListActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity
+            android:name="com.wdp.ActivityScreen.MediaViewActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name="com.wdp.ActivityScreen.ProfileEditActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>        <activity
+            android:name="com.wdp.Agora.VideoCallActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity
+            android:name="com.wdp.ActivityScreen.FilterActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity
+            android:name="com.wdp.ActivityScreen.OtherProfileActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity
+            android:name="com.wdp.ActivityScreen.ImageFilterActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name="com.wdp.ActivityScreen.FeedEditPostActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name="com.wdp.ActivityScreen.FeedPostActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>       <activity
+            android:name="com.wdp.ActivityScreen.StoryPostActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
+
+
+
+
+        <service android:name="com.wdp.Firebase.MyFirebaseMessagingService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".chat.fcm.MyFirebaseInstanceIDService">
+
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
+
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"/>
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="@string/fb_login_protocol_scheme"/>
             </intent-filter>
-        </service>
+        </activity>
+        <activity
+            android:name="com.wdp.Agora.live.LiveActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
+        <activity
+            android:name="com.wdp.Agora.live.BaseActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
 
         <activity
-            android:name=".Activity.CreateStoryActivity"
+            android:name="com.wdp.ActivityScreen.ChatDashboardActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
-        <activity
-            android:name=".Activity.VideoPreviewActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
-        <activity
-            android:name=".Activity.GalleryImageActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
-        <activity
-            android:name=".Activity.HomePageActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize"></activity>
-
-        <activity
-            android:name=".GoLive.MainVideoActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
-        <activity
-            android:name=".videoChat.MainVideoActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
-        <activity
-            android:name=".chat.activitys.AllFriendListVideo"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
 
 
         <activity
-            android:name=".Activity.ViewStoryActivity"
+            android:name="com.wdp.ActivityScreen.ChatActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
+
+
         <activity
-            android:name=".Activity.ViewFullScrrenStoryActivity"
+            android:name="com.wdp.Agora.live.LiveStartActivity"
+            android:screenOrientation="portrait"/>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.wdp.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+        <activity
+            android:name="com.wdp.SendBird.PhotoViewerActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize"></activity>
-
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
 
         <activity
-            android:name=".Activity.SearchStoryActivity"
+            android:name="com.wdp.SendBird.MediaPlayerActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateVisible|adjustResize" />
-        <activity
-            android:name=".Activity.ViewVideoActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Activity.MyVideoStoryActivity"
-            android:screenOrientation="portrait" />
-
-
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
     </application>
 
 </manifest>

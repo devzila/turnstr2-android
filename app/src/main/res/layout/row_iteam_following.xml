@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/rl_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dp_10">
+        <LinearLayout
+            android:id="@+id/ll_cube"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:orientation="vertical"
+            android:src="@drawable/dummy_user"/>
+
+        <RelativeLayout
+            android:layout_toEndOf="@+id/ll_cube"
+            android:layout_width="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txt_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/rl_right"
+                android:gravity="start"
+                android:padding="5dp"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="16dp" />
+
+            <RelativeLayout
+                android:id="@+id/rl_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true">
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/img_post"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"/>
+                <Button
+                    android:id="@+id/btn_approve"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:text="@string/approve"
+                    android:layout_centerVertical="true"
+                    android:padding="5dp"
+                    android:textColor="@color/white"
+                    android:textAllCaps="false"
+                    android:background="@drawable/backgroud_button"/>
+
+
+            </RelativeLayout>
+
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/rl_top"
+        android:background="@color/ColorGray808080"/>
+
+</RelativeLayout>

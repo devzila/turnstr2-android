@@ -1,0 +1,66 @@
+package com.wdp.ApiServices;
+
+import android.content.Context;
+
+import com.wdp.Interface.APIClient;
+import com.wdp.Interface.APIInterface;
+import com.wdp.Interface.ApiConstants;
+import com.wdp.Interface.ApiResponseListner;
+import com.wdp.Interface.GoogleProgressDialog;
+import com.wdp.Interface.SuperCastClass;
+import com.wdp.Modal.LoginResDataModal;
+import com.wdp.Modal.PostDataModal;
+import com.wdp.turnstr.R;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class PostsApiService implements Callback<PostDataModal> {
+    private APIInterface apiInterface;
+    private ApiResponseListner apiResponseListner;
+    private GoogleProgressDialog progressDialog;
+    private Context context;
+
+    public PostsApiService(Context context) {
+        this.context = context;
+        apiInterface = APIClient.getClient().create(APIInterface.class);
+    }
+
+
+
+    public void Connect(String token, String page,ApiResponseListner apiResponseListner) {
+        this.apiResponseListner = apiResponseListner;
+        Call<PostDataModal> call = apiInterface.posts(token,page);
+        call.enqueue(this);
+        setProgressDialog();
+    }
+
+    private void setProgressDialog() {
+        progressDialog = new GoogleProgressDialog(context);
+        progressDialog.showDialog();
+    }
+
+    @Override
+    public void onResponse(Call<PostDataModal> call, Response<PostDataModal> response) {
+        PostDataModal postDataModal = response.body();
+        progressDialog.dismiss();
+        if (postDataModal != null) {
+            if (postDataModal.isSuccess().equalsIgnoreCase("true")) {
+                SuperCastClass superCastClass = postDataModal;
+                apiResponseListner.onSuccess(ApiConstants.posts_tag, superCastClass);
+            } else {
+                apiResponseListner.onFailure(postDataModal.getMessage());
+            }
+        } else {
+            apiResponseListner.onException(context.getResources().getString(R.string.server_data_not_found));
+        }
+    }
+
+    @Override
+    public void onFailure(Call<PostDataModal> call, Throwable t) {
+        progressDialog.dismiss();
+        t.getMessage();
+    }
+
+}

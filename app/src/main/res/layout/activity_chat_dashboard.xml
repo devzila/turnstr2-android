@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/rlHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imgBack"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_50"
+            android:padding="@dimen/dp_13"
+            android:src="@drawable/arrow_back"
+            app:tint="@color/blue" />
+
+        <RelativeLayout
+            android:id="@+id/rl_cube"
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="@dimen/dp_100"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:backgroundTint="@color/black"
+            android:background="@drawable/cube">
+
+        </RelativeLayout>
+
+
+        <ImageView
+            android:id="@+id/img_cube"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_50"
+            android:layout_below="@+id/rl_cube"
+            android:layout_marginTop="@dimen/dp_50"
+            android:layout_centerHorizontal="true"
+            android:padding="@dimen/dp_10"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:src="@drawable/mystory"/>
+
+
+        <LinearLayout
+            android:id="@+id/ll_videochat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp_10"
+            android:gravity="center_horizontal"
+            android:layout_alignParentEnd="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/llChatSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/sp_15"
+                    android:text="@string/chat"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:textColor="@color/blue"
+                    android:textStyle="bold"/>
+
+                <ImageView
+                    android:layout_width="@dimen/dp_40"
+                    android:layout_height="@dimen/dp_40"
+                    android:src="@drawable/icon_search"
+                    android:padding="@dimen/dp_5"
+                    app:tint="@color/blue"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imgVideoCall"
+                android:layout_width="@dimen/dp_45"
+                android:layout_height="@dimen/dp_45"
+                android:src="@drawable/ic_video"
+                android:layout_marginTop="@dimen/dp_20"
+                android:padding="@dimen/dp_5"/>
+
+            <RelativeLayout
+                android:id="@+id/relayChat"
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
+                android:layout_marginTop="@dimen/dp_5">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/chat"
+                    android:padding="@dimen/dp_10"
+                    app:tint="@color/blue" />
+
+                <ImageView
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/sp_20"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/add"
+                    app:tint="@color/blue" />
+
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relaySearch"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginVertical="@dimen/dp_5"
+        android:visibility="gone"
+        android:background="@android:color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40"
+            android:orientation="horizontal"
+            android:background="@drawable/edttextbackground">
+
+            <ImageView
+                android:id="@+id/img_search"
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="match_parent"
+                android:src="@drawable/search"/>
+
+            <EditText
+                android:id="@+id/edtSearch"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/search"
+                android:textSize="@dimen/sp_16"
+                android:textColor="@android:color/black"
+                android:background="@android:color/transparent"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_40"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:paddingHorizontal="@dimen/dp_15"
+            android:textColor="@color/blue"
+            android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="0dp"
+        android:layout_height="0.7dp"
+        android:background="@color/blue"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rlHeader"/>
+
+    <TextView
+        android:id="@+id/txtNoUser"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_250"
+        android:text="@string/nouserchat"
+        android:textColor="@color/ColorGray"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view1"/>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_layout_group_channel_list"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view1"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvChatList"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

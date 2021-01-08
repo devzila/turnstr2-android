@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.wdp.Fragment.HomeFragment"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/rl_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar_back"/>
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rl_top"
+        android:orientation="vertical"
+        android:layout_above="@+id/rl_bottam">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycleview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    </LinearLayout>
+
+
+
+    <RelativeLayout
+        android:id="@+id/rl_bottam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/ColorF3EFEF">
+
+
+        <EditText
+            android:id="@+id/edt_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp_15"
+            android:layout_margin="@dimen/dp_5"
+            android:scrollbars="vertical"
+            android:maxHeight="@dimen/dp_120"
+            android:inputType="textMultiLine"
+            android:hint="@string/write_a_message"
+            android:textColorHint="@color/ColorGray808080"
+            android:textColor="@color/black"
+            android:layout_toStartOf="@+id/sendButton"
+            android:background="@drawable/backgroud_white_with_storke"/>
+
+        <ImageView
+            android:id="@+id/sendButton"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_40"
+            android:layout_gravity="bottom"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="TODO"
+            android:padding="@dimen/dp_2"
+            android:src="@drawable/ic_send" />
+
+
+    </RelativeLayout>
+</RelativeLayout>
+
+

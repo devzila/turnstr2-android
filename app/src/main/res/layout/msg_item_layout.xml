@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/item_layout_l"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/item_name_l"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:lines="1"
+            android:textColor="@color/white"
+            android:textSize="10dp" />
+
+        <TextView
+            android:id="@+id/item_msg_l"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/item_name_l"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/item_layout_r"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/item_name_r"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/item_msg_r"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/item_name_r"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+
+</RelativeLayout>
